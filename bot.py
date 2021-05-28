@@ -10,7 +10,7 @@ import os.path
 
 res = time.strftime("%x %X", time.localtime())
 
-ver = "\n\nv0.7 от 28.05.2021 00:04 МСК"
+ver = "\n\nv0.7.2 от 28.05.2021 15:30 МСК"
 users = next(os.walk("json"))[2]
 
 token = "2d26f19312dd93258ca84a1c533fefb1cffbb3a9d63d775e78ae3c62bd4254806825bdf2af924f8408d78"
@@ -47,6 +47,12 @@ def prof(id):
         return '💬 Добро пожаловать! Я вижу ты здесь новенький, используй "хелп" для помощи и развлекайся!\n💲 А еще,держи свой бонус в размере 1000$'
 
     return 'Ваш профиль\n\n' + '🔎 Ваш id: ' + str(ff["id"]) + '\n💰 Ваш баланс: ' + str(ff["balance"]) + '\n👥Всего пользователей: ' + str(len(users)) + '\n👔 Вы персонал: ' + ifstaff(id) + '\n\n📅 Дата регистрации: ' + str(ff["reg"]) + ver
+
+def dprof(idd):
+    with open('json/' + str(idd) + '.json') as f:
+        ff = json.loads(f.read())
+
+    return 'Ссылка на профиль: vk.com/id' + idd +'\n🔎 id: ' + str(ff["id"]) + '\n💰 баланс: ' + str(ff["balance"]) + '\n👔 персонал: ' + ifstaff(id) + '\n\n📅 Дата регистрации: ' + str(ff["reg"])
 
 def bal(id):
     with open('json/' + str(id) + '.json') as f:
@@ -390,7 +396,7 @@ def top():
             a.append(ff["balance"]) #+ ' ' +  str(ff["id"]))
     a = sorted(a)
     print(a)
-top()
+
 print("✅Бот запущен!")
 while True:
     try:
@@ -471,6 +477,18 @@ while True:
                                                 "message": "Вы не администратор!",
                                                 "random_id": random.randint(1, 2147483647)})
 
+            elif 'дпроф' in body.lower():
+                if id in admins or id in moders:
+                    if len(str(body).split()) == 2:
+                        temp = str(body).split(" ")
+                        idd = temp[1]
+                        vk.method("messages.send", {"peer_id": id,
+                                                "message": dprof(idd),
+                                                "random_id": random.randint(1, 2147483647)})
+                else:
+                    vk.method("messages.send", {"peer_id": id,
+                                                "message": "Вы не администратор или модератор!",
+                                                "random_id": random.randint(1, 2147483647)})
 
             elif 'казино' in body.lower() or 'казик' in body.lower():
                 if len(str(body).split()) == 2:
