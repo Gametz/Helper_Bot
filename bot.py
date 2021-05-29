@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import vk_api
+import dropbox
 import requests
 import bs4
 import datetime
@@ -8,17 +9,34 @@ import json
 import time
 import os.path
 
-res = time.strftime("%x %X", time.localtime())
+def res():
+    return time.strftime("%x %X", time.localtime())
 
-ver = "\n\nv0.7.9 от 29.05.2021 17:05 МСК"
+ver = "\n\nv0.8 от 30.05.2021 00:15 МСК"
 users = next(os.walk("json"))[2]
-
 token = "2d26f19312dd93258ca84a1c533fefb1cffbb3a9d63d775e78ae3c62bd4254806825bdf2af924f8408d78"
 vk = vk_api.VkApi(token=token)
 vk._auth_token()
 
 admins = [419760643]
-moders = [361585264, 190114998]
+moders = [361585264, 190114998, 418333599]
+
+def log(id, body):
+    with open('log.txt', 'a', encoding='utf-8') as f:
+        f.writelines("\n[" + res() + "] " + str(id) + " " + str(body) + " | Успешно!")
+
+def glog():
+    with open('log.txt', 'rb') as file:
+        dbx = dropbox.Dropbox('sl.Axy0arIQI0-ksrw2NAfzT5y53mSeczQPAEcSgWaD1P5M_6OodpSySF6FiFbUHsgKiu1-VCUV4cSCk_FRLakKwcOosksJP86dIyoUYYeGdnLitQfveDPqLLvmeagECbqdxcAmYIONP8X6')
+        r = dbx.files_delete_v2('/log.txt')
+        if 'UploadWriteFailed(reason=WriteError(' in str(r):
+            r = dbx.files_upload(file.read(), '/log.txt')
+            l = dbx.sharing_create_shared_link('/log.txt')
+            return l
+        else:
+            r = dbx.files_upload(file.read(), '/log.txt')
+            l = dbx.sharing_create_shared_link('/log.txt')
+            return l
 
 def ifstaff(id):
     if id in admins or id in moders:
@@ -38,7 +56,7 @@ def prof(id):
         "klose": 0,
         "mwin": 0,
         "mlose": 0,
-        "reg": res
+        "reg": res()
     }
     try:
         with open('json/' + str(id) + '.json') as f:
@@ -56,14 +74,14 @@ def dprof(idd):
     with open('json/' + str(idd) + '.json') as f:
         ff = json.loads(f.read())
 
-    return 'Ссылка на профиль: vk.com/id' + idd +'\n🔎 id: ' + str(ff["id"]) + '\n📋 Ник: ' + str(ff["nick"]) + '\n💰 Баланс: ' + str(ff["balance"]) + '\n👔 Персонал: ' + ifstaff(id) + '\n\n📅 Дата регистрации: ' + str(ff["reg"])
+    return 'Ссылка на профиль: vk.com/id' + idd +'\n🔎 id: ' + str(ff["id"]) + '\n📋 Ник: ' + str(ff["nick"]) + '\n💰 Баланс: ' + str(ff["balance"]) + '\n👔 Персонал: ' + ifstaff(idd) + '\n\n📅 Дата регистрации: ' + str(ff["reg"])
 
 def nick(id, nick):
     if len(nick) <= 15:
-        with open('json/' + str(id) + '.json') as f:
+        with open('json/' + str(id) + '.json', encoding='utf-8') as f:
             ff = json.loads(f.read())
         ff["nick"] = nick
-        with open('json/' + str(id) + '.json', 'w') as f:
+        with open('json/' + str(id) + '.json', 'w', encoding='utf-8') as f:
             f.write(json.dumps(ff, indent=4))
         return "Теперь ваш ник: " + nick
     else:
@@ -114,6 +132,34 @@ def dbal (idd,val):
         return "Теперь баланс " + idd + ": " + str(ff["balance"])
     else:
         return "Вы ввели значение меньше нуля или больше 1 000 000 000"
+
+def pay(id, idd, val):
+    with open('json/' + str(id) + '.json', encoding='utf-8') as f:
+        per = json.loads(f.read())
+    try:
+        with open('json/' + str(idd) + '.json', encoding='utf-8') as f:
+            pol = json.loads(f.read())
+    except:
+        return "Такого пользователя не существует!"
+
+    if int(val) > 0 and int(val) <= per["balance"]:
+        per["balance"] -= int(val)
+        pol["balance"] += int(val)
+        with open('json/' + str(id) + '.json', 'w', encoding='utf-8') as f:
+            f.write(json.dumps(per, indent=4))
+        with open('json/' + str(idd) + '.json', 'w', encoding='utf-8') as f:
+            f.write(json.dumps(pol, indent=4))
+        if per["nick"] == '':
+            vk.method("messages.send", {"peer_id": idd,
+                                "message": "Вы получили перевод от " + str(id) + " в размере: " + val + "$",
+                                "random_id": random.randint(1, 2147483647)})
+        else:
+            vk.method("messages.send", {"peer_id": idd,
+                                "message": "Вы получили перевод от " + per["nick"] + " в размере: " + val + "$",
+                                "random_id": random.randint(1, 2147483647)})
+        return "Перевод успешно выполнен! Ваш баланс: " + str(per["balance"]) + "$"
+    else:
+        return "Сумма превышает ваш баланс/Сумма меньше 0"
 
 def ulist():
     c=1
@@ -186,14 +232,15 @@ def monetka(id,amount):
         return "У вас недостаточно денег или сумма меньше 0!"
 
 def staff():
-    return 'Список персонала\n\n' + 'Администраторы:\n' + '@gamtz (Влад Богданов)\n\n' + 'Модераторы:\n @lymar1 (Алексей Лымар)\n@plz_helpme_die (Денис Швец)'
+    return 'Список персонала\n\n' + 'Администраторы:\n' + '@gamtz (Влад Богданов)\n\n' + 'Модераторы:\n @lymar1 (Алексей Лымар)\n@plz_helpme_die (Денис Швец)\n@yatox1c (Ефим Ефименко)'
 
 def help():
-    return "📚 Основные команды\n&#12288;📖 Профиль/Проф - посмотреть свой профиль\n&#12288;💲 Баланс/Бал - проверить свой баланс\n&#12288;📋 Сник {ник} - изменить свой ник\n&#12288;📊 Стата - статистика по развлекательным играм\n&#12288;👔 Staff/Админы/Модеры - список персонала " \
-           "\n\n🎉Развлекательные команды\n&#12288;🎰 Казино/Казик {сумма} - попытать удачу в казино\n&#12288;🦅 Монетка {сумма} - flip! Подбрось монетку\n&#12288;🤣 Анекдот - ну просто анекдот (Ха-Ха)\n&#12288;📽 Фильм - случайный фильм из kinopoisk\n&#12288;🔫 Стата {nick} {id} - статистика в COD:Warzone за всё время\n&#12288;🔫 Стат20 {nick} {id} - статистика в COD:Warzone за последние 20 матчей " \
-           "\n\n📕 Команды для персонала\n&#12288;💸 сбал {сумма} - изменить баланс себе (от Модератора)\n&#12288;💳 дбал {id} {сумма} - изменить баланс другому игроку (от Администратора)\n&#12288;👤 Дпроф {id} - просмотр чужого профиля (от Модератора)\n&#12288;✒ Дник {id} {ник} - изменить чужой ник (от Администратора)\n&#12288;👥 Users - список всех пользователей (от Модератора)"
+    return "📚 Основные команды\n&#12288;📖 Профиль/Проф - посмотреть свой профиль\n&#12288;💲 Баланс/Бал - проверить свой баланс\n&#12288;🤝 Передать {id} {сумма} - перевести денег другому игроку\n&#12288;📋 Сник {ник} - изменить свой ник\n&#12288;📊 Стата - статистика по развлекательным играм\n&#12288;👔 Staff/Админы/Модеры - список персонала " \
+           "\n\n🎉Развлекательные команды\n&#12288;🎰 Казино/Казик {сумма} - попытать удачу в казино\n&#12288;🦅 Монетка {сумма} - flip! Подбрось монетку\n&#12288;🤣 Анекдот - ну просто анекдот (Ха-Ха)\n&#12288;📽 Фильм - случайный фильм из kinopoisk\n&#12288;🔫 Ктата {nick} {id} - статистика в COD:Warzone за всё время\n&#12288;🔫 Кстат20 {nick} {id} - статистика в COD:Warzone за последние 20 матчей " \
+           "\n\n📕 Команды для персонала\n&#12288;💸 сбал {сумма} - изменить баланс себе (от Модератора)\n&#12288;💳 дбал {id} {сумма} - изменить баланс другому игроку (от Администратора)\n&#12288;👤 Дпроф {id} - просмотр чужого профиля (от Модератора)\n&#12288;✒ Дник {id} {ник} - изменить чужой ник (от Администратора)\n&#12288;👥 Users - список всех пользователей (от Модератора)" \
+           "\n&#12288;📄 Логи - просмотр использования команд (от Модератора)"
 
-def stats(id):
+def gstats(id):
     with open('json/' + str(id) + '.json') as f:
         ff = json.loads(f.read())
     twin = ff["kwin"] + ff["mwin"]
@@ -435,7 +482,7 @@ def top():
     a = sorted(a)
     print(a)
 
-print("[" + res +"] ✅Бот запущен!")
+print("[" + res() +"] ✅Бот запущен!")
 while True:
     try:
         messages = vk.method("messages.getConversations", {"offset": 0, "count": 20, "filter": "unanswered"})
@@ -446,53 +493,56 @@ while True:
                 vk.method("messages.send", {"peer_id": id,
                                             "message": "Не Миша,всё хуйня! Давай по новой!",
                                             "random_id": random.randint(1, 2147483647)})
-                print("[" + res +"] " + str(id) + " " + str(body) + " | Успешно!")
+                log(id, body)
 
             elif body.lower() == 'хелп' or body.lower() == 'помощь':
                 vk.method("messages.send", {"peer_id": id,
                                             "message": help(),
                                             "random_id": random.randint(1, 2147483647)})
-                print("[" + res + "] " + str(id) + " " + str(body) + " | Успешно!")
+                log(id, body)
 
-            elif body.lower() == 'профиль' or body.lower() == 'начать' or body.lower() == 'проф':
+            elif body.lower() == 'профиль' or body.lower() == 'начать' or body.lower() == 'проф' or body.lower() == 'start':
                 vk.method("messages.send", {"peer_id": id,
                                             "message": prof(id),
                                             "random_id": random.randint(1, 2147483647)})
-                print("[" + res + "] " + str(id) + " " + str(body) + " | Успешно!")
+                log(id, body)
 
             elif body.lower() == 'баланс' or body.lower() == 'бал':
                 vk.method("messages.send", {"peer_id": id,
                                             "message": bal(id),
                                             "random_id": random.randint(1, 2147483647)})
-                print("[" + res + "] " + str(id) + " " + str(body) + " | Успешно!")
+                log(id, body)
 
             elif body.lower() == 'стата':
                 vk.method("messages.send", {"peer_id": id,
-                                            "message": stats(id),
+                                            "message": gstats(id),
                                             "random_id": random.randint(1, 2147483647)})
-                print("[" + res + "] " + str(id) + " " + str(body) + " | Успешно!")
+                log(id, body)
 
             elif "анекдот" in body.lower():
                 vk.method("messages.send",
                           {"peer_id": id, "message": getanekdot(), "random_id": random.randint(1, 2147483647)})
+                log(id, body)
 
-            if 'стата' in body.lower():
-                try:
+            if 'кстата' in body.lower():
+                if len(str(body).split()) == 3:
                     temp = str(body).split(" ")
                     nick = temp[1]
                     idd = temp[2]
                     stats(nick, idd)
-                except:
+                    log(id, body)
+                else:
                     vk.method("messages.send", {"peer_id": id,
                                                 "message": "⚠Для показа статистики введите ник и id Battle.net через пробел. Пример: стата Vlad 214228⚠",
                                                 "random_id": random.randint(1, 2147483647)})
 
-            elif 'стат20' in body.lower():
+            elif 'кстат20' in body.lower():
                 if len(body) > 5:
                     temp = str(body).split(" ")
                     nick = temp[1]
                     idd = temp[2]
                     stats20(nick, idd)
+                    log(id, body)
                 else:
                     vk.method("messages.send", {"peer_id": id,
                                                 "message": "⚠Для показа статистики введите ник и id Battle.net через пробел. Пример: стат20 Vlad 214228⚠",
@@ -506,6 +556,7 @@ while True:
                         vk.method("messages.send", {"peer_id": id,
                                                 "message": cbal(id,val),
                                                 "random_id": random.randint(1, 2147483647)})
+                        log(id, body)
                 else:
                     vk.method("messages.send", {"peer_id": id,
                                                 "message": "Вы не администратор или модератор!",
@@ -520,6 +571,7 @@ while True:
                         vk.method("messages.send", {"peer_id": id,
                                                     "message": dbal(idd, val),
                                                     "random_id": random.randint(1, 2147483647)})
+                        log(id, body)
                 else:
                     vk.method("messages.send", {"peer_id": id,
                                                 "message": "Вы не администратор!",
@@ -533,6 +585,7 @@ while True:
                         vk.method("messages.send", {"peer_id": id,
                                                 "message": dprof(idd),
                                                 "random_id": random.randint(1, 2147483647)})
+                        log(id, body)
                 else:
                     vk.method("messages.send", {"peer_id": id,
                                                 "message": "Вы не администратор или модератор!",
@@ -545,6 +598,7 @@ while True:
                     vk.method("messages.send", {"peer_id": id,
                                                 "message": kaz(id, amount),
                                                 "random_id": random.randint(1, 2147483647)})
+                    log(id, body)
 
             elif 'монеточка' in body.lower() or 'монетка' in body.lower():
                 if len(str(body).split()) == 2:
@@ -553,6 +607,7 @@ while True:
                     vk.method("messages.send", {"peer_id": id,
                                                 "message": monetka(id, amount),
                                                 "random_id": random.randint(1, 2147483647)})
+                    log(id, body)
                 else:
                     vk.method("messages.send", {"peer_id": id,
                                                 "message": "Обычная игра в монеточку\nЕсли выпадет Орел - вы выйграете,Решка - проиграете\nУдачи!\n'монетка {сумма}'",
@@ -565,9 +620,10 @@ while True:
                     vk.method("messages.send", {"peer_id": id,
                                                 "message": nick(id, nickk),
                                                 "random_id": random.randint(1, 2147483647)})
+                    log(id, body)
                 else:
                     vk.method("messages.send", {"peer_id": id,
-                                                "message": "Ваш ник содержит пробелы",
+                                                "message": "Ваш ник содержит пробелы или пустой",
                                                 "random_id": random.randint(1, 2147483647)})
 
             elif 'дник' in body.lower():
@@ -579,6 +635,7 @@ while True:
                         vk.method("messages.send", {"peer_id": id,
                                                     "message": dnick(idd, nickk),
                                                     "random_id": random.randint(1, 2147483647)})
+                        log(id, body)
                 else:
                     vk.method("messages.send", {"peer_id": id,
                                                 "message": "Вы не администратор!",
@@ -590,6 +647,7 @@ while True:
                         vk.method("messages.send", {"peer_id": id,
                                                     "message": ulist(),
                                                 "random_id": random.randint(1, 2147483647)})
+                        log(id, body)
                 else:
                     vk.method("messages.send", {"peer_id": id,
                                                 "message": "Вы не администратор или модератор!",
@@ -599,11 +657,36 @@ while True:
                 vk.method("messages.send", {"peer_id": id,
                                             "message": staff(),
                                             "random_id": random.randint(1, 2147483647)})
+                log(id, body)
+
             elif body.lower() == 'фильм':
                 vk.method("messages.send", {"peer_id": id,
                                             "message": rfilm(),
                                             "attachment": d,
                                             "random_id": random.randint(1, 2147483647)})
+                log(id, body)
+
+            elif body.lower() == 'логи':
+                if id in admins or id in moders:
+                    vk.method("messages.send", {"peer_id": id,
+                                                "message": glog(),
+                                                "random_id": random.randint(1, 2147483647)})
+                    log(id, body)
+                else:
+                    vk.method("messages.send", {"peer_id": id,
+                                                "message": "Вы не администратор!",
+                                                "random_id": random.randint(1, 2147483647)})
+
+            elif 'передать' in body.lower():
+                if len(str(body).split()) == 3:
+                    temp = str(body).split(" ")
+                    idd = temp[1]
+                    val = temp[2]
+                    vk.method("messages.send", {"peer_id": id,
+                                                "message": pay(id, idd, val),
+                                                "random_id": random.randint(1, 2147483647)})
+                    log(id, body)
+
     except BaseException as E:
         print(E)
         vk.method("messages.send",
