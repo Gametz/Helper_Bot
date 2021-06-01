@@ -9,11 +9,20 @@ import json
 import time
 import os.path
 import threading
+from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 
 def res():
     return time.strftime("%x %X", time.localtime())
 
-ver = "\n\nv1.3 от 01.06.2021 16:25 МСК"
+keyboard = VkKeyboard(one_time=False)
+keyboard.add_button(label="Профиль")
+keyboard.add_line()
+keyboard.add_button(label="Баланс", color=VkKeyboardColor.POSITIVE)
+keyboard.add_line()
+keyboard.add_button(label="Работы")
+keyboard.add_button(label="Команды")
+
+ver = "\n\nv1.3.1 от 01.06.2021 16:25 МСК"
 users = next(os.walk("json/"))[2]
 token = "2d26f19312dd93258ca84a1c533fefb1cffbb3a9d63d775e78ae3c62bd4254806825bdf2af924f8408d78"
 vk = vk_api.VkApi(token=token)
@@ -794,7 +803,7 @@ while True:
                                                 "random_id": random.randint(1, 2147483647)})
                     log(id, body)
 
-                elif body.lower() == 'хелп' or body.lower() == 'помощь':
+                elif body.lower() == 'хелп' or body.lower() == 'помощь' or body.lower() == 'команды':
                     vk.method("messages.send", {"peer_id": id,
                                                 "message": help(),
                                                 "random_id": random.randint(1, 2147483647)})
@@ -803,6 +812,7 @@ while True:
                 elif body.lower() == 'профиль' or body.lower() == 'начать' or body.lower() == 'проф' or body.lower() == 'start':
                     vk.method("messages.send", {"peer_id": id,
                                                 "message": prof(id),
+                                                "keyboard": keyboard.get_keyboard(),
                                                 "random_id": random.randint(1, 2147483647)})
                     log(id, body)
 
