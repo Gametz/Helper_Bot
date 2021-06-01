@@ -1,10 +1,11 @@
 {
     "id": 361585264,
-    "balance": 1400,
+    "balance": 1100,
     "nick": "",
     "kwin": 0,
     "klose": 0,
     "mwin": 0,
     "mlose": 0,
-    "reg": "05/29/21 23:56:48"
+    "wstatus": false,
+    "reg": "06/01/21 00:35:21"
 }
