@@ -1,10 +1,13 @@
 {
     "id": 225064049,
-    "balance": 10,
+    "balance": 1000,
+    "level": 1,
+    "exp": 0,
     "nick": "",
     "kwin": 0,
     "klose": 0,
     "mwin": 0,
     "mlose": 0,
-    "reg": "DOCH :)"
+    "wstatus": false,
+    "reg": "06/01/21 12:08:36"
 }

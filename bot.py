@@ -13,7 +13,7 @@ import threading
 def res():
     return time.strftime("%x %X", time.localtime())
 
-ver = "\n\nv1.2 от 01.06.2021 3:25 МСК"
+ver = "\n\nv1.3 от 01.06.2021 16:25 МСК"
 users = next(os.walk("json/"))[2]
 token = "2d26f19312dd93258ca84a1c533fefb1cffbb3a9d63d775e78ae3c62bd4254806825bdf2af924f8408d78"
 vk = vk_api.VkApi(token=token)
@@ -25,6 +25,7 @@ moders = [361585264, 190114998, 418333599]
 def log(id, body):
     with open('log.txt', 'a', encoding='utf-8') as f:
         f.writelines("\n[" + res() + "] " + str(id) + " " + str(body) + " | Успешно!")
+    print("\n[" + res() + "] " + str(id) + " " + str(body) + " | Успешно!")
 
 def glog():
     with open('log.txt', 'rb') as file:
@@ -52,6 +53,7 @@ def prof(id):
     x = {
         "id": id,
         "balance": 1000,
+        "bank": 0,
         "level": 1,
         "exp": 0,
         "nick": "",
@@ -79,6 +81,7 @@ def prof(id):
            '🔎 id: ' + str(ff["id"]) + \
            '\n📋 Ник: ' + str(ff["nick"]) + \
            '\n💰 Баланс: ' + str(ff["balance"]) + \
+           '\n💳 Банк: ' + str(ff["bank"]) + \
            '\n📶 Уровень: ' + str(ff["level"]) + \
            '\n💡 Опыт: ' + str(ff["exp"]) + \
            '\n👥 Всего пользователей: ' + str(len(users)) + \
@@ -89,16 +92,36 @@ def prof(id):
 def dprof(idd):
     with open('json/' + str(idd) + '.json') as f:
         ff = json.loads(f.read())
-    print(idd)
     return 'Ссылка на профиль: vk.com/id' + idd + \
            '\n🔎 id: ' + str(ff["id"]) + \
            '\n📋 Ник: ' + str(ff["nick"]) + \
            '\n💰 Баланс: ' + str(ff["balance"]) + \
+           '\n💳 Банк: ' + str(ff["bank"]) + \
            '\n📶 Уровень: ' + str(ff["level"]) + \
            '\n💡 Опыт: ' + str(ff["exp"]) + \
            '\n👔 Персонал: ' + ifstaff(int(idd)) + \
            '\n' \
            '\n📅 Дата регистрации: ' + str(ff["reg"])
+
+def bank(id, type, amount):
+    with open('json/' + str(id) + '.json', encoding='utf-8') as f:
+        ff = json.loads(f.read())
+    if int(amount) > 0 and int(amount) <= ff["balance"] and type == "положить":
+        ff["balance"] -= int(amount)
+        ff["bank"] += int(amount)
+        with open('json/' + str(id) + '.json', 'w') as f:
+            f.write(json.dumps(ff, indent=4))
+        return "Вы успешно положили " + amount + "$ в банк!"
+
+    elif int(amount) > 0 and int(amount) <= ff["bank"] and type == "снять":
+        ff["balance"] += int(amount)
+        ff["bank"] -= int(amount)
+        with open('json/' + str(id) + '.json', 'w') as f:
+            f.write(json.dumps(ff, indent=4))
+        return "Вы успешно сняли " + amount + "$ со счёта!"
+
+    else:
+        return "Сумма превышает баланс или меньше 0"
 
 def nick(id, nick):
     if len(nick) <= 15:
@@ -795,12 +818,12 @@ while True:
                                                 "random_id": random.randint(1, 2147483647)})
                     log(id, body)
 
-                elif "анекдот" in body.lower():
+                elif body.lower() == "анекдот":
                     vk.method("messages.send",
                               {"peer_id": id, "message": getanekdot(), "random_id": random.randint(1, 2147483647)})
                     log(id, body)
 
-                if 'кстата' in body.lower():
+                elif 'кстата' in body.lower():
                     if len(str(body).split()) == 3:
                         temp = str(body).split(" ")
                         nick = temp[1]
@@ -809,11 +832,11 @@ while True:
                         log(id, body)
                     else:
                         vk.method("messages.send", {"peer_id": id,
-                                                    "message": "⚠Для показа статистики введите ник и id Battle.net через пробел. Пример: стата Vlad 214228⚠",
+                                                    "message": "⚠Для показа статистики введите ник и id Battle.net через пробел. Пример: кстата Vlad 214228⚠",
                                                     "random_id": random.randint(1, 2147483647)})
 
                 elif 'кстат20' in body.lower():
-                    if len(body) > 5:
+                    if len(body.split(" ")) == 3:
                         temp = str(body).split(" ")
                         nick = temp[1]
                         idd = temp[2]
@@ -821,7 +844,7 @@ while True:
                         log(id, body)
                     else:
                         vk.method("messages.send", {"peer_id": id,
-                                                    "message": "⚠Для показа статистики введите ник и id Battle.net через пробел. Пример: стат20 Vlad 214228⚠",
+                                                    "message": "⚠Для показа статистики введите ник и id Battle.net через пробел. Пример: кстат20 Vlad 214228⚠",
                                                     "random_id": random.randint(1, 2147483647)})
 
                 elif 'сбал' in body.lower():
@@ -913,7 +936,6 @@ while True:
                                                         "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
-
                 elif 'работать' in body.lower():
                     if len(str(body).split()) == 2:
                         temp = str(body).split(" ")
@@ -923,7 +945,7 @@ while True:
                                                     "random_id": random.randint(1, 2147483647)})
                         log(id, body)
 
-                elif 'users' in body.lower():
+                elif body.lower() == 'users':
                     if id in admins or id in moders:
                         if len(str(body).split()) == 1:
                             vk.method("messages.send", {"peer_id": id,
@@ -993,6 +1015,23 @@ while True:
                                                     "message": "⚠ Вы пытаетесь отправить пустой репорт!",
                                                     "random_id": random.randint(1, 2147483647)})
                     log(id, body)
+
+                elif 'банк' in body.lower():
+                    temp = str(body.lower()).split(" ")
+                    if len(temp) == 3:
+                        type = temp[1]
+                        amount = temp[2]
+                        vk.method("messages.send", {"peer_id": id,
+                                                    "message": bank(id, type, amount),
+                                                    "random_id": random.randint(1, 2147483647)})
+                    else:
+                        with open('json/' + str(id) + '.json', encoding='utf-8') as f:
+                            ff = json.loads(f.read())
+                        vk.method("messages.send", {"peer_id": id,
+                                                    "message": "💳 Баланс счёта: " + str(ff["bank"]) + "$\n\n⚠ Используйте:\nБанк положить {сумма}\nили\nБанк снять {сумма}",
+                                                    "random_id": random.randint(1, 2147483647)})
+                    log(id, body)
+
             else:
                 vk.method("messages.send", {"peer_id": id,
                                             "message": "⚠ Технические работы! Приносим свои извинения",
