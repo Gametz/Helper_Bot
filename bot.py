@@ -785,9 +785,9 @@ while True:
             id = messages["items"][0]["last_message"]["from_id"]
             body = messages["items"][0]["last_message"]["text"]
 
-            if id in moders or id in admins:
+            #if id in moders or id in admins:
             #if id in admins:
-            #if True:
+            if True:
                 if body.lower() == 'пинг':
                     vk.method("messages.send", {"peer_id": id,
                                                 "message": "Не Миша,всё хуйня! Давай по новой!",
