@@ -22,7 +22,7 @@ keyboard.add_line()
 keyboard.add_button(label="Работы")
 keyboard.add_button(label="Команды")
 
-ver = "\n\nv1.3.1 от 01.06.2021 16:25 МСК"
+ver = "\n\nv1.3.3 от 17.06.2021 00:01 МСК"
 users = next(os.walk("json/"))[2]
 token = "2d26f19312dd93258ca84a1c533fefb1cffbb3a9d63d775e78ae3c62bd4254806825bdf2af924f8408d78"
 vk = vk_api.VkApi(token=token)
@@ -56,7 +56,7 @@ def ifstaff(id):
         if id in moders:
             return '✅ | Модератор'
     else:
-        return '🚫'
+        return '🚫 | Пользователь'
 
 def prof(id):
     x = {
@@ -71,7 +71,8 @@ def prof(id):
         "mwin": 0,
         "mlose": 0,
         "wstatus": False,
-        "reg": res()
+        "reg": res(),
+        "lbonus": 1623869110
     }
     try:
         with open('json/' + str(id) + '.json') as f:
@@ -299,9 +300,11 @@ def help():
            "\n&#12288;📶 Уровни - информация по распределению опыта" \
            "\n&#12288;👔 Staff/Админы/Модеры - список персонала " \
            "\n&#12288;⚠ Репорт {текст} - написать админу" \
+           "\n&#12288;💾 Ид {текст} - посмотреть ID пользователя" \
            "\n" \
            "\n🎉Развлекательные команды" \
            "\n&#12288;💼 Работы - список доступных работ для заработка $" \
+           "\n&#12288;💰 Бонус - список доступных работ для заработка $" \
            "\n&#12288;🎰 Казино/Казик {сумма} - попытать удачу в казино" \
            "\n&#12288;🦅 Монетка {сумма} - flip! Подбрось монетку" \
            "\n&#12288;🤣 Анекдот - ну просто анекдот (Ха-Ха)" \
@@ -786,6 +789,42 @@ def report(id, msg):
     else:
         return "⚠ Ваш репорт превышает 100 символов"
 
+def cgbonus(id):
+    vk.method("messages.send", {"peer_id": id,
+                                "message": "💎 Вам снова доступен бонус!\nИспользуйте 'бонус', чтобы получить его",
+                                "random_id": random.randint(1, 2147483647)})
+
+def gbonus(id):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    o = (int(time.time()) - (ff["lbonus"] + 300)) * -1
+    if (int(time.time())) - ff["lbonus"] >= 300:
+        ff["balance"] += 300
+        ff["lbonus"] = int(time.time())
+        with open('json/' + str(id) + '.json', 'w') as f:
+            f.write(json.dumps(ff, indent=4))
+        threading.Timer(300.0, cgbonus, args=(id,)).start()
+        return "💎 Вы получили бонус в размере 300$!\nВаш баланс: " + str(ff["balance"]) + "$"
+    else:
+        return "Бонус можно получать раз в 5 минут!\nВозвращайтесь через " + str(o) + " секунд"
+
+def idsearch(id):
+    c=1
+    path = "json/"
+    f=os.listdir(path)
+    for i in range (len(f)):
+        f[i] = str(f[i][:-5])
+        c += 1
+    id_ = id.split('/')[-1]
+    id = str(vk.method('users.get', {'user_ids': id_})[0]['id'])
+    if id in f:
+        try:
+            return "👤 ID пользователя: " + id + "\n👔 Персонал: " + ifstaff(int(id))
+        except:
+            return "Пример использования:\nид vk.com/gamtz"
+    else:
+        return "Такого пользователя не существует!"
+
 print("[" + res() +"] ✅Бот запущен!")
 while True:
     try:
@@ -1041,6 +1080,19 @@ while True:
                                                     "message": "💳 Баланс счёта: " + str(ff["bank"]) + "$\n\n⚠ Используйте:\nБанк положить {сумма}\nили\nБанк снять {сумма}",
                                                     "random_id": random.randint(1, 2147483647)})
                     log(id, body)
+                elif body.lower() == 'бонус':
+                    vk.method("messages.send", {"peer_id": id,
+                                                "message": gbonus(id),
+                                                "random_id": random.randint(1, 2147483647)})
+                    log(id, body)
+                elif 'ид' in body.lower():
+                    if len(str(body).split()) == 2:
+                        temp = str(body).split(" ")
+                        idd = temp[1]
+                        vk.method("messages.send", {"peer_id": id,
+                                                    "message": idsearch(idd),
+                                                    "random_id": random.randint(1, 2147483647)})
+                        log(id, body)
 
             else:
                 vk.method("messages.send", {"peer_id": id,
