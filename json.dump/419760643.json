@@ -1,15 +1,13 @@
 {
     "id": 419760643,
-    "balance": 11334,
-    "bank": 0,
-    "level": 1,
-    "exp": 2,
-    "nick": "",
+    "balance": 4140,
+    "level": 5,
+    "exp": 501,
+    "nick": "Gametz",
     "kwin": 0,
-    "klose": 1000,
+    "klose": 0,
     "mwin": 0,
     "mlose": 0,
     "wstatus": false,
-    "spam": false,
-    "reg": "06/05/21 05:53:16"
+    "reg": "06/01/21 01:28:02"
 }
