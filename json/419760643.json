@@ -1,7 +1,7 @@
 {
     "id": 419760643,
-    "balance": 1000000,
-    "bank": 0,
+    "balance": 999000,
+    "bank": 1000,
     "level": 1,
     "exp": 0,
     "nick": "",
@@ -14,5 +14,6 @@
     "lbonus": 1623869110,
     "car": "\u0412\u0410\u0417 2115",
     "phone": "",
-    "home": ""
+    "home": "",
+    "banned": "NO"
 }

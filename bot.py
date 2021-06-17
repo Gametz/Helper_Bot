@@ -23,7 +23,7 @@ keyboard.add_button(label="Работы")
 keyboard.add_button(label="Магазин")
 keyboard.add_button(label="Команды")
 
-ver = "\n\nv1.4 от 17.06.2021 20:00 МСК"
+ver = "\n\nv1.4.5 от 18.06.2021 00:45 МСК"
 users = next(os.walk("json/"))[2]
 token = "2d26f19312dd93258ca84a1c533fefb1cffbb3a9d63d775e78ae3c62bd4254806825bdf2af924f8408d78"
 vk = vk_api.VkApi(token=token)
@@ -76,7 +76,8 @@ def prof(id):
         "lbonus": 1623869110,
         "car": "",
         "phone": "",
-        "home": ""
+        "home": "",
+        "banned": "NO"
     }
     try:
         with open('json/' + str(id) + '.json') as f:
@@ -106,6 +107,7 @@ def prof(id):
            '\n&#12288;📱 Телефон: ' + phonecheck(id) +  \
            '\n' \
            '\n👔 Вы персонал: ' + ifstaff(id) + \
+           '\n⛔ Блокировка: ' + profbancheck(id) + \
            '\n📅 Дата регистрации: ' + str(ff["reg"]) + ver
 
 # Имущество
@@ -146,7 +148,69 @@ def dprof(idd):
            '\n💡 Опыт: ' + str(ff["exp"]) + \
            '\n👔 Персонал: ' + ifstaff(int(idd)) + \
            '\n' \
+           '\n🔑 Имущество:' \
+           '\n&#12288;🚗 Машина: ' + carcheck(idd) + \
+           '\n&#12288;🏡 Дом: ' + homecheck(idd) +  \
+           '\n&#12288;📱 Телефон: ' + phonecheck(idd) +  \
+           '\n' \
+           '\n⛔ Блокировка: ' + profbancheck(idd) + \
            '\n📅 Дата регистрации: ' + str(ff["reg"])
+
+def profbancheck(id):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    if ff["banned"] == "NO":
+        return "🚫"
+    else:
+        r = ff["banned"].split(" ")[-1]
+        return "✅ | " + r
+
+def giveban(id,idd,rsn):
+    c=1
+    path = "json/"
+    f=os.listdir(path)
+    for i in range (len(f)):
+        f[i] = str(f[i][:-5])
+        c += 1
+    if idd in f:
+        with open('json/' + str(idd) + '.json') as f:
+            ff = json.loads(f.read())
+        if ff["banned"] == "NO":
+            s = str(id) + " " + rsn
+            ff["banned"] = s
+            with open('json/' + str(idd) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            vk.method("messages.send", {"peer_id": idd,
+                                        "message": "⚠ Вы были заблокированы по причине: " + rsn + "\nЕсли не согласны с баном,напишите в репорт",
+                                        "random_id": random.randint(1, 2147483647)})
+            return "Пользователь успешно заблокирован!"
+        else:
+            return "Пользователь уже забанен!"
+    else:
+        return "Такого пользователя не существует!"
+
+def unban(idd):
+    c=1
+    path = "json/"
+    f=os.listdir(path)
+    for i in range (len(f)):
+        f[i] = str(f[i][:-5])
+        c += 1
+    if idd in f:
+        with open('json/' + str(idd) + '.json') as f:
+            ff = json.loads(f.read())
+        if ff["banned"] != "NO":
+            ff["banned"] = "NO"
+            with open('json/' + str(idd) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            vk.method("messages.send", {"peer_id": idd,
+                                        "message": "Поздравляю!🎉 Вы были разблокированы!",
+                                        "random_id": random.randint(1, 2147483647)})
+            return "Пользователь успешно разблокирован!"
+        else:
+            return "Пользователь не имеет блокировки"
+    else:
+        return "Такого пользователя не существует!"
 
 def bank(id, type, amount):
     with open('json/' + str(id) + '.json', encoding='utf-8') as f:
@@ -335,6 +399,7 @@ def help():
            "\n&#12288;📶 Уровни - информация по распределению опыта" \
            "\n&#12288;👔 Staff/Админы/Модеры - список персонала " \
            "\n&#12288;💾 Ид {текст} - посмотреть ID пользователя" \
+           "\n&#12288;👤 Пхелп - команды для персонала" \
            "\n&#12288;⚠ Репорт {текст} - написать админу" \
            "\n" \
            "\n🎉Развлекательные команды" \
@@ -348,14 +413,18 @@ def help():
            "\n&#12288;📽 Фильм - случайный фильм из kinopoisk" \
            "\n&#12288;🔫 Ктата {nick} {id} - статистика в COD:Warzone за всё время" \
            "\n&#12288;🔫 Кстат20 {nick} {id} - статистика в COD:Warzone за последние 20 матчей " \
-           "\n" \
-           "\n📕 Команды для персонала" \
+
+        #"\n&#12288;📄 Логи - просмотр использования команд (от Модератора)"
+
+def staffhelp():
+    return "\n📕 Команды для персонала" \
            "\n&#12288;💸 сбал {сумма} - изменить баланс себе (от Модератора)" \
            "\n&#12288;💳 дбал {id} {сумма} - изменить баланс другому игроку (от Администратора)" \
            "\n&#12288;👤 Дпроф {id} - просмотр чужого профиля (от Модератора)" \
            "\n&#12288;✒ Дник {id} {ник} - изменить чужой ник (от Администратора)" \
            "\n&#12288;👥 Users - список всех пользователей (от Модератора)" \
-           #"\n&#12288;📄 Логи - просмотр использования команд (от Модератора)"
+           "\n&#12288;⛔ gban {id} {причина} - блокировка пользователя (от Администратора)" \
+           "\n&#12288;⛔ unban {id} - разблокировка пользователя (от Модератора)"
 
 def gstats(id):
     with open('json/' + str(id) + '.json') as f:
@@ -853,7 +922,10 @@ def idsearch(id):
         f[i] = str(f[i][:-5])
         c += 1
     id_ = id.split('/')[-1]
-    id = str(vk.method('users.get', {'user_ids': id_})[0]['id'])
+    try:
+        id = str(vk.method('users.get', {'user_ids': id_})[0]['id'])
+    except:
+        return "Пример использования:\nид vk.com/gamtz"
     if id in f:
         try:
             return "👤 ID пользователя: " + id + "\n👔 Персонал: " + ifstaff(int(id))
@@ -1254,6 +1326,15 @@ while True:
                                                 "random_id": random.randint(1, 2147483647)})
                     log(id, body)
 
+                if body.lower() == 'пхелп':
+                    if id in admins or id in moders:
+                        vk.method("messages.send", {"peer_id": id,
+                                                    "message": staffhelp(),
+                                                    "random_id": random.randint(1, 2147483647)})
+                    else:
+                        vk.method("messages.send", {"peer_id": id,
+                                                    "message": "Вы не Администратор или Модератор!",
+                                                    "random_id": random.randint(1, 2147483647)})
                 elif body.lower() == 'профиль' or body.lower() == 'начать' or body.lower() == 'проф' or body.lower() == 'start':
                     vk.method("messages.send", {"peer_id": id,
                                                 "message": prof(id),
@@ -1411,6 +1492,42 @@ while True:
                         vk.method("messages.send", {"peer_id": id,
                                                     "message": "Вы не Администратор или Модератор!",
                                                     "random_id": random.randint(1, 2147483647)})
+                elif 'gban' in body.lower():
+                    if id in admins:
+                        if len(str(body).split()) == 3:
+                            temp = str(body).split(" ")
+                            idd = temp[1]
+                            rsn = temp[2]
+                            vk.method("messages.send", {"peer_id": id,
+                                                        "message": giveban(id, idd, rsn),
+                                                        "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+                        else:
+                            vk.method("messages.send", {"peer_id": id,
+                                                        "message": "Используйте:\n'gban {id} {причина}'",
+                                                        "random_id": random.randint(1, 2147483647)})
+                    else:
+                        vk.method("messages.send", {"peer_id": id,
+                                                    "message": "Вы не Администратор!",
+                                                    "random_id": random.randint(1, 2147483647)})
+
+                elif 'unban' in body.lower():
+                    if id in admins or id in moders:
+                        if len(str(body).split()) == 2:
+                            temp = str(body).split(" ")
+                            idd = temp[1]
+                            vk.method("messages.send", {"peer_id": id,
+                                                        "message": unban(idd),
+                                                        "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+                        else:
+                            vk.method("messages.send", {"peer_id": id,
+                                                        "message": "Используйте:\n'unban {id}'",
+                                                        "random_id": random.randint(1, 2147483647)})
+                    else:
+                        vk.method("messages.send", {"peer_id": id,
+                                                    "message": "Вы не Администратор!",
+                                                    "random_id": random.randint(1, 2147483647)})
 
                 elif body.lower() == 'staff' or body.lower() == 'админы' or body.lower() == 'модеры' or body.lower() == 'стафф':
                     vk.method("messages.send", {"peer_id": id,
@@ -1449,18 +1566,23 @@ while True:
                                                     "random_id": random.randint(1, 2147483647)})
 
                 elif 'передать' in body.lower():
-                    if len(str(body).split()) == 3:
-                        temp = str(body).split(" ")
-                        idd = temp[1]
-                        val = temp[2]
+                    if id in admins or id in moders:
                         vk.method("messages.send", {"peer_id": id,
-                                                    "message": pay(id, idd, val),
+                                                    "message": "Персоналу запрещено передавать деньги",
                                                     "random_id": random.randint(1, 2147483647)})
-                        log(id, body)
                     else:
-                        vk.method("messages.send", {"peer_id": id,
-                                                    "message": "Используйте:\nПередать {id} {сумма}\n\nЧтобы узнать ID - используйте 'ид {ссылка на профиль}'",
-                                                    "random_id": random.randint(1, 2147483647)})
+                        if len(str(body).split()) == 3:
+                            temp = str(body).split(" ")
+                            idd = temp[1]
+                            val = temp[2]
+                            vk.method("messages.send", {"peer_id": id,
+                                                        "message": pay(id, idd, val),
+                                                        "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+                        else:
+                            vk.method("messages.send", {"peer_id": id,
+                                                        "message": "Используйте:\nПередать {id} {сумма}\n\nЧтобы узнать ID - используйте 'ид {ссылка на профиль}'",
+                                                        "random_id": random.randint(1, 2147483647)})
 
                 elif 'репорт' in body.lower():
                     temp = str(body.lower()).split("репорт")
@@ -1509,6 +1631,7 @@ while True:
                         vk.method("messages.send", {"peer_id": id,
                                                     "message": "Чтобы узнать ID - используйте 'ид {ссылка на профиль}'",
                                                     "random_id": random.randint(1, 2147483647)})
+
 
                 # Магазин
                 elif body.lower() == 'магазин':

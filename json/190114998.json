@@ -1,9 +1,9 @@
 {
     "id": 190114998,
-    "balance": 998100,
-    "bank": 0,
+    "balance": 100000,
+    "bank": 2400000,
     "level": 1,
-    "exp": 2,
+    "exp": 6,
     "nick": "",
     "kwin": 0,
     "klose": 0,
@@ -12,7 +12,8 @@
     "wstatus": false,
     "reg": "06/17/21 18:18:45",
     "lbonus": 1623869110,
-    "car": "",
-    "phone": "iPhone 12",
-    "home": ""
+    "car": "\u0412\u0410\u0417 2115",
+    "phone": "Samsung Galaxy S21",
+    "home": "\u0414\u0432\u043e\u0440\u0435\u0446 \u0432 \u0413\u0435\u043b\u0435\u043d\u0434\u0436\u0438\u043a\u0435",
+    "banned": "NO"
 }
