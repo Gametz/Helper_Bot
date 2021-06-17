@@ -1,15 +1,15 @@
 {
     "id": 419760643,
-    "balance": 11334,
+    "balance": 48000,
     "bank": 0,
     "level": 1,
-    "exp": 2,
+    "exp": 0,
     "nick": "",
     "kwin": 0,
-    "klose": 1000,
+    "klose": 0,
     "mwin": 0,
     "mlose": 0,
     "wstatus": false,
-    "spam": false,
-    "reg": "06/05/21 05:53:16"
+    "reg": "06/16/21 21:42:22",
+    "lbonus": 1623875428
 }
