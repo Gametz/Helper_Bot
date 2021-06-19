@@ -1,10 +1,19 @@
 {
     "id": 418333599,
-    "balance": 0,
+    "balance": 1000,
+    "bank": 0,
+    "level": 1,
+    "exp": 0,
     "nick": "",
-    "kwin": 5381035,
-    "klose": 15444028,
+    "kwin": 0,
+    "klose": 0,
     "mwin": 0,
     "mlose": 0,
-    "reg": "05/29/21 21:15:58"
+    "wstatus": false,
+    "reg": "06/17/21 19:41:57",
+    "lbonus": 1623869110,
+    "car": "",
+    "phone": "",
+    "home": "",
+    "banned": "NO"
 }
