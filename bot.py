@@ -14,7 +14,7 @@ from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 def res():
     return time.strftime("%x %X", time.localtime())
 
-ver = "\n\nv1.6.4 от 20.06.2021 05:40 МСК"
+ver = "\n\nv1.6.5 от 21.06.2021 00:10 МСК"
 users = next(os.walk("json/"))[2]
 token = "2d26f19312dd93258ca84a1c533fefb1cffbb3a9d63d775e78ae3c62bd4254806825bdf2af924f8408d78"
 vk = vk_api.VkApi(token=token)
@@ -32,12 +32,13 @@ mainmenu.add_button(label="Баланс", color=VkKeyboardColor.POSITIVE)
 mainmenu.add_line()
 mainmenu.add_button(label="Магазин")
 mainmenu.add_button(label="Работы")
-mainmenu.add_button(label="Уровни")
+mainmenu.add_button(label="Игры")
 mainmenu.add_line()
+mainmenu.add_button(label="Уровни")
 mainmenu.add_button(label="Ферма")
-mainmenu.add_button(label="Админпанель", color=VkKeyboardColor.NEGATIVE)
 mainmenu.add_button(label="Стата")
 mainmenu.add_line()
+mainmenu.add_button(label="Админпанель", color=VkKeyboardColor.NEGATIVE)
 mainmenu.add_button(label="Команды", color=VkKeyboardColor.SECONDARY)
 
 worksmenu = VkKeyboard(one_time=False)
@@ -90,7 +91,6 @@ phonemenu.add_button(label="Ктел 3")
 phonemenu.add_line()
 phonemenu.add_button(label="Ктел 4")
 phonemenu.add_button(label="Ктел 5")
-phonemenu.add_button(label="Ктел 6")
 phonemenu.add_line()
 phonemenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
 phonemenu.add_button(label="⬅ Магазин", color=VkKeyboardColor.PRIMARY)
@@ -147,6 +147,10 @@ sellmenu.add_button(label="⬅ Магазин", color=VkKeyboardColor.PRIMARY)
 farmmenu = VkKeyboard(one_time=False)
 farmmenu.add_button(label="Сбитки")
 farmmenu.add_line()
+farmmenu.add_button(label="♻ Обновить")
+farmmenu.add_line()
+farmmenu.add_button(label="Биткоины")
+farmmenu.add_line()
 farmmenu.add_button(label="Видеокарты", color=VkKeyboardColor.PRIMARY)
 farmmenu.add_line()
 farmmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
@@ -166,6 +170,69 @@ adminmenu.add_line()
 adminmenu.add_button(label="Users")
 adminmenu.add_line()
 adminmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
+
+monetkasidemenu = VkKeyboard(one_time=False)
+monetkasidemenu.add_button(label="Орел")
+monetkasidemenu.add_button(label="Решка")
+monetkasidemenu.add_line()
+monetkasidemenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
+monetkasidemenu.add_button(label="⬅ Игры", color=VkKeyboardColor.PRIMARY)
+
+monetkaorelmenu = VkKeyboard(one_time=False)
+monetkaorelmenu.add_button(label="Монетка орел 1000")
+monetkaorelmenu.add_button(label="Монетка орел 10000")
+monetkaorelmenu.add_line()
+monetkaorelmenu.add_button(label="Монетка орел 100000")
+monetkaorelmenu.add_button(label="Монетка орел 500000")
+monetkaorelmenu.add_line()
+monetkaorelmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
+monetkaorelmenu.add_button(label="⬅ Игры", color=VkKeyboardColor.PRIMARY)
+
+monetkareshkamenu = VkKeyboard(one_time=False)
+monetkareshkamenu.add_button(label="Монетка решка 1000")
+monetkareshkamenu.add_button(label="Монетка решка 10000")
+monetkareshkamenu.add_line()
+monetkareshkamenu.add_button(label="Монетка решка 100000")
+monetkareshkamenu.add_button(label="Монетка решка 500000")
+monetkareshkamenu.add_line()
+monetkareshkamenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
+monetkareshkamenu.add_button(label="⬅ Игры", color=VkKeyboardColor.PRIMARY)
+
+kazmenu = VkKeyboard(one_time=False)
+kazmenu.add_button(label="Казино всё")
+kazmenu.add_line()
+kazmenu.add_button(label="Казино 1000")
+kazmenu.add_button(label="Казино 50000")
+kazmenu.add_line()
+kazmenu.add_button(label="Казино 100000")
+kazmenu.add_button(label="Казино 500000")
+kazmenu.add_line()
+kazmenu.add_button(label="Казино 1000000")
+kazmenu.add_button(label="Казино 5000000")
+kazmenu.add_line()
+kazmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
+kazmenu.add_button(label="⬅ Игры", color=VkKeyboardColor.PRIMARY)
+
+gamesmenu = VkKeyboard(one_time=False)
+gamesmenu.add_button(label="Монетка")
+gamesmenu.add_button(label="Казино")
+gamesmenu.add_line()
+gamesmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
+
+btcmenu = VkKeyboard(one_time=False)
+btcmenu.add_button(label="Кбитк все", color=VkKeyboardColor.POSITIVE)
+btcmenu.add_line()
+btcmenu.add_button(label="Кбитк 1")
+btcmenu.add_button(label="Кбитк 10")
+btcmenu.add_button(label="Кбитк 100")
+btcmenu.add_line()
+btcmenu.add_button(label="Пбитк все", color=VkKeyboardColor.NEGATIVE)
+btcmenu.add_line()
+btcmenu.add_button(label="Пбитк 1")
+btcmenu.add_button(label="Пбитк 10")
+btcmenu.add_button(label="Пбитк 100")
+btcmenu.add_line()
+btcmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
 
 errormenu = VkKeyboard(one_time=False, inline=True)
 errormenu.add_button(label="Команды", color=VkKeyboardColor.POSITIVE)
@@ -506,7 +573,7 @@ def pay(id, idd, val):
             vk.method("messages.send", {"peer_id": idd,
                                 "message": "Вы получили перевод от " + per["nick"] + " в размере: " + val + "$",
                                 "random_id": random.randint(1, 2147483647)})
-        return "Перевод успешно выполнен! Ваш баланс: " + str(per["balance"]) + "$"
+        return "Перевод успешно выполнен! \nВаш баланс: " + str(per["balance"]) + "$"
     else:
         return "Сумма превышает ваш баланс/Сумма меньше 0"
 
@@ -520,63 +587,90 @@ def ulist():
     a = '\n'.join(f)
     return "Список пользователей\n\n" + a
 
+def games():
+    return "🎮 Список игр:" \
+           "\n" \
+           "\n&#12288;🎰 Казино" \
+           "\n&#12288;🦅 Монетка"
+
 def kaz(id,amount):
     with open('json/' + str(id) + '.json') as f:
         ff = json.loads(f.read())
-    if int(amount) <= ff["balance"] and int(amount) > 0:
-        r = random.randrange(0,7)
-        if r == 0 or r == 1 or r == 2 or r == 3:
-            ff["balance"] -= int(amount)
-            ff["klose"] += int(round(int(amount)))
-            with open('json/' + str(id) + '.json', 'w') as f:
-                f.write(json.dumps(ff, indent=4))
+    try:
+        if amount == "все" or amount == "всё":
+            amount = ff["balance"]
+        if int(amount) <= ff["balance"] and int(amount) > 0:
+            r = random.randrange(0,17)
+            if r == 0 or r == 1 or r == 2 or r == 3 or r == 4 or r == 5 or r == 6:
+                ff["balance"] -= int(amount)
+                ff["klose"] += int(round(int(amount)))
+                with open('json/' + str(id) + '.json', 'w') as f:
+                    f.write(json.dumps(ff, indent=4))
+                return "🚫Вы проиграли всю ставку!\n💰Ваш баланс: " + str(ff["balance"]) + "$"
+            elif r == 7 or r == 8 or r == 9 or r == 10:
+                win = int(amount)*1.5
+                ff["balance"] += int(round(win))
+                ff["kwin"] += int(round(win))
+                with open('json/' + str(id) + '.json', 'w') as f:
+                    f.write(json.dumps(ff, indent=4))
+                return "✅Вы выйграли: " + str(int(win)) + "$ (1.5x)" + "\n💰Ваш баланс: " + str(ff["balance"]) + "$"
+            elif r == 11 or r == 12 or r == 13 or r == 14:
+                win = int(amount) * 2
+                ff["balance"] += int(round(win))
+                ff["kwin"] += int(round(win))
+                with open('json/' + str(id) + '.json', 'w') as f:
+                    f.write(json.dumps(ff, indent=4))
+                return "✅Вы выйграли: " + str(int(win)) + "$ (2x)" + "\n💰Ваш баланс: " + str(ff["balance"]) + "$"
+            elif r == 15 or r == 16:
+                win = int(amount) * 5
+                ff["balance"] += int(round(win))
+                ff["kwin"] += int(round(win))
+                with open('json/' + str(id) + '.json', 'w') as f:
+                    f.write(json.dumps(ff, indent=4))
 
-            return "🚫Вы проиграли всю ставку!\n💰Ваш баланс: " + str(ff["balance"]) + "$"
-        elif r == 4:
-            win = int(amount)*1.5
-            ff["balance"] += int(round(win))
-            ff["kwin"] += int(round(win))
-            with open('json/' + str(id) + '.json', 'w') as f:
-                f.write(json.dumps(ff, indent=4))
+                return "✅Вы выйграли: " + str(int(win)) + "$ (5x)" + "\n💰Ваш баланс: " + str(ff["balance"]) + "$"
+        else:
+            return "У вас недостаточно денег или сумма меньше 0!"
+    except:
+        return "Введите целое число!"
 
-            return "✅Вы выйграли: " + str(int(win)) + "$ (1.5x)" + "\n💰Ваш баланс: " + str(ff["balance"]) + "$"
-        elif r == 5:
-            win = int(amount) * 2
-            ff["balance"] += int(round(win))
-            ff["kwin"] += int(round(win))
-            with open('json/' + str(id) + '.json', 'w') as f:
-                f.write(json.dumps(ff, indent=4))
-
-            return "✅Вы выйграли: " + str(int(win)) + "$ (2x)" + "\n💰Ваш баланс: " + str(ff["balance"]) + "$"
-        elif r == 6:
-            win = int(amount) * 5
-            ff["balance"] += int(round(win))
-            ff["kwin"] += int(round(win))
-            with open('json/' + str(id) + '.json', 'w') as f:
-                f.write(json.dumps(ff, indent=4))
-
-            return "✅Вы выйграли: " + str(int(win)) + "$ (5x)" + "\n💰Ваш баланс: " + str(ff["balance"]) + "$"
-    else:
-        return "У вас недостаточно денег или сумма меньше 0!"
-
-def monetka(id,amount):
+def monetka(id, side, amount):
     with open('json/' + str(id) + '.json') as f:
         ff = json.loads(f.read())
+    if amount == "все" or amount == "всё":
+        amount = ff["balance"]
     if int(amount) <= ff["balance"] and int(amount) > 0:
-        r = random.randrange(0, 2)
-        if r == 0:
-            ff["balance"] -= int(amount)
-            ff["mlose"] += int(amount)
-            with open('json/' + str(id) + '.json', 'w') as f:
-                f.write(json.dumps(ff, indent=4))
-            return "🚫Выпала решка,вы проиграли!" + "\n💰Ваш баланс: " + str(ff["balance"]) + "$"
-        elif r == 1:
-            win = int(amount) * 3
-            ff["balance"] += int(round(win))
-            ff["mwin"] += int(round(win))
-            with open('json/' + str(id) + '.json', 'w') as f:
-                f.write(json.dumps(ff, indent=4))
-        return "✅Вы выйграли,выпал Орел: " + str(int(win)) + "$ (3x)" + "\n💰Ваш баланс: " + str(ff["balance"]) + "$"
+        if side == "орел":
+            r = random.randrange(0, 2)
+            if r == 0:
+                ff["balance"] -= int(amount)
+                ff["mlose"] += int(amount)
+                with open('json/' + str(id) + '.json', 'w') as f:
+                    f.write(json.dumps(ff, indent=4))
+                return "🚫Выпала решка,вы проиграли!" + "\n💰Ваш баланс: " + str(ff["balance"]) + "$"
+            elif r == 1:
+                win = int(amount) * 3
+                ff["balance"] += int(round(win))
+                ff["mwin"] += int(round(win))
+                with open('json/' + str(id) + '.json', 'w') as f:
+                    f.write(json.dumps(ff, indent=4))
+            return "✅Вы выйграли,выпал Орел: " + str(int(win)) + "$ (3x)" + "\n💰Ваш баланс: " + str(ff["balance"]) + "$"
+        elif side == "решка":
+            r = random.randrange(0, 2)
+            if r == 0:
+                ff["balance"] -= int(amount)
+                ff["mlose"] += int(amount)
+                with open('json/' + str(id) + '.json', 'w') as f:
+                    f.write(json.dumps(ff, indent=4))
+                return "🚫Выпал Орел,вы проиграли!" + "\n💰Ваш баланс: " + str(ff["balance"]) + "$"
+            elif r == 1:
+                win = int(amount) * 3
+                ff["balance"] += int(round(win))
+                ff["mwin"] += int(round(win))
+                with open('json/' + str(id) + '.json', 'w') as f:
+                    f.write(json.dumps(ff, indent=4))
+            return "✅Вы выйграли,выпала Решка: " + str(int(win)) + "$ (3x)" + "\n💰Ваш баланс: " + str(ff["balance"]) + "$"
+        return "У монетки есть только 2 стороны - Орел и Решка"
     else:
         return "У вас недостаточно денег или сумма меньше 0!"
 
@@ -1883,26 +1977,31 @@ def btcrateshow():
 def btctousd(id, n):
     with open('json/' + str(id) + '.json') as f:
         ff = json.loads(f.read())
+    if n == "все" or n == "всё":
+        n = round(ff["btc"],5)
     if float(n) <= ff["btc"] and float(n) > 0:
         temp = float(n) * 10000
         ff["btc"] -= float(n)
         ff["balance"] += int(float(n) * 10000)
         with open('json/' + str(id) + '.json', 'w') as f:
             f.write(json.dumps(ff, indent=4))
-        return "Вы успешно перевели " + str(n) + "₿ в " + str(int(temp)) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+        return "Вы успешно перевели " + str(n) + "₿ в " + str(int(temp)) + "$\n" + bal(id)
     return "У вас недостаточно биткоинов или вы ввели 0\nВаш баланс: " + str(ff["balance"]) + "$"
 
 def usdtobtc(id, n):
     with open('json/' + str(id) + '.json') as f:
         ff = json.loads(f.read())
-    temp = int(float(n) * 10000)
-    if temp <= ff["balance"] and int(n) > 0:
-        ff["btc"] += float(round(float(n),5))
+    if n == "все" or n == "всё":
+        n = int(ff["balance"] / 10000)
+    temp = int(float(n) * 10000)  # в $
+    if temp <= ff["balance"] and float(n) > 0:
+        ff["btc"] += round(float(n),5)
         ff["balance"] -= temp
         with open('json/' + str(id) + '.json', 'w') as f:
             f.write(json.dumps(ff, indent=4))
-        return "Вы успешно перевели " + str(temp) + "$ в " + str(n) + "₿\nВаш баланс: " + str(ff["balance"]) + "$"
-    return "У вас недостаточно денег или вы ввели 0\nВаш баланс: " + str(ff["balance"]) + "$"
+        return "Вы успешно купили " + str(round(float(n),5)) + "₿ за " + str(temp) + "$\n" + str(bal(id))
+    else:
+        return "У вас недостаточно денег или вы ввели 0\nВаш баланс: " + str(ff["balance"]) + "$"
 # Bytecoin
 
 print("[" + res() +"] ✅Бот запущен!")
@@ -2141,7 +2240,8 @@ while True:
                                 ff["car"] = "Tesla model S"
                                 ff["home"] = "Личный остров со шлюхами"
                                 ff["phone"] = "iPhone 12 Gold Edition"
-                                ff["gpu"] = "GF RTX 3090 Mining ver"
+                                ff["gpu"] = "nVidia Tesla A100"
+                                ff["farm"] = 0.1
                                 with open('json/' + str(id) + '.json', 'w') as f:
                                     f.write(json.dumps(ff, indent=4))
                                 vk.method("messages.send", {"peer_id": id,
@@ -2165,6 +2265,7 @@ while True:
                                 ff["home"] = ""
                                 ff["phone"] = ""
                                 ff["gpu"] = ""
+                                ff["farm"] = 0.0
                                 with open('json/' + str(id) + '.json', 'w') as f:
                                     f.write(json.dumps(ff, indent=4))
                                 vk.method("messages.send", {"peer_id": id,
@@ -2176,6 +2277,38 @@ while True:
                                                             "message": "Вы не Администратор или Модератор!",
                                                             "random_id": random.randint(1, 2147483647)})
 
+                        elif body.lower() == "игры" or body.lower() == "⬅ игры":
+                            vk.method("messages.send",
+                                      {"peer_id": id,
+                                       "message": games(),
+                                       "keyboard": gamesmenu.get_keyboard(),
+                                       "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+
+                        elif body.lower() == "биткоины" or body.lower() == "битки" or body.lower() == "битк":
+                            vk.method("messages.send",
+                                      {"peer_id": id,
+                                       "message": "Выберите что вы хотите сделать\n" + bal(id),
+                                       "keyboard": btcmenu.get_keyboard(),
+                                       "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+
+                        elif str(body.lower()).split()[0] == 'казино' or str(body).split()[0] == 'казик':
+                            if len(str(body).split()) == 2:
+                                temp = str(body).split(" ")
+                                amount = temp[1]
+                                vk.method("messages.send", {"peer_id": id,
+                                                            "message": kaz(id, amount),
+                                                            "keyboard": kazmenu.get_keyboard(),
+                                                            "random_id": random.randint(1, 2147483647)})
+                                log(id, body)
+                            else:
+                                vk.method("messages.send", {"peer_id": id,
+                                                            "message": "Добро пожаловать в казино!",
+                                                            "keyboard": kazmenu.get_keyboard(),
+                                                            "random_id": random.randint(1, 2147483647)})
+                                log(id, body)
+
                         elif str(body.lower()).split()[0] == 'казино' or str(body).split()[0] == 'казик':
                             if len(str(body).split()) == 2:
                                 temp = str(body).split(" ")
@@ -2185,18 +2318,36 @@ while True:
                                                             "random_id": random.randint(1, 2147483647)})
                                 log(id, body)
 
-                        elif str(body.lower()).split()[0] == 'монеточка' or str(body).split()[0] == 'монетка':
-                            if len(str(body).split()) >= 2:
-                                temp = str(body).split("дник")
-                                amount = temp[1]
+                        elif str(body.lower()).split()[0] == 'монеточка' or str(body.lower()).split()[0] == 'монетка':
+                            if len(str(body).split()) >= 3:
+                                temp = str(body).split(" ")
+                                side = temp[1]
+                                amount = temp[2]
                                 vk.method("messages.send", {"peer_id": id,
-                                                            "message": monetka(id, amount),
+                                                            "message": monetka(id, side , amount),
+                                                            "keyboard": monetkasidemenu.get_keyboard(),
                                                             "random_id": random.randint(1, 2147483647)})
                                 log(id, body)
                             else:
                                 vk.method("messages.send", {"peer_id": id,
-                                                            "message": "Обычная игра в монеточку\nЕсли выпадет Орел - вы выйграете,Решка - проиграете\nУдачи!\n'монетка {сумма}'",
+                                                            "message": "Обычная игра в монеточку\nВыберите сторону [Орел или Решка] и укажите сткаву\nПример: Монетка орел 1000",
+                                                            "keyboard": monetkasidemenu.get_keyboard(),
                                                             "random_id": random.randint(1, 2147483647)})
+
+                        elif body.lower() == "орел":
+                            vk.method("messages.send",
+                                      {"peer_id": id,
+                                       "message": "Вы выбрали Орла",
+                                       "keyboard": monetkaorelmenu.get_keyboard(),
+                                       "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+                        elif body.lower() == "решка":
+                            vk.method("messages.send",
+                                      {"peer_id": id,
+                                       "message": "Вы выбрали Решку",
+                                       "keyboard": monetkareshkamenu.get_keyboard(),
+                                       "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
 
                         elif str(body.lower()).split()[0] == 'сник':
                             if len(str(body).split()) >= 2:
@@ -2317,7 +2468,7 @@ while True:
                                                             "message": "Вы не Администратор или Модератор!",
                                                             "random_id": random.randint(1, 2147483647)})
 
-                        elif str(body.lower()).split()[0] == 'передать':
+                        elif str(body.lower()).split()[0] == 'передать' or str(body.lower()).split()[0] == 'перевод':
                             if id in admins or id in moders:
                                 vk.method("messages.send", {"peer_id": id,
                                                             "message": "Персоналу запрещено передавать деньги",
@@ -2486,6 +2637,13 @@ while True:
                             log(id, body)
 
                         elif body.lower() == "ферма":
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": farmstatus(id),
+                                                    "keyboard": farmmenu.get_keyboard(),
+                                                    "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+
+                        elif body.lower() == "♻ обновить":
                             vk.method("messages.send", {"peer_id": id,
                                                     "message": farmstatus(id),
                                                     "keyboard": farmmenu.get_keyboard(),
