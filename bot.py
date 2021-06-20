@@ -14,7 +14,6 @@ from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 def res():
     return time.strftime("%x %X", time.localtime())
 
-ver = "\n\nv1.6.5 от 21.06.2021 00:10 МСК"
 ver = "\n\nv1.6.6 от 21.06.2021 00:10 МСК"
 users = next(os.walk("json/"))[2]
 token = "2d26f19312dd93258ca84a1c533fefb1cffbb3a9d63d775e78ae3c62bd4254806825bdf2af924f8408d78"
