@@ -15,19 +15,21 @@ def res():
     return time.strftime("%x %X", time.localtime())
 
 ver = "\n\nv1.6.5 от 21.06.2021 00:10 МСК"
+ver = "\n\nv1.6.6 от 21.06.2021 00:10 МСК"
 users = next(os.walk("json/"))[2]
 token = "2d26f19312dd93258ca84a1c533fefb1cffbb3a9d63d775e78ae3c62bd4254806825bdf2af924f8408d78"
 vk = vk_api.VkApi(token=token)
 vk._auth_token()
 
 admins = [419760643]
-moders = [361585264, 190114998, 418333599]
+moders = [361585264, 190114998, 418333599, 562995566]
 
 #keyboard
 mainmenu = VkKeyboard(one_time=False)
 mainmenu.add_button(label="Профиль")
 mainmenu.add_line()
 mainmenu.add_button(label="Бонус", color=VkKeyboardColor.PRIMARY)
+mainmenu.add_button(label="Банк")
 mainmenu.add_button(label="Баланс", color=VkKeyboardColor.POSITIVE)
 mainmenu.add_line()
 mainmenu.add_button(label="Магазин")
@@ -200,6 +202,7 @@ monetkareshkamenu.add_button(label="⬅ Игры", color=VkKeyboardColor.PRIMARY
 
 kazmenu = VkKeyboard(one_time=False)
 kazmenu.add_button(label="Казино всё")
+kazmenu.add_button(label="Казино половина")
 kazmenu.add_line()
 kazmenu.add_button(label="Казино 1000")
 kazmenu.add_button(label="Казино 50000")
@@ -234,6 +237,18 @@ btcmenu.add_button(label="Пбитк 100")
 btcmenu.add_line()
 btcmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
 
+bankmenu = VkKeyboard(one_time=False)
+bankmenu.add_button(label="Банк положить всё", color=VkKeyboardColor.PRIMARY)
+bankmenu.add_button(label="Банк положить половину", color=VkKeyboardColor.PRIMARY)
+bankmenu.add_line()
+bankmenu.add_button(label="Банк снять всё", color=VkKeyboardColor.POSITIVE)
+bankmenu.add_button(label="Банк снять половину", color=VkKeyboardColor.POSITIVE)
+bankmenu.add_line()
+bankmenu.add_button(label="Банк баланс")
+bankmenu.add_line()
+bankmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
+
+
 errormenu = VkKeyboard(one_time=False, inline=True)
 errormenu.add_button(label="Команды", color=VkKeyboardColor.POSITIVE)
 
@@ -264,7 +279,7 @@ def ifstaff(id):
         if id in admins:
             return '✅ | Администратор'
         if id in moders:
-            return '✅ | Модератор'
+            return '✅ | Бета-тестер'
     else:
         return '🚫 | Пользователь'
 
@@ -436,22 +451,32 @@ def unban(idd):
 def bank(id, type, amount):
     with open('json/' + str(id) + '.json', encoding='utf-8') as f:
         ff = json.loads(f.read())
+
+    if type == "положить" and amount == "все" or amount == "всё":
+        amount = ff["balance"]
+    if type == "снять" and amount == "все" or amount == "всё":
+        amount = ff["bank"]
+    if type == "положить" and amount == "половину":
+        amount = int(ff["balance"] / 2)
+    if type == "снять" and amount == "половину":
+        amount = int(ff["bank"] / 2)
+
     if int(amount) > 0 and int(amount) <= ff["balance"] and type == "положить":
         ff["balance"] -= int(amount)
         ff["bank"] += int(amount)
         with open('json/' + str(id) + '.json', 'w') as f:
             f.write(json.dumps(ff, indent=4))
-        return "Вы успешно положили " + amount + "$ в банк!"
+        return "Вы успешно положили " + str(amount) + "$ в банк!"
 
     elif int(amount) > 0 and int(amount) <= ff["bank"] and type == "снять":
         ff["balance"] += int(amount)
         ff["bank"] -= int(amount)
         with open('json/' + str(id) + '.json', 'w') as f:
             f.write(json.dumps(ff, indent=4))
-        return "Вы успешно сняли " + amount + "$ со счёта!"
+        return "Вы успешно сняли " + str(amount) + "$ со счёта!"
 
     else:
-        return "Сумма превышает баланс или меньше 0"
+        return "Сумма превышает баланс или меньше 0\n" + bal(id)
 
 def nick(id, nick):
     if len(nick) <= 15:
@@ -575,7 +600,7 @@ def pay(id, idd, val):
                                 "random_id": random.randint(1, 2147483647)})
         return "Перевод успешно выполнен! \nВаш баланс: " + str(per["balance"]) + "$"
     else:
-        return "Сумма превышает ваш баланс/Сумма меньше 0"
+        return "Сумма превышает ваш баланс/Сумма меньше 0\n" + bal(id)
 
 def ulist():
     c=1
@@ -599,6 +624,8 @@ def kaz(id,amount):
     try:
         if amount == "все" or amount == "всё":
             amount = ff["balance"]
+        if amount == "половина":
+            amount = int(ff["balance"] / 2)
         if int(amount) <= ff["balance"] and int(amount) > 0:
             r = random.randrange(0,17)
             if r == 0 or r == 1 or r == 2 or r == 3 or r == 4 or r == 5 or r == 6:
@@ -630,7 +657,7 @@ def kaz(id,amount):
 
                 return "✅Вы выйграли: " + str(int(win)) + "$ (5x)" + "\n💰Ваш баланс: " + str(ff["balance"]) + "$"
         else:
-            return "У вас недостаточно денег или сумма меньше 0!"
+            return "У вас недостаточно денег или сумма меньше 0!\n" + bal(id)
     except:
         return "Введите целое число!"
 
@@ -672,10 +699,10 @@ def monetka(id, side, amount):
             return "✅Вы выйграли,выпала Решка: " + str(int(win)) + "$ (3x)" + "\n💰Ваш баланс: " + str(ff["balance"]) + "$"
         return "У монетки есть только 2 стороны - Орел и Решка"
     else:
-        return "У вас недостаточно денег или сумма меньше 0!"
+        return "У вас недостаточно денег или сумма меньше 0!\n" + bal(id)
 
 def staff():
-    return 'Список персонала\n\n' + 'Администраторы:\n' + '@gamtz (Влад Богданов)\n\n' + 'Модераторы:\n @lymar1 (Алексей Лымар)\n@plz_helpme_die (Денис Швец)\n@yatox1c (Ефим Ефименко)'
+    return 'Список персонала\n\n' + 'Администраторы:\n' + '@gamtz (Влад Богданов)\n\n' + 'Тестеры:\n @lymar1 (Алексей Лымар)\n@plz_helpme_die (Денис Швец)\n@yatox1c (Ефим Ефименко)\n@id562995566 (Михаил Романов)'
 
 def help():
     return "📚 Основные" \
@@ -1986,7 +2013,7 @@ def btctousd(id, n):
         with open('json/' + str(id) + '.json', 'w') as f:
             f.write(json.dumps(ff, indent=4))
         return "Вы успешно перевели " + str(n) + "₿ в " + str(int(temp)) + "$\n" + bal(id)
-    return "У вас недостаточно биткоинов или вы ввели 0\nВаш баланс: " + str(ff["balance"]) + "$"
+    return "У вас недостаточно биткоинов или вы ввели 0\n" + bal(id)
 
 def usdtobtc(id, n):
     with open('json/' + str(id) + '.json') as f:
@@ -2001,7 +2028,7 @@ def usdtobtc(id, n):
             f.write(json.dumps(ff, indent=4))
         return "Вы успешно купили " + str(round(float(n),5)) + "₿ за " + str(temp) + "$\n" + str(bal(id))
     else:
-        return "У вас недостаточно денег или вы ввели 0\nВаш баланс: " + str(ff["balance"]) + "$"
+        return "У вас недостаточно денег или вы ввели 0\n" + bal(id)
 # Bytecoin
 
 print("[" + res() +"] ✅Бот запущен!")
@@ -2285,7 +2312,7 @@ while True:
                                        "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
-                        elif body.lower() == "биткоины" or body.lower() == "битки" or body.lower() == "битк":
+                        elif body.lower() == "биткоины" or body.lower() == "биткоин" or body.lower() == "битки" or body.lower() == "битк":
                             vk.method("messages.send",
                                       {"peer_id": id,
                                        "message": "Выберите что вы хотите сделать\n" + bal(id),
@@ -2315,6 +2342,7 @@ while True:
                                 amount = temp[1]
                                 vk.method("messages.send", {"peer_id": id,
                                                             "message": kaz(id, amount),
+                                                            "keyboard": kazmenu.get_keyboard(),
                                                             "random_id": random.randint(1, 2147483647)})
                                 log(id, body)
 
@@ -2487,19 +2515,21 @@ while True:
                                                                 "message": "Используйте:\nПередать {id} {сумма}\n\nЧтобы узнать ID - используйте 'ид {ссылка на профиль}'",
                                                                 "random_id": random.randint(1, 2147483647)})
 
-                        elif str(body.lower()).split()[0] == 'банк':
+                        elif str(body.lower()).split()[0] == 'банк' or body.lower() == 'Банк баланс':
                             temp = str(body.lower()).split(" ")
                             if len(temp) == 3:
                                 type = temp[1]
                                 amount = temp[2]
                                 vk.method("messages.send", {"peer_id": id,
                                                             "message": bank(id, type, amount),
+                                                            "keyboard": bankmenu.get_keyboard(),
                                                             "random_id": random.randint(1, 2147483647)})
                             else:
                                 with open('json/' + str(id) + '.json', encoding='utf-8') as f:
                                     ff = json.loads(f.read())
                                 vk.method("messages.send", {"peer_id": id,
                                                             "message": "💳 Баланс счёта: " + str(ff["bank"]) + "$\n\n⚠ Используйте:\nБанк положить {сумма}\nили\nБанк снять {сумма}",
+                                                            "keyboard": bankmenu.get_keyboard(),
                                                             "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
@@ -2691,7 +2721,7 @@ while True:
                         # Bytecoin
                         else:
                             vk.method("messages.send", {"peer_id": id,
-                                                        "message": "Увы, но такой команды нет\nПосмотреть их список можно написать 'команды'",
+                                                        "message": "Увы, но такой команды нет\nПосмотреть их список можно написав 'команды'",
                                                         "keyboard": errormenu.get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
                     else:
