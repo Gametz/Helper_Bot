@@ -14,8 +14,7 @@ from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 def res():
     return time.strftime("%x %X", time.localtime())
 
-ver = "\n\nv1.6.5 от 21.06.2021 00:10 МСК"
-ver = "\n\nv1.6.6 от 21.06.2021 00:10 МСК"
+ver = "\n\nv1.6.8 от 21.06.2021 05:10 МСК"
 users = next(os.walk("json/"))[2]
 token = "2d26f19312dd93258ca84a1c533fefb1cffbb3a9d63d775e78ae3c62bd4254806825bdf2af924f8408d78"
 vk = vk_api.VkApi(token=token)
@@ -39,6 +38,7 @@ mainmenu.add_line()
 mainmenu.add_button(label="Уровни")
 mainmenu.add_button(label="Ферма")
 mainmenu.add_button(label="Стата")
+mainmenu.add_button(label="Топ")
 mainmenu.add_line()
 mainmenu.add_button(label="Админпанель", color=VkKeyboardColor.NEGATIVE)
 mainmenu.add_button(label="Команды", color=VkKeyboardColor.SECONDARY)
@@ -248,6 +248,11 @@ bankmenu.add_button(label="Банк баланс")
 bankmenu.add_line()
 bankmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
 
+topmenu = VkKeyboard(one_time=False)
+topmenu.add_button(label="Балтоп")
+topmenu.add_button(label="Битктоп")
+topmenu.add_line()
+topmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
 
 errormenu = VkKeyboard(one_time=False, inline=True)
 errormenu.add_button(label="Команды", color=VkKeyboardColor.POSITIVE)
@@ -627,7 +632,7 @@ def kaz(id,amount):
         if amount == "половина":
             amount = int(ff["balance"] / 2)
         if int(amount) <= ff["balance"] and int(amount) > 0:
-            r = random.randrange(0,17)
+            r = random.randrange(0,15)
             if r == 0 or r == 1 or r == 2 or r == 3 or r == 4 or r == 5 or r == 6:
                 ff["balance"] -= int(amount)
                 ff["klose"] += int(round(int(amount)))
@@ -641,14 +646,14 @@ def kaz(id,amount):
                 with open('json/' + str(id) + '.json', 'w') as f:
                     f.write(json.dumps(ff, indent=4))
                 return "✅Вы выйграли: " + str(int(win)) + "$ (1.5x)" + "\n💰Ваш баланс: " + str(ff["balance"]) + "$"
-            elif r == 11 or r == 12 or r == 13 or r == 14:
+            elif r == 11 or r == 12 or r == 13:
                 win = int(amount) * 2
                 ff["balance"] += int(round(win))
                 ff["kwin"] += int(round(win))
                 with open('json/' + str(id) + '.json', 'w') as f:
                     f.write(json.dumps(ff, indent=4))
                 return "✅Вы выйграли: " + str(int(win)) + "$ (2x)" + "\n💰Ваш баланс: " + str(ff["balance"]) + "$"
-            elif r == 15 or r == 16:
+            elif r == 14:
                 win = int(amount) * 5
                 ff["balance"] += int(round(win))
                 ff["kwin"] += int(round(win))
@@ -711,6 +716,7 @@ def help():
            "\n&#12288;📶 Уровни - информация по распределению опыта" \
            "\n&#12288;💲 Баланс/Бал - проверить свой баланс" \
            "\n&#12288;🤝 Передать {id} {сумма} - перевести денег другому игроку" \
+           "\n&#12288;📜 Топ - лучшие игроки" \
            "\n&#12288;🛒 Магазин - если хотите что-нибудь купить,то вам сюда" \
            "\n&#12288;💼 Работы - список доступных работ для заработка $" \
            "\n&#12288;💰 Бонус - немного $ каждые 5 минут" \
@@ -2031,10 +2037,74 @@ def usdtobtc(id, n):
         return "У вас недостаточно денег или вы ввели 0\n" + bal(id)
 # Bytecoin
 
+# Топ
+def sortbybal(str):
+    a = int(str.split(":")[0])
+    return a
+
+def sortbybtc(str):
+    a = float(str.split(":")[0])
+    return a
+
+def baltop():
+    a=[]
+    path = "json/"
+    f=list(os.listdir(path))
+    for i in range (len(f)):
+        f[i] = str(f[i][0:-5])
+    for i in f:
+        id = i
+        with open('json/' + str(id) + '.json') as f:
+            ff = json.loads(f.read())
+        if ff["balance"] != 0:
+            if ff["nick"] != "":
+                a.append(str(str(ff["balance"]) + ":" + "@id" + str(id) + " (" + ff["nick"] + ")"))
+            else:
+                user = vk.method("users.get", {"user_ids": id})
+                a.append(str(str(ff["balance"]) + ":" + "@id" + str(id) + " (" + user[0]['first_name'] + ")"))
+    a = sorted(a, key=sortbybal, reverse=True)
+    for i in range(len(a)):
+            a[i] = str(i+1) + ". " + str(a[i].split(":")[1]) + " | " + str(a[i].split(":")[0]) + "$"
+    threading.Thread(target=reloadtop, args=()).start()
+    global topbal
+    topbal = "📜 Топ по балансу:\n\n" + "\n".join(a) + "\n\nОбновление каждые 5 минут"
+
+def btctop():
+    a=[]
+    path = "json/"
+    f=list(os.listdir(path))
+    for i in range (len(f)):
+        f[i] = str(f[i][0:-5])
+    for i in f:
+        id = i
+        with open('json/' + str(id) + '.json') as f:
+            ff = json.loads(f.read())
+        if ff["btc"] != 0.0:
+            if ff["nick"] != "":
+                a.append(str(str(ff["btc"]) + ": " + "@id" + str(id) + " (" + ff["nick"] + ")"))
+            else:
+                user = vk.method("users.get", {"user_ids": id})
+                a.append(str(str(ff["btc"]) + ": " + "@id" + str(id) + " (" + user[0]['first_name'] + ")"))
+    a = sorted(a, key=sortbybtc, reverse=True)
+    for i in range(len(a)):
+            a[i] = str(i+1) + ". " + str(a[i].split(":")[1]) + " | " + str(round(float(a[i].split(":")[0]),5)) + "₿"
+    global topbtc
+    topbtc = "📜 Топ по биткоинам:\n\n" + "\n".join(a) + "\n\nОбновление каждые 5 минут"
+    threading.Thread(target=reloadtopbtc, args=()).start()
+
+def reloadtop():
+    threading.Timer(300.0, baltop, args=()).start()
+
+def reloadtopbtc():
+    threading.Timer(300.0, btctop, args=()).start()
+
+# Топ
 print("[" + res() +"] ✅Бот запущен!")
 log("system", "Бот запущен")
 
 btcfarmreload()
+baltop()
+btctop()
 # btcratestart()
 
 while True:
@@ -2380,7 +2450,7 @@ while True:
                         elif str(body.lower()).split()[0] == 'сник':
                             if len(str(body).split()) >= 2:
                                 temp = str(body).split("сник")
-                                nickk = temp[1]
+                                nickk = temp[1][1:]
                                 vk.method("messages.send", {"peer_id": id,
                                                             "message": nick(id, nickk),
                                                             "random_id": random.randint(1, 2147483647)})
@@ -2719,6 +2789,30 @@ while True:
                                                             "random_id": random.randint(1, 2147483647)})
 
                         # Bytecoin
+
+                        elif body.lower() == 'топ':
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": "Какй топ вы хотите посмтореть?"
+                                                               "\nБалтоп - топ по балансу"
+                                                               "\nБитктоп - топ по кол-ву биткоинов",
+                                                    "keyboard": topmenu.get_keyboard(),
+                                                    "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+
+                        elif body.lower() == 'битктоп':
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": topbtc,
+                                                    "keyboard": topmenu.get_keyboard(),
+                                                    "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+
+                        elif body.lower() == 'балтоп':
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": topbal,
+                                                    "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+
+
                         else:
                             vk.method("messages.send", {"peer_id": id,
                                                         "message": "Увы, но такой команды нет\nПосмотреть их список можно написав 'команды'",
