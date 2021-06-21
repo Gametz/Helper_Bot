@@ -14,14 +14,14 @@ from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 def res():
     return time.strftime("%x %X", time.localtime())
 
-ver = "\n\nv1.6.8 от 21.06.2021 05:10 МСК"
+ver = "\n\nv1.6.9 от 21.06.2021 21:50 МСК"
 users = next(os.walk("json/"))[2]
 token = "2d26f19312dd93258ca84a1c533fefb1cffbb3a9d63d775e78ae3c62bd4254806825bdf2af924f8408d78"
 vk = vk_api.VkApi(token=token)
 vk._auth_token()
 
 admins = [419760643]
-moders = [361585264, 190114998, 418333599, 562995566]
+moders = [361585264, 190114998, 418333599, 562995566, 225064049, 245843594]
 
 #keyboard
 mainmenu = VkKeyboard(one_time=False)
@@ -333,7 +333,6 @@ def prof(id):
            '\n💴 Биткоины: ' + str(round(ff["btc"],5)) + "₿" + \
            '\n📶 Уровень: ' + str(ff["level"]) + \
            '\n💡 Опыт: ' + str(ff["exp"]) + \
-           '\n👥 Всего пользователей: ' + str(len(users)) + \
            '\n' \
            '\n🔑 Имущество:' \
            '\n&#12288;🚗 Машина: ' + carcheck(id) + \
@@ -380,6 +379,7 @@ def farmcheck(id):
 # Имущество
 
 def dprof(idd):
+    idd = ids(idd)
     with open('json/' + str(idd) + '.json') as f:
         ff = json.loads(f.read())
     return 'Ссылка на профиль: vk.com/id' + idd + \
@@ -411,6 +411,7 @@ def profbancheck(id):
         return "✅ | " + r
 
 def giveban(id,idd,rsn):
+    idd = ids(idd)
     path = "json/"
     f=os.listdir(path)
     for i in range (len(f)):
@@ -433,6 +434,7 @@ def giveban(id,idd,rsn):
         return "Такого пользователя не существует!"
 
 def unban(idd):
+    idd = ids(idd)
     path = "json/"
     f=os.listdir(path)
     for i in range (len(f)):
@@ -508,7 +510,7 @@ def dnick(id, nick):
 def bal(id):
     with open('json/' + str(id) + '.json') as f:
         ff = json.loads(f.read())
-    return '💰Ваш баланс: ' + str(ff["balance"]) + "$\n💴 Биткоины: " + str(ff["btc"]) + " ₿"
+    return '💰Ваш баланс: ' + str(ff["balance"]) + "$\n💴 Биткоины: " + str(round(ff["btc"],5)) + " ₿"
 
 def cbal(id,val):
     if int(val) >= 0 and int(val) <= 1000000:
@@ -526,6 +528,7 @@ def cbal(id,val):
         return "Вы ввели значение меньше нуля или больше 1 000 000"
 
 def dbal (idd,val):
+    idd = ids(idd)
     if int(val) >= 0 and int(val) <= 1000000000:
         with open('json/' + str(idd) + '.json') as f:
             ff = json.loads(f.read())
@@ -580,6 +583,9 @@ def cexp (id, val):
         return "Вы ввели значение меньше 1 или больше 5"
 
 def pay(id, idd, val):
+    idd = ids(idd)
+    if str(id) == str(idd):
+        return "🙃 Нельзя переводить самому себе!"
     with open('json/' + str(id) + '.json', encoding='utf-8') as f:
         per = json.loads(f.read())
     try:
@@ -595,17 +601,18 @@ def pay(id, idd, val):
             f.write(json.dumps(per, indent=4))
         with open('json/' + str(idd) + '.json', 'w', encoding='utf-8') as f:
             f.write(json.dumps(pol, indent=4))
-        if per["nick"] == '':
+        if per["nick"] != '':
             vk.method("messages.send", {"peer_id": idd,
-                                "message": "Вы получили перевод от " + str(id) + " в размере: " + val + "$",
+                                "message": "💎 | Вы получили перевод от " + "@id" + str(id) + " (" + ff["nick"] + ")" + " в размере: " + val + "$",
                                 "random_id": random.randint(1, 2147483647)})
         else:
+            user = vk.method("users.get", {"user_ids": id})
             vk.method("messages.send", {"peer_id": idd,
-                                "message": "Вы получили перевод от " + per["nick"] + " в размере: " + val + "$",
+                                "message": "💎 | Вы получили перевод от " + "@id" + str(id) + " (" + user[0]['first_name'] + ") в размере: " + val + "$",
                                 "random_id": random.randint(1, 2147483647)})
         return "Перевод успешно выполнен! \nВаш баланс: " + str(per["balance"]) + "$"
     else:
-        return "Сумма превышает ваш баланс/Сумма меньше 0\n" + bal(id)
+        return "Сумма превышает ваш баланс или Сумма меньше 0\n" + bal(id)
 
 def ulist():
     c=1
@@ -715,7 +722,7 @@ def help():
            "\n&#12288;📋 Сник {ник} - изменить свой ник" \
            "\n&#12288;📶 Уровни - информация по распределению опыта" \
            "\n&#12288;💲 Баланс/Бал - проверить свой баланс" \
-           "\n&#12288;🤝 Передать {id} {сумма} - перевести денег другому игроку" \
+           "\n&#12288;🤝 Передать {id/ссылка} {сумма} - перевести денег другому игроку" \
            "\n&#12288;📜 Топ - лучшие игроки" \
            "\n&#12288;🛒 Магазин - если хотите что-нибудь купить,то вам сюда" \
            "\n&#12288;💼 Работы - список доступных работ для заработка $" \
@@ -1278,6 +1285,25 @@ def idsearch(id):
             return "Пример использования:\nид vk.com/gamtz"
     else:
         return "Такого пользователя не существует!"
+
+def ids(id):
+    path = "json/"
+    f = os.listdir(path)
+    for i in range(len(f)):
+        f[i] = str(f[i][:-5])
+    if "@" in id:
+        id_ = id.split('@')[-1][:-1]
+    else:
+        id_ = id.split('/')[-1]
+    try:
+        id = str(vk.method('users.get', {'user_ids': id_})[0]['id'])
+    except:
+        return "USER GET ERROR"
+    if id in f:
+        try:
+            return id
+        except:
+            return "USER NOT EXIST"
 
 def congrts(id):
     vk.method("messages.send", {"peer_id": id,
@@ -2097,16 +2123,28 @@ def reloadtop():
 
 def reloadtopbtc():
     threading.Timer(300.0, btctop, args=()).start()
-
 # Топ
-print("[" + res() +"] ✅Бот запущен!")
-log("system", "Бот запущен")
+
+def mailing(body):
+    a = []
+    path = "json/"
+    f = list(os.listdir(path))
+    for i in range(len(f)):
+        f[i] = str(f[i][0:-5])
+    for i in f:
+        id = i
+        vk.method("messages.send", {"peer_id": id,
+                                    "message": body,
+                                    "random_id": random.randint(1, 2147483647)})
+    return "Рассылка завершена!"
 
 btcfarmreload()
 baltop()
 btctop()
 # btcratestart()
 
+print("[" + res() +"] ✅Бот запущен!")
+log("system", "Бот запущен")
 while True:
     try:
         messages = vk.method("messages.getConversations", {"offset": 0, "count": 20, "filter": "unanswered"})
@@ -2129,10 +2167,8 @@ while True:
             with open('json/' + str(id) + '.json') as f:
                 ff = json.loads(f.read())
 
-            #if id in moders or id in admins:
-            #if id in admins:
             allow = ["репорт", "профиль", "проф", "unban"]
-            if True:
+            if True and body != "":
                     if ff["banned"] == "NO" or body.lower().split(" ")[0] in allow:
                         if 'репорт' in body.lower():
                             temp = str(body.lower()).split("репорт")
@@ -2146,6 +2182,18 @@ while True:
                                                             "message": "⚠ Вы пытаетесь отправить пустой репорт!",
                                                             "random_id": random.randint(1, 2147483647)})
                             log(id, body)
+
+                        elif str(body.lower()).split()[0] == "toall":
+                            if id in admins:
+                                temp = str(body).split("toall")[1]
+                                vk.method("messages.send", {"peer_id": id,
+                                                        "message": mailing(temp),
+                                                        "random_id": random.randint(1, 2147483647)})
+                                log(id, body)
+                            else:
+                                vk.method("messages.send", {"peer_id": id,
+                                                        "message": "Вы не Администратор!",
+                                                        "random_id": random.randint(1, 2147483647)})
 
                         # Меню
                         elif body.lower() == "🏠 главное меню":
@@ -2567,11 +2615,11 @@ while True:
                                                             "random_id": random.randint(1, 2147483647)})
 
                         elif str(body.lower()).split()[0] == 'передать' or str(body.lower()).split()[0] == 'перевод':
-                            if id in admins or id in moders:
-                                vk.method("messages.send", {"peer_id": id,
-                                                            "message": "Персоналу запрещено передавать деньги",
-                                                            "random_id": random.randint(1, 2147483647)})
-                            else:
+                            # if id in admins or id in moders:
+                            #     vk.method("messages.send", {"peer_id": id,
+                            #                                 "message": "Персоналу запрещено передавать деньги",
+                            #                                 "random_id": random.randint(1, 2147483647)})
+                            # else:
                                 if len(str(body).split()) == 3:
                                     temp = str(body).split(" ")
                                     idd = temp[1]
@@ -2812,7 +2860,6 @@ while True:
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
-
                         else:
                             vk.method("messages.send", {"peer_id": id,
                                                         "message": "Увы, но такой команды нет\nПосмотреть их список можно написав 'команды'",
@@ -2824,7 +2871,8 @@ while True:
                                                     "random_id": random.randint(1, 2147483647)})
             else:
                 vk.method("messages.send", {"peer_id": id,
-                                        "message": "⚠ Технические работы! Приносим свои извинения",
+                                        "message": "К сожалению,я могу распознать только текст :(",
+                                        "keyboard": mainmenu.get_keyboard(),
                                         "random_id": random.randint(1, 2147483647)})
 
     except BaseException as E:
