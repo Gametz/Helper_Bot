@@ -14,7 +14,7 @@ from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 def res():
     return time.strftime("%x %X", time.localtime())
 
-ver = "\n\nv1.7.0 от 25.06.2021 16:50 МСК"
+ver = "\n\nv1.7.5 от 25.06.2021 16:50 МСК"
 users = next(os.walk("json/"))[2]
 token = "2d26f19312dd93258ca84a1c533fefb1cffbb3a9d63d775e78ae3c62bd4254806825bdf2af924f8408d78"
 vk = vk_api.VkApi(token=token)
@@ -264,6 +264,73 @@ topmenu.add_button(label="Битктоп")
 topmenu.add_line()
 topmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
 
+# Хакерство
+
+mainhackmenu = VkKeyboard(one_time=False)
+mainhackmenu.add_button(label="Что-то будет")
+mainhackmenu.add_line()
+mainhackmenu.add_button(label="Что-то будет")
+mainhackmenu.add_line()
+mainhackmenu.add_button(label="DarkShop", color=VkKeyboardColor.PRIMARY)
+mainhackmenu.add_line()
+mainhackmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
+
+dsmenu = VkKeyboard(one_time=False)
+dsmenu.add_button(label="Компы")
+dsmenu.add_line()
+dsmenu.add_button(label="VPN")
+dsmenu.add_line()
+dsmenu.add_button(label="Убежища")
+dsmenu.add_line()
+dsmenu.add_button(label="Прoдать", color=VkKeyboardColor.NEGATIVE)
+dsmenu.add_line()
+dsmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
+dsmenu.add_button(label="⬅ Хакерство", color=VkKeyboardColor.PRIMARY)
+
+compmenu = VkKeyboard(one_time=False)
+compmenu.add_button(label="Ккомп 1")
+compmenu.add_button(label="Ккомп 2")
+compmenu.add_button(label="Ккомп 3")
+compmenu.add_line()
+compmenu.add_button(label="Ккомп 4")
+compmenu.add_button(label="Ккомп 5")
+compmenu.add_line()
+compmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
+compmenu.add_button(label="⬅ DarkShop", color=VkKeyboardColor.PRIMARY)
+
+vpnmenu = VkKeyboard(one_time=False)
+vpnmenu.add_button(label="Квпн 1")
+vpnmenu.add_button(label="Квпн 2")
+vpnmenu.add_button(label="Квпн 3")
+vpnmenu.add_line()
+vpnmenu.add_button(label="Квпн 4")
+vpnmenu.add_button(label="Квпн 5")
+vpnmenu.add_line()
+vpnmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
+vpnmenu.add_button(label="⬅ DarkShop", color=VkKeyboardColor.PRIMARY)
+
+shltrmenu = VkKeyboard(one_time=False)
+shltrmenu.add_button(label="Кубежище 1")
+shltrmenu.add_button(label="Кубежище 2")
+shltrmenu.add_button(label="Кубежище 3")
+shltrmenu.add_line()
+shltrmenu.add_button(label="Кубежище 4")
+shltrmenu.add_button(label="Кубежище 5")
+shltrmenu.add_line()
+shltrmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
+shltrmenu.add_button(label="⬅ DarkShop", color=VkKeyboardColor.PRIMARY)
+
+selldarkmenu = VkKeyboard(one_time=False)
+selldarkmenu.add_button(label="Пкомп")
+selldarkmenu.add_line()
+selldarkmenu.add_button(label="Пвпн")
+selldarkmenu.add_line()
+selldarkmenu.add_button(label="Пубежище")
+selldarkmenu.add_line()
+selldarkmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
+selldarkmenu.add_button(label="⬅ DarkShop", color=VkKeyboardColor.PRIMARY)
+# Хакерство
+
 errormenu = VkKeyboard(one_time=False, inline=True)
 errormenu.add_button(label="Команды", color=VkKeyboardColor.POSITIVE)
 
@@ -274,7 +341,7 @@ bonusmenu.add_button(label="Бонус", color=VkKeyboardColor.POSITIVE)
 def log(id, body):
     with open('log.txt', 'a', encoding='utf-8') as f:
         f.writelines("\n[" + res() + "] " + str(id) + " " + str(body) + " | Успешно!")
-    #print("\n[" + res() + "] " + str(id) + " " + str(body) + " | Успешно!")
+    print("\n[" + res() + "] " + str(id) + " " + str(body) + " | Успешно!")
 
 def glog():
     with open('log.txt', 'rb') as file:
@@ -323,7 +390,18 @@ def prof(id):
         "car": "",
         "phone": "",
         "home": "",
-        "banned": "NO"
+        "banned": "NO",
+        "hhp": 20,
+        "hlevel": 1,
+        "hhp": 10,
+        "hdamage": 1,
+        "hdef": 1,
+        "pdamage": 0,
+        "php": 0,
+        "pdef": 0,
+        "hvpn": "",
+        "hcomp": "",
+        "hsheltr": ""
     }
     try:
         with open('json/' + str(id) + '.json') as f:
@@ -2319,6 +2397,383 @@ def mailing(body):
                                     "random_id": random.randint(1, 2147483647)})
     return "Рассылка завершена!"
 
+# Хакерство
+def hackmenu(id):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    return "📋 Твой профиль:" \
+           "\n" \
+           "\n🔎 Уровень: " + str(ff["level"]) + \
+           "\n💊 ХП: " + str(ff["hhp"]) + " (+" + str(ff["php"]) + ")" + \
+           "\n🔫 Урон: " + str(ff["hdamage"]) + " (+" + str(ff["pdamage"]) + ")" + \
+           "\n🕶 Защита: " + str(ff["hdef"]) + " (+" + str(ff["pdef"]) + ")" + \
+           "\n" \
+           "\n🔑 Имущество" \
+           "\n&#12288;💻 Комп: " + ff["hcomp"] + \
+           "\n&#12288;🛡 VPN: " + ff["hvpn"] + \
+           "\n&#12288;🚪 Убежище: " + ff["hsheltr"] \
+
+def darkshop():
+    return "🎴 DarkShop 🎴" \
+           "\n" \
+           "\n&#12288;💻 Компы - атака" \
+           "\n&#12288;🛡 VPN - защита" \
+           "\n&#12288;🚪 Убежища - хп" \
+           "\n" \
+           "\n📌Для просмотра категории используйте ее название"
+
+def comps():
+    return "💻 Компы 💻" \
+           "\nУровень | Название | Баффы | Цена" \
+           "\n" \
+           "\n&#12288;💎 1. &#12288;2 | Калькулятор | +1 к атаке | 20₿" \
+           "\n&#12288;💎 2. &#12288;5 | 4 ядра, 4 гига | +3 к атаке | 100₿" \
+           "\n&#12288;💎 3. &#12288;15 | Офисный | +5 к атаке | 300₿" \
+           "\n&#12288;💎 4. &#12288;30 | Игровой | +10 к атаке | 500₿" \
+           "\n&#12288;💎 5. &#12288;50 | Квантовый | +20 к атаке | 1500₿" \
+           "\n" \
+           "\n📌Для покупки используйте 'ккомп [номер]'"
+
+def vpns():
+    return "🛡 VPN 🛡" \
+           "\nУровень | Название | Баффы | Цена" \
+           "\n" \
+           "\n&#12288;💎 1. &#12288;3 | Wi-Fi соседа | +1 к защите | 20₿" \
+           "\n&#12288;💎 2. &#12288;7 | С форума | +4 к защите | 170₿" \
+           "\n&#12288;💎 3. &#12288;18 | Приватный | +8 к защите | 350₿" \
+           "\n&#12288;💎 4. &#12288;35 | Игровой | +15 к защите | 550₿" \
+           "\n&#12288;💎 5. &#12288;55 | Собственный | +20 к защите | 1700₿" \
+           "\n" \
+           "\n📌Для покупки используйте 'квпн [номер]'"
+
+def shltrs():
+    return "🚪 Убежища 🚪" \
+           "\nУровень | Название | Баффы | Цена" \
+           "\n" \
+           "\n&#12288;💎 1. &#12288;5 | Подвал дома | +2 к хп | 35₿" \
+           "\n&#12288;💎 2. &#12288;12 | Гараж деда | +5 к хп | 200₿" \
+           "\n&#12288;💎 3. &#12288;25 | Съемная квартира | +9 к хп | 400₿" \
+           "\n&#12288;💎 4. &#12288;50 | Бункер в горах | +16 к хп | 1800₿" \
+           "\n&#12288;💎 5. &#12288;60 | Дом Путина | +21 к хп | 2000₿" \
+           "\n" \
+           "\n📌Для покупки используйте 'кубежище [номер]'"
+
+def bcomp(id, n):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    if ff["hcomp"] == "":
+        if n == '1' and ff["btc"] >= 20 and ff["hlevel"] >= 2:
+            ff["btc"] -= 20
+            ff["hcomp"] = "Калькулятор"
+            ff["pdamage"] += 1
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["hcomp"]) + " за 20₿\nВаш баланс: \n" + bal(id)
+
+        elif n == '2' and ff["btc"] >= 100 and ff["hlevel"] >= 5:
+            ff["btc"] -= 100
+            ff["hcomp"] = "4 ядра, 4 гига"
+            ff["pdamage"] += 3
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["hcomp"]) + " за 100₿\nВаш баланс: \n" + bal(id)
+
+        elif n == '3' and ff["btc"] >= 300 and ff["hlevel"] >= 15:
+            ff["btc"] -= 300
+            ff["hcomp"] = "Офисный"
+            ff["pdamage"] += 5
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["hcomp"]) + " за 300₿\nВаш баланс: \n" + bal(id)
+
+        elif n == '4' and ff["btc"] >= 500 and ff["hlevel"] >= 30:
+            ff["btc"] -= 500
+            ff["hcomp"] = "Игровой"
+            ff["pdamage"] += 10
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["hcomp"]) + " за 500₿\nВаш баланс: \n" + bal(id)
+
+        elif n == '5' and ff["btc"] >= 1500 and ff["hlevel"] >= 50:
+            ff["btc"] -= 1500
+            ff["hcomp"] = "Квантовый"
+            ff["pdamage"] += 20
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["hcomp"]) + " за 1500₿\nВаш баланс: \n" + bal(id)
+
+        else:
+            return "У вас не хватает денег/опыта или вы неправильно используете команду!\nПример: ккомп 1"
+    else:
+        return "У вас уже есть комп или вы неправильно используете команду!\nПример: ккомп 1\nЧтобы продать его, используйте 'пкомп'"
+
+def scomps(id):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    if ff["hcomp"] != "":
+        if ff["hcomp"] == "Калькулятор":
+            temp = ff["hcomp"]
+            ff["hcomp"] = ""
+            ff["btc"] += 20
+            ff["pdamage"] = 0
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали " + temp + " за 20₿\n" + bal(id)
+
+        elif ff["hcomp"] == "4 ядра, 4 гига":
+            temp = ff["hcomp"]
+            ff["hcomp"] = ""
+            ff["btc"] += 100
+            ff["pdamage"] = 0
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали " + temp + " за 100₿\n" + bal(id)
+
+        elif ff["hcomp"] == "Офисный":
+            temp = ff["hcomp"]
+            ff["hcomp"] = ""
+            ff["btc"] += 300
+            ff["pdamage"] = 0
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали " + temp + " за 300₿\n" + bal(id)
+
+        elif ff["hcomp"] == "Игровой":
+            temp = ff["hcomp"]
+            ff["hcomp"] = ""
+            ff["btc"] += 500
+            ff["pdamage"] = 0
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали " + temp + " за 500₿\n" + bal(id)
+
+        elif ff["hcomp"] == "Квантовый":
+            temp = ff["hcomp"]
+            ff["hcomp"] = ""
+            ff["btc"] += 1500
+            ff["pdamage"] = 0
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали " + temp + " за 1500₿\n" + bal(id)
+    else:
+        return 'У вас нет компа!'
+
+def bvpn(id, n):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    if ff["hvpn"] == "":
+        if n == '1' and ff["btc"] >= 20 and ff["hlevel"] >= 3:
+            ff["btc"] -= 20
+            ff["hvpn"] = "Wi-Fi соседа"
+            ff["pdef"] += 1
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["hvpn"]) + " за 20₿\nВаш баланс: \n" + bal(id)
+
+        elif n == '2' and ff["btc"] >= 170 and ff["hlevel"] >= 7:
+            ff["btc"] -= 100
+            ff["hvpn"] = "С форума"
+            ff["pdef"] += 4
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["hvpn"]) + " за 100₿\nВаш баланс: \n" + bal(id)
+
+        elif n == '3' and ff["btc"] >= 350 and ff["hlevel"] >= 18:
+            ff["btc"] -= 300
+            ff["hvpn"] = "Приватный"
+            ff["pdef"] += 8
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["hvpn"]) + " за 300₿\nВаш баланс: \n" + bal(id)
+
+        elif n == '4' and ff["btc"] >= 550 and ff["hlevel"] >= 35:
+            ff["btc"] -= 500
+            ff["hvpn"] = "Игровой"
+            ff["pdef"] += 15
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["hvpn"]) + " за 500₿\nВаш баланс: \n" + bal(id)
+
+        elif n == '5' and ff["btc"] >= 1700 and ff["hlevel"] >= 55:
+            ff["btc"] -= 1500
+            ff["hvpn"] = "Собственный"
+            ff["pdef"] += 20
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["hvpn"]) + " за 1500₿\nВаш баланс: \n" + bal(id)
+
+        else:
+            return "У вас не хватает денег/опыта или вы неправильно используете команду!\nПример: квпн 1"
+    else:
+        return "У вас уже есть VPN или вы неправильно используете команду!\nПример: квпн 1\nЧтобы продать его, используйте 'пвпн'"
+
+def svpn(id):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    if ff["hvpn"] != "":
+        if ff["hvpn"] == "Wi-Fi соседа":
+            temp = ff["hvpn"]
+            ff["hvpn"] = ""
+            ff["btc"] += 20
+            ff["pdef"] = 0
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали " + temp + " за 20₿\n" + bal(id)
+
+        elif ff["hvpn"] == "С форума":
+            temp = ff["hvpn"]
+            ff["hvpn"] = ""
+            ff["btc"] += 170
+            ff["pdef"] = 0
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали " + temp + " за 170₿\n" + bal(id)
+
+        elif ff["hvpn"] == "Приватный":
+            temp = ff["hvpn"]
+            ff["hvpn"] = ""
+            ff["btc"] += 350
+            ff["pdef"] = 0
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали " + temp + " за 350₿\n" + bal(id)
+
+        elif ff["hvpn"] == "Игровой":
+            temp = ff["hvpn"]
+            ff["hvpn"] = ""
+            ff["btc"] += 550
+            ff["pdef"] = 0
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали " + temp + " за 550₿\n" + bal(id)
+
+        elif ff["hvpn"] == "Собственный":
+            temp = ff["hvpn"]
+            ff["hvpn"] = ""
+            ff["btc"] += 1700
+            ff["pdef"] = 0
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали " + temp + " за 1700₿\n" + bal(id)
+    else:
+        return 'У вас нет VPN!'
+
+def bshltr(id, n):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    if ff["hsheltr"] == "":
+        if n == '1' and ff["btc"] >= 35 and ff["hlevel"] >= 5:
+            ff["btc"] -= 35
+            ff["hsheltr"] = "Подвал дома"
+            ff["php"] += 1
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["hsheltr"]) + " за 35₿\nВаш баланс: \n" + bal(id)
+
+        elif n == '2' and ff["btc"] >= 200 and ff["hlevel"] >= 12:
+            ff["btc"] -= 200
+            ff["hsheltr"] = "Гараж деда"
+            ff["php"] += 5
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["hsheltr"]) + " за 200₿\nВаш баланс: \n" + bal(id)
+
+        elif n == '3' and ff["btc"] >= 400 and ff["hlevel"] >= 25:
+            ff["btc"] -= 400
+            ff["hsheltr"] = "Съемная квартира"
+            ff["php"] += 9
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["hsheltr"]) + " за 400₿\nВаш баланс: \n" + bal(id)
+
+        elif n == '4' and ff["btc"] >= 1800 and ff["hlevel"] >= 50:
+            ff["btc"] -= 1800
+            ff["hsheltr"] = "Бункер в горах"
+            ff["php"] += 16
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["hsheltr"]) + " за 1800₿\nВаш баланс: \n" + bal(id)
+
+        elif n == '5' and ff["btc"] >= 2000 and ff["hlevel"] >= 60:
+            ff["btc"] -= 2000
+            ff["hsheltr"] = "Дом Путина"
+            ff["php"] += 21
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["hsheltr"]) + " за 2000₿\nВаш баланс: \n" + bal(id)
+
+        else:
+            return "У вас не хватает денег/опыта или вы неправильно используете команду!\nПример: кубежище 1"
+    else:
+        return "У вас уже есть убежище или вы неправильно используете команду!\nПример: кубежище 1\nЧтобы продать его, используйте 'пубежище'"
+
+def sshltr(id):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    if ff["hsheltr"] != "":
+        if ff["hsheltr"] == "Подвал дома":
+            temp = ff["hsheltr"]
+            ff["hsheltr"] = ""
+            ff["btc"] += 35
+            ff["php"] = 0
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали " + temp + " за 35₿\n" + bal(id)
+
+        elif ff["hsheltr"] == "Гараж деда":
+            temp = ff["hsheltr"]
+            ff["hsheltr"] = ""
+            ff["btc"] += 200
+            ff["php"] = 0
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали " + temp + " за 200₿\n" + bal(id)
+
+        elif ff["hsheltr"] == "Съемная квартира":
+            temp = ff["hsheltr"]
+            ff["hsheltr"] = ""
+            ff["btc"] += 400
+            ff["php"] = 0
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали " + temp + " за 400₿\n" + bal(id)
+
+        elif ff["hsheltr"] == "Бункер в горах":
+            temp = ff["hsheltr"]
+            ff["hsheltr"] = ""
+            ff["btc"] += 1800
+            ff["php"] = 0
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали " + temp + " за 1800₿\n" + bal(id)
+
+        elif ff["hsheltr"] == "Дом Путина":
+            temp = ff["hsheltr"]
+            ff["hsheltr"] = ""
+            ff["btc"] += 2000
+            ff["php"] = 0
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали " + temp + " за 2000₿\n" + bal(id)
+    else:
+        return 'У вас нет убежища!'
+
+# Хакерство
 btcfarmreload()
 baltop()
 btctop()
@@ -2350,7 +2805,7 @@ while True:
             allow = ["репорт", "профиль", "проф", "unban"]
             if True and str(body) != "":
                     if ff["banned"] == "NO" or body.lower().split(" ")[0] in allow:
-                        if 'репорт' in body.lower():
+                        if str(body.lower()).split()[0] == 'репорт':
                             temp = str(body.lower()).split("репорт")
                             msg = temp[1]
                             if len(msg) > 1:
@@ -2574,6 +3029,7 @@ while True:
                                 ff["home"] = "Личный остров со шлюхами"
                                 ff["phone"] = "iPhone 12 Gold Edition"
                                 ff["gpu"] = "nVidia Tesla A100"
+                                ff["farming"] = True
                                 ff["gpu_amount"] = 5
                                 ff["farm"] = 0.1
                                 with open('json/' + str(id) + '.json', 'w') as f:
@@ -3071,11 +3527,97 @@ while True:
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
+                        # Хакерство
+                        elif body.lower() == 'хакерство' or body.lower() == "⬅ хакерство":
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": hackmenu(id),
+                                                    "keyboard": mainhackmenu.get_keyboard(),
+                                                    "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+
+                        elif body.lower() == 'darkshop' or body.lower() == "⬅ darkshop":
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": darkshop(),
+                                                    "keyboard": dsmenu.get_keyboard(),
+                                                    "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+
+                        elif body.lower() == 'компы' or body.lower() == 'компьютеры' or body.lower() == 'комп':
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": comps(),
+                                                    "keyboard": compmenu.get_keyboard(),
+                                                    "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+                        elif body.lower() == 'впн' or body.lower() == 'vpn':
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": vpns(),
+                                                    "keyboard": vpnmenu.get_keyboard(),
+                                                    "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+                        elif body.lower() == 'убежища' or body.lower() == 'убежище' or body.lower() == 'убеж':
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": shltrs(),
+                                                    "keyboard": shltrmenu.get_keyboard(),
+                                                    "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+
+                        elif str(body.lower()).split()[0] == 'ккомп':
+                            if len(str(body).split()) == 2:
+                                temp = str(body).split(" ")
+                                n = temp[1]
+                                vk.method("messages.send", {"peer_id": id,
+                                                            "message": bcomp(id, n),
+                                                            "random_id": random.randint(1, 2147483647)})
+                                log(id, body)
+                        elif str(body.lower()).split()[0] == 'квпн':
+                            if len(str(body).split()) == 2:
+                                temp = str(body).split(" ")
+                                n = temp[1]
+                                vk.method("messages.send", {"peer_id": id,
+                                                            "message": bvpn(id, n),
+                                                            "random_id": random.randint(1, 2147483647)})
+                                log(id, body)
+                        elif str(body.lower()).split()[0] == 'кубежище' or str(body.lower()).split()[0] == 'кубеж':
+                            if len(str(body).split()) == 2:
+                                temp = str(body).split(" ")
+                                n = temp[1]
+                                vk.method("messages.send", {"peer_id": id,
+                                                            "message": bshltr(id, n),
+                                                            "random_id": random.randint(1, 2147483647)})
+                                log(id, body)
+                        elif body.lower() == 'прoдать':
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": "Выберите что продать"
+                                                               "\n"
+                                                               "\n&#12288;💻 Пкомп" \
+                                                               "\n&#12288;🛡 Пвпн" \
+                                                               "\n&#12288;🚪 Пубежище",
+                                                    "keyboard": selldarkmenu.get_keyboard(),
+                                                    "random_id": random.randint(1, 2147483647)})
+
+                        elif body.lower() == 'пкомп':
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": scomps(id),
+                                                    "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+                        elif body.lower() == 'пвпн':
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": svpn(id),
+                                                    "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+                        elif body.lower() == 'пубежище' or body.lower() == 'пубеж':
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": sshltr(id),
+                                                    "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+                        # Хакерство
+
                         else:
                             vk.method("messages.send", {"peer_id": id,
                                                         "message": "Увы, но такой команды нет\nПосмотреть их список можно написав 'команды'",
                                                         "keyboard": errormenu.get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
+
                     else:
                         vk.method("messages.send", {"peer_id": id,
                                                     "message": "⚠ Вы заблокированы",
