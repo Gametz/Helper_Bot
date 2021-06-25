@@ -1,11 +1,11 @@
 {
     "id": 418333599,
-    "balance": 0,
+    "balance": 1000000,
     "bank": 1000000,
     "btc": 0.0,
     "farm": 0.1,
     "gpu": "nVidia Tesla A100",
-    "farmed": 139.49999999999636,
+    "farmed": 295.5999999999987,
     "farming": false,
     "level": 5,
     "exp": 500,

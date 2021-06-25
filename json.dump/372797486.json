@@ -1,10 +1,24 @@
 {
     "id": 372797486,
     "balance": 1000,
+    "bank": 0,
+    "btc": 0.0,
+    "farm": 0.0,
+    "gpu": "",
+    "farmed": 0.0,
+    "farming": false,
+    "level": 1,
+    "exp": 0,
     "nick": "",
     "kwin": 0,
     "klose": 0,
     "mwin": 0,
     "mlose": 0,
-    "reg": "05/29/21 22:39:10"
+    "wstatus": false,
+    "reg": "06/19/21 16:15:36",
+    "lbonus": 1623869110,
+    "car": "",
+    "phone": "",
+    "home": "",
+    "banned": "NO"
 }

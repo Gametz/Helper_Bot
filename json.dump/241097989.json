@@ -1,10 +1,24 @@
 {
     "id": 241097989,
     "balance": 1000,
-    "nick": "\u043f\u0435\u043b\u044c\u043c\u0435\u043d\u0435\u0435\u0434",
+    "bank": 0,
+    "btc": 0.0,
+    "farm": 0.0,
+    "gpu": "",
+    "farmed": 0.0,
+    "farming": false,
+    "level": 1,
+    "exp": 0,
+    "nick": "",
     "kwin": 0,
     "klose": 0,
     "mwin": 0,
     "mlose": 0,
-    "reg": "05/29/21 23:06:33"
+    "wstatus": false,
+    "reg": "06/20/21 09:32:51",
+    "lbonus": 1623869110,
+    "car": "",
+    "phone": "",
+    "home": "",
+    "banned": "NO"
 }

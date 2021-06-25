@@ -2,6 +2,11 @@
     "id": 361585264,
     "balance": 1000,
     "bank": 0,
+    "btc": 0.0,
+    "farm": 0.0,
+    "gpu": "",
+    "farmed": 0.0,
+    "farming": false,
     "level": 1,
     "exp": 0,
     "nick": "",
@@ -10,5 +15,10 @@
     "mwin": 0,
     "mlose": 0,
     "wstatus": false,
-    "reg": "06/01/21 19:28:17"
+    "reg": "06/21/21 01:38:03",
+    "lbonus": 1623869110,
+    "car": "",
+    "phone": "",
+    "home": "",
+    "banned": "NO"
 }

@@ -14,7 +14,7 @@ from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 def res():
     return time.strftime("%x %X", time.localtime())
 
-ver = "\n\nv1.6.9 от 21.06.2021 21:50 МСК"
+ver = "\n\nv1.7.0 от 25.06.2021 16:50 МСК"
 users = next(os.walk("json/"))[2]
 token = "2d26f19312dd93258ca84a1c533fefb1cffbb3a9d63d775e78ae3c62bd4254806825bdf2af924f8408d78"
 vk = vk_api.VkApi(token=token)
@@ -32,7 +32,7 @@ mainmenu.add_button(label="Банк")
 mainmenu.add_button(label="Баланс", color=VkKeyboardColor.POSITIVE)
 mainmenu.add_line()
 mainmenu.add_button(label="Магазин")
-mainmenu.add_button(label="Работы")
+mainmenu.add_button(label="Работа")
 mainmenu.add_button(label="Игры")
 mainmenu.add_line()
 mainmenu.add_button(label="Уровни")
@@ -43,22 +43,32 @@ mainmenu.add_line()
 mainmenu.add_button(label="Админпанель", color=VkKeyboardColor.NEGATIVE)
 mainmenu.add_button(label="Команды", color=VkKeyboardColor.SECONDARY)
 
+mainworkmenu = VkKeyboard(one_time=False)
+mainworkmenu.add_button(label="Работать", color=VkKeyboardColor.PRIMARY)
+mainworkmenu.add_line()
+mainworkmenu.add_button(label="Устроиться", color=VkKeyboardColor.POSITIVE)
+mainworkmenu.add_line()
+mainworkmenu.add_button(label="Уволиться", color=VkKeyboardColor.NEGATIVE)
+mainworkmenu.add_line()
+mainworkmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.PRIMARY)
+
 worksmenu = VkKeyboard(one_time=False)
-worksmenu.add_button(label="Работать 1")
-worksmenu.add_button(label="Работать 2")
+worksmenu.add_button(label="Устроиться 1")
+worksmenu.add_button(label="Устроиться 2")
 worksmenu.add_line()
-worksmenu.add_button(label="Работать 3")
-worksmenu.add_button(label="Работать 4")
+worksmenu.add_button(label="Устроиться 3")
+worksmenu.add_button(label="Устроиться 4")
 worksmenu.add_line()
-worksmenu.add_button(label="Работать 5")
-worksmenu.add_button(label="Работать 6")
+worksmenu.add_button(label="Устроиться 5")
+worksmenu.add_button(label="Устроиться 6")
 worksmenu.add_line()
-worksmenu.add_button(label="Работать 7")
-worksmenu.add_button(label="Работать 8")
+worksmenu.add_button(label="Устроиться 7")
+worksmenu.add_button(label="Устроиться 8")
 worksmenu.add_line()
-worksmenu.add_button(label="Работать 9")
-worksmenu.add_button(label="Работать 10")
+worksmenu.add_button(label="Устроиться 9")
+worksmenu.add_button(label="Устроиться 10")
 worksmenu.add_line()
+worksmenu.add_button(label="⬅ Работа", color=VkKeyboardColor.PRIMARY)
 worksmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
 
 shopmenu = VkKeyboard(one_time=False)
@@ -296,6 +306,7 @@ def prof(id):
         "btc": 0.0,
         "farm": 0.0,
         "gpu": "",
+        "gpu_amount": 0,
         "farmed": 0.0,
         "farming": False,
         "level": 1,
@@ -305,6 +316,7 @@ def prof(id):
         "klose": 0,
         "mwin": 0,
         "mlose": 0,
+        "work": "",
         "wstatus": False,
         "reg": res(),
         "lbonus": 1623869110,
@@ -331,6 +343,7 @@ def prof(id):
            '\n💰 Баланс: ' + str(ff["balance"]) + "$" + \
            '\n💳 Банк: ' + str(ff["bank"]) + "$" + \
            '\n💴 Биткоины: ' + str(round(ff["btc"],5)) + "₿" + \
+           '\n💼 Работа: ' + str(ff["work"]) + \
            '\n📶 Уровень: ' + str(ff["level"]) + \
            '\n💡 Опыт: ' + str(ff["exp"]) + \
            '\n' \
@@ -375,7 +388,7 @@ def farmcheck(id):
     if ff["gpu"] == "":
         return "Нет"
     else:
-        return ff["gpu"]
+        return ff["gpu"] + " (x" + str(ff["gpu_amount"]) + ")"
 # Имущество
 
 def dprof(idd):
@@ -839,6 +852,7 @@ def stats(nick, idd):
 
     response = requests.request("GET", url, headers=headers)
     r = str(response.text).split(",")
+
     if len(r) > 3:
         # WINS
         wins = "\n🎉Побед: " + r[0][14:999]
@@ -1092,98 +1106,181 @@ def works(id):
            "\n&#12288;9) 🍥 Режиссёр Аниме - 18 000$ | 20 минут" \
            "\n&#12288;10) 👽 Директор Natflex - 36 000$ | 40 минут" \
            "\n\n" \
-           "\nЧтобы работать используйте 'работать {номер}'"
+           "\nЧтобы устроиться на работу 'устроиться {номер}'"
     return s
 
-def work(id,work):
+def work(id):
     with open('json/' + str(id) + '.json') as f:
         ff = json.loads(f.read())
 
     if ff["wstatus"] == False:
-        if ff["level"] >= 1:
-            if work == "1":
-                ff["wstatus"] = True
-                threading.Timer(20.0, workend, args=(id, work,)).start()
-                with open('json/' + str(id) + '.json', 'w') as f:
-                    f.write(json.dumps(ff, indent=4))
-                return "✅ Вы начали работать в FakeTAXI! \nЗакончите через 20 секунд"
+        if ff["work"] != "":
+            if ff["level"] >= 1:
+                if ff["work"] == "FakeTAXI":
+                    ff["wstatus"] = True
+                    threading.Timer(20.0, workend, args=(id, work,)).start()
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    return "✅ Вы начали работать в FakeTAXI! \nЗакончите через 20 секунд"
 
-            if work == "2":
-                ff["wstatus"] = True
-                threading.Timer(40.0, workend, args=(id, work,)).start()
-                with open('json/' + str(id) + '.json', 'w') as f:
-                    f.write(json.dumps(ff, indent=4))
-                return "✅ Вы начали работать на Ферме! \nЗакончите через 40 секунд"
+                if ff["work"] == "Ферма":
+                    ff["wstatus"] = True
+                    threading.Timer(40.0, workend, args=(id, work,)).start()
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    return "✅ Вы начали работать на Ферме! \nЗакончите через 40 секунд"
 
-        if ff["level"] >= 2:
-            if work == "3":
-                ff["wstatus"] = True
-                threading.Timer(60.0, workend, args=(id, work,)).start()
-                with open('json/' + str(id) + '.json', 'w') as f:
-                    f.write(json.dumps(ff, indent=4))
-                return "✅ Вы начали работать Тестировщиком игр! \nЗакончите через 1 минуту"
+            if ff["level"] >= 2:
+                if ff["work"] == "Тестировщик игр":
+                    ff["wstatus"] = True
+                    threading.Timer(60.0, workend, args=(id, work,)).start()
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    return "✅ Вы начали работать Тестировщиком игр! \nЗакончите через 1 минуту"
 
-            if work == "4":
-                ff["wstatus"] = True
-                threading.Timer(90.0, workend, args=(id, work,)).start()
-                with open('json/' + str(id) + '.json', 'w') as f:
-                    f.write(json.dumps(ff, indent=4))
-                return "✅ Вы начали работать в кофейне! \nЗакончите через 1:30 минуты"
+                if ff["work"] == "Работник кофейни":
+                    ff["wstatus"] = True
+                    threading.Timer(90.0, workend, args=(id, work,)).start()
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    return "✅ Вы начали работать в кофейне! \nЗакончите через 1:30 минуты"
+            else:
+                return "У вас слишком маленький уровень! \nНеобходим: 2\nВаш уровень: " + str(ff["level"])
+
+            if ff["level"] >= 3:
+                if ff["work"] == "Рабочий на заводе":
+                    ff["wstatus"] = True
+                    threading.Timer(120.0, workend, args=(id, work,)).start()
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    return "✅ Вы начали работать на Заводе! \nЗакончите через 2 минуты"
+
+                if ff["work"] == "Дегустатор вина":
+                    ff["wstatus"] = True
+                    threading.Timer(180.0, workend, args=(id, work,)).start()
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    return "✅ Вы начали работать Дегустатором вина! \nЗакончите через 3 минуты"
+            else:
+                return "У вас слишком маленький уровень! \nНеобходим: 3\nВаш уровень: " + str(ff["level"])
+
+            if ff["level"] >= 4:
+                if ff["work"] == "Продавец в Verdax":
+                    ff["wstatus"] = True
+                    threading.Timer(300.0, workend, args=(id, work,)).start()
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    return "✅ Вы начали работать продавцом в Verdax'e! \nЗакончите через 5 минут"
+
+                if ff["work"] == "Дизайнер":
+                    ff["wstatus"] = True
+                    threading.Timer(600.0, workend, args=(id, work,)).start()
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    return "✅ Вы начали работать Дизайнером! \nЗакончите через 10 минут"
+            else:
+                return "У вас слишком маленький уровень! \nНеобходим: 4\nВаш уровень: " + str(ff["level"])
+
+            if ff["level"] >= 5:
+                if ff["work"] == "Режиссёр Аниме":
+                    ff["wstatus"] = True
+                    threading.Timer(1200.0, workend, args=(id, work,)).start()
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    return "✅ Вы начали работать Режиссёром Аниме! \nЗакончите через 20 минут"
+
+                if ff["work"] == "Директор Natflex":
+                    ff["wstatus"] = True
+                    threading.Timer(2400.0, workend, args=(id, work,)).start()
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    return "✅ Вы начали работать Директором Natflex'a! \nЗакончите через 40 минут"
+            else:
+                return "⚠ У вас слишком маленький уровень! \nНеобходим: 5\nВаш уровень: " + str(ff["level"])
         else:
-            return "У вас слишком маленький уровень! \nНеобходим: 2\nВаш уровень: " + str(ff["level"])
-
-        if ff["level"] >= 3:
-            if work == "5":
-                ff["wstatus"] = True
-                threading.Timer(120.0, workend, args=(id, work,)).start()
-                with open('json/' + str(id) + '.json', 'w') as f:
-                    f.write(json.dumps(ff, indent=4))
-                return "✅ Вы начали работать на Заводе! \nЗакончите через 2 минуты"
-
-            if work == "6":
-                ff["wstatus"] = True
-                threading.Timer(180.0, workend, args=(id, work,)).start()
-                with open('json/' + str(id) + '.json', 'w') as f:
-                    f.write(json.dumps(ff, indent=4))
-                return "✅ Вы начали работать Дегустатором вина! \nЗакончите через 3 минуты"
-        else:
-            return "У вас слишком маленький уровень! \nНеобходим: 3\nВаш уровень: " + str(ff["level"])
-
-        if ff["level"] >= 4:
-            if work == "7":
-                ff["wstatus"] = True
-                threading.Timer(300.0, workend, args=(id, work,)).start()
-                with open('json/' + str(id) + '.json', 'w') as f:
-                    f.write(json.dumps(ff, indent=4))
-                return "✅ Вы начали работать продавцом в Verdax'e! \nЗакончите через 5 минут"
-
-            if work == "8":
-                ff["wstatus"] = True
-                threading.Timer(600.0, workend, args=(id, work,)).start()
-                with open('json/' + str(id) + '.json', 'w') as f:
-                    f.write(json.dumps(ff, indent=4))
-                return "✅ Вы начали работать Дизайнером! \nЗакончите через 10 минут"
-        else:
-            return "У вас слишком маленький уровень! \nНеобходим: 4\nВаш уровень: " + str(ff["level"])
-
-        if ff["level"] >= 5:
-            if work == "9":
-                ff["wstatus"] = True
-                threading.Timer(1200.0, workend, args=(id, work,)).start()
-                with open('json/' + str(id) + '.json', 'w') as f:
-                    f.write(json.dumps(ff, indent=4))
-                return "✅ Вы начали работать Режиссёром Аниме! \nЗакончите через 20 минут"
-
-            if work == "10":
-                ff["wstatus"] = True
-                threading.Timer(2400.0, workend, args=(id, work,)).start()
-                with open('json/' + str(id) + '.json', 'w') as f:
-                    f.write(json.dumps(ff, indent=4))
-                return "✅ Вы начали работать Директором Natflex'a! \nЗакончите через 40 минут"
-        else:
-            return "У вас слишком маленький уровень! \nНеобходим: 5\nВаш уровень: " + str(ff["level"])
+            return "⚠ Вы не устроены на работу!\nСписок работ: 'работы'"
     else:
         return "⚠ Вы уже работаете!"
+
+def hwork(id,work):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    if ff["work"] == "":
+        if work == "1" and ff["level"] >= 1:
+            ff["work"] = "FakeTAXI"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "✅ Поздравляем! Теперь ваша работа " + ff["work"]
+
+        elif work == "2" and ff["level"] >= 1:
+            ff["work"] = "Ферма"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "✅ Поздравляем! Теперь ваша работа " + ff["work"]
+
+        elif work == "3" and ff["level"] >= 2:
+            ff["work"] = "Тестировщик игр"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "✅ Поздравляем! Теперь ваша работа " + ff["work"]
+
+        elif work == "4" and ff["level"] >= 2:
+            ff["work"] = "Работник кофейни"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "✅ Поздравляем! Теперь ваша работа " + ff["work"]
+
+        elif work == "5" and ff["level"] >= 3:
+            ff["work"] = "Рабочий на заводе"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "✅ Поздравляем! Теперь ваша работа " + ff["work"]
+
+        elif work == "6" and ff["level"] >= 3:
+            ff["work"] = "Дегустатор вина"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "✅ Поздравляем! Теперь ваша работа " + ff["work"]
+
+        elif work == "7" and ff["level"] >= 4:
+            ff["work"] = "Продавец в Verdax"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "✅ Поздравляем! Теперь ваша работа " + ff["work"]
+
+        elif work == "8" and ff["level"] >= 4:
+            ff["work"] = "Дизайнер"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "✅ Поздравляем! Теперь ваша работа " + ff["work"]
+
+        elif work == "9" and ff["level"] >= 5:
+            ff["work"] = "Режиссёр Аниме"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "✅ Поздравляем! Теперь ваша работа " + ff["work"]
+
+        elif work == "10" and ff["level"] >= 5:
+            ff["work"] = "Директор Natflex"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "✅ Поздравляем! Теперь ваша работа " + ff["work"]
+
+        else:
+            return "⚠ Недостаточный уровень или неправильно выбрана работа\nПример: устроиться 1"
+    else:
+        return "⚠ Вы уже устроены на работу!\n'уволиться' - чтобы стать безработным"
+
+def dwork(id):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    if ff["work"] != "":
+        ff["work"] = ""
+        with open('json/' + str(id) + '.json', 'w') as f:
+            f.write(json.dumps(ff, indent=4))
+        return "✅ Теперь вы безработный"
+    else:
+        return "⚠ Вы нигде не работаете"
 
 def workend(id,work):
     with open('json/' + str(id) + '.json') as f:
@@ -1369,7 +1466,7 @@ def homes():
            "\n📌Для покупки транспорта используйте 'кдом [номер]'\n" \
            "Например: кдом 1"
 
-#машины
+# машины
 def bcar(id, n):
     with open('json/' + str(id) + '.json') as f:
         ff = json.loads(f.read())
@@ -1721,143 +1818,193 @@ def fshop():
            "\n&#12288;💎 10. RX 580 | 0.005 ₿ | 300.000$" \
            "\n&#12288;💎 11. RX5700 | 0.01 ₿ | 500.000$" \
            "\n&#12288;💎 12. RX6900XT | 0.05 ₿ | 1.500.000$" \
-           "\n\n📌 Для покупки видеокарты используйте 'ккарту [номер]"
+           "\n" \
+           "\n📌 Для покупки видеокарты используйте 'ккарту [номер]" \
+           "\n❗ Максимальное кол-во видеокарт - 5"
 
 def bfarm(id, n):
     with open('json/' + str(id) + '.json') as f:
         ff = json.loads(f.read())
-    if ff["gpu"] == "":
-        if n == "1" or n == "7": p = 10000
-        elif n == "2" or n == "8": p = 50000
-        elif n == "3" or n == "9": p = 100000
-        elif n == "4" or n == "10": p = 300000
-        elif n == "5" or n == "11": p = 500000
-        elif n == "6" or n == "12": p = 1500000
+        if ff["gpu_amount"] < 5:
+            if n == "1" or n == "7": p = 10000
+            elif n == "2" or n == "8": p = 50000
+            elif n == "3" or n == "9": p = 100000
+            elif n == "4" or n == "10": p = 300000
+            elif n == "5" or n == "11": p = 500000
+            elif n == "6" or n == "12": p = 1500000
 
-        if n == '1' and ff["balance"] >= p:
-            ff["balance"] -= p
-            ff["gpu"] = "GF 210"
-            ff["farm"] = 0.00025
-            ff["farming"] = True
-            with open('json/' + str(id) + '.json', 'w') as f:
-                f.write(json.dumps(ff, indent=4))
-            congrts(id)
-            return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+            if n == '1' and ff["balance"] >= p:
+                if ff["gpu"] == "GF 210" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "GF 210"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.00025
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
 
-        elif n == '2' and ff["balance"] >= p:
-            ff["balance"] -= p
-            ff["gpu"] = "GF GTX 750 Ti"
-            ff["farm"] = 0.0005
-            ff["farming"] = True
-            with open('json/' + str(id) + '.json', 'w') as f:
-                f.write(json.dumps(ff, indent=4))
-            congrts(id)
-            return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+            elif n == '2' and ff["balance"] >= p:
+                if ff["gpu"] == "GF GTX 750 Ti" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "GF GTX 750 Ti"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.0005
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
 
-        elif n == '3' and ff["balance"] >= p:
-            ff["balance"] -= p
-            ff["gpu"] = "GF GTX 1050 Ti"
-            ff["farm"] = 0.001
-            ff["farming"] = True
-            with open('json/' + str(id) + '.json', 'w') as f:
-                f.write(json.dumps(ff, indent=4))
-            congrts(id)
-            return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+            elif n == '3' and ff["balance"] >= p:
+                if ff["gpu"] == "GF GTX 1050 Ti" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "GF GTX 1050 Ti"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.001
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
 
-        elif n == '4' and ff["balance"] >= p:
-            ff["balance"] -= p
-            ff["gpu"] = "GF GTX 1660S"
-            ff["farm"] = 0.005
-            ff["farming"] = True
-            with open('json/' + str(id) + '.json', 'w') as f:
-                f.write(json.dumps(ff, indent=4))
-            congrts(id)
-            return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+            elif n == '4' and ff["balance"] >= p:
+                if ff["gpu"] == "GF GTX 1660S" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "GF GTX 1660S"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.005
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
 
-        elif n == '5' and ff["balance"] >= p:
-            ff["balance"] -= p
-            ff["gpu"] = "GF RTX 2080S"
-            ff["farm"] = 0.01
-            ff["farming"] = True
-            with open('json/' + str(id) + '.json', 'w') as f:
-                f.write(json.dumps(ff, indent=4))
-            congrts(id)
-            return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+            elif n == '5' and ff["balance"] >= p:
+                if ff["gpu"] == "GF RTX 2080S" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "GF RTX 2080S"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.01
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
 
-        elif n == '6' and ff["balance"] >= p:
-            ff["balance"] -= p
-            ff["gpu"] = "GF RTX 3090 Mining ver"
-            ff["farm"] = 0.05
-            ff["farming"] = True
-            with open('json/' + str(id) + '.json', 'w') as f:
-                f.write(json.dumps(ff, indent=4))
-            congrts(id)
-            return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+            elif n == '6' and ff["balance"] >= p:
+                if ff["gpu"] == "GF RTX 3090 Mining ver" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "GF RTX 3090 Mining ver"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.05
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
 
-        elif n == '7' and ff["balance"] >= p:
-            ff["balance"] -= p
-            ff["gpu"] = "R5 220"
-            ff["farm"] = 0.00025
-            ff["farming"] = True
-            with open('json/' + str(id) + '.json', 'w') as f:
-                f.write(json.dumps(ff, indent=4))
-            congrts(id)
-            return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+            elif n == '7' and ff["balance"] >= p:
+                if ff["gpu"] == "R5 220" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "R5 220"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.00025
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
 
-        elif n == '8' and ff["balance"] >= p:
-            ff["balance"] -= p
-            ff["gpu"] = "R7 360"
-            ff["farm"] = 0.0005
-            ff["farming"] = True
-            with open('json/' + str(id) + '.json', 'w') as f:
-                f.write(json.dumps(ff, indent=4))
-            congrts(id)
-            return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+            elif n == '8' and ff["balance"] >= p:
+                if ff["gpu"] == "R7 360" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "R7 360"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.0005
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
 
-        elif n == '9' and ff["balance"] >= p:
-            ff["balance"] -= p
-            ff["gpu"] = "R9 380"
-            ff["farm"] = 0.001
-            ff["farming"] = True
-            with open('json/' + str(id) + '.json', 'w') as f:
-                f.write(json.dumps(ff, indent=4))
-            congrts(id)
-            return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+            elif n == '9' and ff["balance"] >= p:
+                if ff["gpu"] == "R9 380" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "R9 380"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.001
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
 
-        elif n == '10' and ff["balance"] >= p:
-            ff["balance"] -= p
-            ff["gpu"] = "RX 580"
-            ff["farm"] = 0.005
-            ff["farming"] = True
-            with open('json/' + str(id) + '.json', 'w') as f:
-                f.write(json.dumps(ff, indent=4))
-            congrts(id)
-            return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+            elif n == '10' and ff["balance"] >= p:
+                if ff["gpu"] == "RX 580" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "RX 580"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.005
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
 
-        elif n == '11' and ff["balance"] >= p:
-            ff["balance"] -= p
-            ff["gpu"] = "RX5700"
-            ff["farm"] = 0.01
-            ff["farming"] = True
-            with open('json/' + str(id) + '.json', 'w') as f:
-                f.write(json.dumps(ff, indent=4))
-            congrts(id)
-            return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+            elif n == '11' and ff["balance"] >= p:
+                if ff["gpu"] == "RX5700" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "RX5700"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.01
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
 
-        elif n == '12' and ff["balance"] >= p:
-            ff["balance"] -= p
-            ff["gpu"] = "RX6900XT"
-            ff["farm"] = 0.05
-            ff["farming"] = True
-            with open('json/' + str(id) + '.json', 'w') as f:
-                f.write(json.dumps(ff, indent=4))
-            congrts(id)
-            return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+            elif n == '12' and ff["balance"] >= p:
+                if ff["gpu"] == "RX6900XT" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "RX6900XT"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.05
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
 
+            else:
+                return "У вас не хватает денег или вы неправильно используете команду!\nПример: ккарту 1"
         else:
-            return "У вас не хватает денег или вы неправильно используете команду!\nПример: ккарту 1"
-    else:
-        return "У вас уже есть видеокарта или вы неправильно используете команду!\nПример: ккарту 1\nЧтобы продать её, используйте 'пкарту'"
+            return "У вас максимальное кол-во видеокарт - 5"
 
 def sfarm(id):
     with open('json/' + str(id) + '.json') as f:
@@ -1865,7 +2012,9 @@ def sfarm(id):
     if ff["gpu"] != "":
         if ff["gpu"] == "GF 210":
             ff["balance"] += 10000
-            ff["gpu"] = ""
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
             ff["farm"] = 0.0
             ff["farming"] = False
             with open('json/' + str(id) + '.json', 'w') as f:
@@ -1873,7 +2022,9 @@ def sfarm(id):
             return "Вы продали свою видеокарту за 1000$\nВаш баланс: " + str(ff["balance"]) + "$"
 
         elif ff["gpu"] == "GF GTX 750 Ti":
-            ff["gpu"] = ""
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
             ff["balance"] += 50000
             ff["farm"] = 0.0
             ff["farming"] = False
@@ -1882,7 +2033,9 @@ def sfarm(id):
             return "Вы продали свою видеокарту за 50.000$\nВаш баланс: " + str(ff["balance"]) + "$"
 
         elif ff["gpu"] == "GF GTX 1050 Ti":
-            ff["gpu"] = ""
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
             ff["balance"] += 100000
             ff["farm"] = 0.0
             ff["farming"] = False
@@ -1891,7 +2044,9 @@ def sfarm(id):
             return "Вы продали свою видеокарту за 100.000$\nВаш баланс: " + str(ff["balance"]) + "$"
 
         elif ff["gpu"] == "GF GTX 1660S":
-            ff["gpu"] = ""
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
             ff["balance"] += 300000
             ff["farm"] = 0.0
             ff["farming"] = False
@@ -1900,7 +2055,9 @@ def sfarm(id):
             return "Вы продали свою видеокарту за 300.000$\nВаш баланс: " + str(ff["balance"]) + "$"
 
         elif ff["gpu"] == "GF RTX 2080S":
-            ff["gpu"] = ""
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
             ff["balance"] += 500000
             ff["farm"] = 0.0
             ff["farming"] = False
@@ -1909,7 +2066,9 @@ def sfarm(id):
             return "Вы продали свою видеокарту за 500.000$\nВаш баланс: " + str(ff["balance"]) + "$"
 
         elif ff["gpu"] == "GF RTX 3090 Mining ver":
-            ff["gpu"] = ""
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
             ff["balance"] += 1500000
             ff["farm"] = 0.0
             ff["farming"] = False
@@ -1919,7 +2078,9 @@ def sfarm(id):
 
         elif ff["gpu"] == "R5 220":
             ff["balance"] += 10000
-            ff["gpu"] = ""
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
             ff["farm"] = 0.0
             ff["farming"] = False
             with open('json/' + str(id) + '.json', 'w') as f:
@@ -1927,7 +2088,9 @@ def sfarm(id):
             return "Вы продали свою видеокарту за 1000$\nВаш баланс: " + str(ff["balance"]) + "$"
 
         elif ff["gpu"] == "R7 360":
-            ff["gpu"] = ""
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
             ff["balance"] += 50000
             ff["farm"] = 0.0
             ff["farming"] = False
@@ -1936,7 +2099,9 @@ def sfarm(id):
             return "Вы продали свою видеокарту за 50.000$\nВаш баланс: " + str(ff["balance"]) + "$"
 
         elif ff["gpu"] == "R9 380":
-            ff["gpu"] = ""
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
             ff["balance"] += 100000
             ff["farm"] = 0.0
             ff["farming"] = False
@@ -1945,7 +2110,9 @@ def sfarm(id):
             return "Вы продали свою видеокарту за 100.000$\nВаш баланс: " + str(ff["balance"]) + "$"
 
         elif ff["gpu"] == "RX 580":
-            ff["gpu"] = ""
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
             ff["balance"] += 300000
             ff["farm"] = 0.0
             ff["farming"] = False
@@ -1954,7 +2121,9 @@ def sfarm(id):
             return "Вы продали свою видеокарту за 300.000$\nВаш баланс: " + str(ff["balance"]) + "$"
 
         elif ff["gpu"] == "RX5700":
-            ff["gpu"] = ""
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
             ff["balance"] += 500000
             ff["farm"] = 0.0
             ff["farming"] = False
@@ -1963,25 +2132,38 @@ def sfarm(id):
             return "Вы продали свою видеокарту за 500.000$\nВаш баланс: " + str(ff["balance"]) + "$"
 
         elif ff["gpu"] == "RX6900XT":
-            ff["gpu"] = ""
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
             ff["balance"] += 1500000
             ff["farm"] = 0.0
             ff["farming"] = False
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
             return "Вы продали свою видеокарту за 1.500.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["gpu"] == "nVidia Tesla A100":
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
+            ff["balance"] += 5000000
+            ff["farm"] = 0.0
+            ff["farming"] = False
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою видеокарту за 5.000.000$\nВаш баланс: " + str(ff["balance"]) + "$"
     else:
         return 'У вас нет видеокарты!'
 
 def farmstatus(id):
     with open('json/' + str(id) + '.json') as f:
         ff = json.loads(f.read())
-    return "Состояние вашей видеокарты:" \
+    return "Состояние вашей фермы:" \
            "\n" \
-           "\n&#12288;📄 Название: " + farmcheck(id) + \
-           "\n&#12288;🔋 Добыча: " + str(ff["farm"]) + " ₿ / 1 мин" + \
-           "\n&#12288;💴 Добыто в биткоинах: " + str(round(ff["farmed"],5)) + " ₿" + \
-           "\n&#12288;💵 Добыто в долларах: " + str(int(ff["farmed"] * 10000)) + " $" + \
+           "\n&#12288;📄 Видеокарты: " + farmcheck(id) + \
+           "\n&#12288;🔋 Добыча: " + str(ff["farm"] * ff["gpu_amount"]) + " ₿ / 1 мин" + \
+           "\n&#12288;💴 Добыто в биткоинах: " + str(round(ff["farmed"] * ff["gpu_amount"],5)) + " ₿" + \
+           "\n&#12288;💵 Добыто в долларах: " + str(int(ff["farmed"] * 10000 * ff["gpu_amount"])) + " $" + \
            "\n" \
            "\n📌Для снятия используйте 'сбитки'" \
 #магазин
@@ -2007,8 +2189,8 @@ def sellbtc(id):
 def btcfarm(id):
     with open('json/' + str(id) + '.json') as f:
         ff = json.loads(f.read())
-    ff["farmed"] += ff["farm"]
-    ff["farm"] = round(ff["farm"],5)
+    ff["farmed"] += ff["farm"] * ff["gpu_amount"]
+    ff["farm"] = round(ff["farm"] * ff["gpu_amount"],5)
     with open('json/' + str(id) + '.json', 'w') as f:
         f.write(json.dumps(ff, indent=4))
     threading.Thread(target=btcfarmstart, args=(id,)).start()
@@ -2126,7 +2308,6 @@ def reloadtopbtc():
 # Топ
 
 def mailing(body):
-    a = []
     path = "json/"
     f = list(os.listdir(path))
     for i in range(len(f)):
@@ -2151,7 +2332,6 @@ while True:
         if messages["count"] >= 1:
             id = messages["items"][0]["last_message"]["from_id"]
             body = messages["items"][0]["last_message"]["text"]
-
             c = 1
             path = "json/"
             u = os.listdir(path)
@@ -2168,7 +2348,7 @@ while True:
                 ff = json.loads(f.read())
 
             allow = ["репорт", "профиль", "проф", "unban"]
-            if True and body != "":
+            if True and str(body) != "":
                     if ff["banned"] == "NO" or body.lower().split(" ")[0] in allow:
                         if 'репорт' in body.lower():
                             temp = str(body.lower()).split("репорт")
@@ -2199,6 +2379,13 @@ while True:
                         elif body.lower() == "🏠 главное меню":
                             vk.method("messages.send", {"peer_id": id,
                                                     "message": "💎 Добро пожаловать в главное меню",
+                                                    "keyboard": mainmenu.get_keyboard(),
+                                                    "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+
+                        elif body.lower() == "начать" or body.lower() == "start":
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": "Удачи в развитии!",
                                                     "keyboard": mainmenu.get_keyboard(),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
@@ -2381,11 +2568,13 @@ while True:
                                 cbtc(id, "5000.0")
                                 clvl(id, "5")
                                 cexp(id, "500")
+                                ff["balance"] = 1000000
                                 ff["bank"] = 1000000
                                 ff["car"] = "Tesla model S"
                                 ff["home"] = "Личный остров со шлюхами"
                                 ff["phone"] = "iPhone 12 Gold Edition"
                                 ff["gpu"] = "nVidia Tesla A100"
+                                ff["gpu_amount"] = 5
                                 ff["farm"] = 0.1
                                 with open('json/' + str(id) + '.json', 'w') as f:
                                     f.write(json.dumps(ff, indent=4))
@@ -2405,11 +2594,13 @@ while True:
                                 cbtc(id, "0.0")
                                 clvl(id, "1")
                                 cexp(id, "0")
+                                ff["balance"] = 0
                                 ff["bank"] = 0
                                 ff["car"] = ""
                                 ff["home"] = ""
                                 ff["phone"] = ""
                                 ff["gpu"] = ""
+                                ff["gpu_amount"] = 0
                                 ff["farm"] = 0.0
                                 with open('json/' + str(id) + '.json', 'w') as f:
                                     f.write(json.dumps(ff, indent=4))
@@ -2519,12 +2710,32 @@ while True:
                                                                 "random_id": random.randint(1, 2147483647)})
                                     log(id, body)
 
-                        elif str(body.lower()).split()[0] == 'работать':
+                        elif body.lower()  == 'работать':
+                            vk.method("messages.send", {"peer_id": id,
+                                "message": work(str(id)),
+                                "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+
+                        elif body.lower()  == 'уволиться':
+                            vk.method("messages.send", {"peer_id": id,
+                                "message": dwork(str(id)),
+                                "keyboard": mainworkmenu.get_keyboard(),
+                                "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+
+                        elif str(body.lower()).split()[0] == 'устроиться':
                             if len(str(body).split()) == 2:
                                 temp = str(body).split(" ")
                                 val = temp[1]
                                 vk.method("messages.send", {"peer_id": id,
-                                                            "message": work(str(id), val),
+                                                            "message": hwork(str(id), val),
+                                                            "keyboard": worksmenu.get_keyboard(),
+                                                            "random_id": random.randint(1, 2147483647)})
+                                log(id, body)
+                            else:
+                                vk.method("messages.send", {"peer_id": id,
+                                                            "message": works(id),
+                                                            "keyboard": worksmenu.get_keyboard(),
                                                             "random_id": random.randint(1, 2147483647)})
                                 log(id, body)
 
@@ -2589,10 +2800,10 @@ while True:
                                                         "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
-                        elif body.lower() == 'работы':
+                        elif body.lower() == 'работа' or body.lower() == '⬅ работа':
                             vk.method("messages.send", {"peer_id": id,
-                                                        "message": works(id),
-                                                        "keyboard": worksmenu.get_keyboard(),
+                                                        "message": "💎 Выберите действие",
+                                                        "keyboard": mainworkmenu.get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
