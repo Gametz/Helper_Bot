@@ -21,7 +21,7 @@ vk = vk_api.VkApi(token=token)
 vk._auth_token()
 
 admins = [419760643]
-moders = [361585264, 190114998, 418333599, 562995566, 225064049, 245843594]
+moders = [361585264, 190114998, 418333599, 562995566, 225064049, 245843594, 163915816]
 
 #keyboard
 mainmenu = VkKeyboard(one_time=False)
@@ -269,7 +269,7 @@ topmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.P
 mainhackmenu = VkKeyboard(one_time=False)
 mainhackmenu.add_button(label="Что-то будет")
 mainhackmenu.add_line()
-mainhackmenu.add_button(label="Что-то будет")
+mainhackmenu.add_button(label="Улучшение")
 mainhackmenu.add_line()
 mainhackmenu.add_button(label="DarkShop", color=VkKeyboardColor.PRIMARY)
 mainhackmenu.add_line()
@@ -329,6 +329,31 @@ selldarkmenu.add_button(label="Пубежище")
 selldarkmenu.add_line()
 selldarkmenu.add_button(label="🏠 Главное меню", color=VkKeyboardColor.POSITIVE)
 selldarkmenu.add_button(label="⬅ DarkShop", color=VkKeyboardColor.PRIMARY)
+
+uplmenu = VkKeyboard(one_time=False)
+uplmenu.add_button(label="💊 ХП")
+uplmenu.add_button(label="🔫 Урон")
+uplmenu.add_button(label="🕶 Защита")
+uplmenu.add_line()
+uplmenu.add_button(label="⬅ Хакерство", color=VkKeyboardColor.PRIMARY)
+
+phpmenu = VkKeyboard(one_time=False)
+phpmenu.add_button(label="Прокачать ХП")
+phpmenu.add_line()
+phpmenu.add_button(label="⬅ Улучшения", color=VkKeyboardColor.PRIMARY)
+phpmenu.add_button(label="🏠 Хакерство", color=VkKeyboardColor.POSITIVE)
+
+pdefmenu = VkKeyboard(one_time=False)
+pdefmenu.add_button(label="Прокачать Защиту")
+pdefmenu.add_line()
+pdefmenu.add_button(label="⬅ Улучшения", color=VkKeyboardColor.PRIMARY)
+pdefmenu.add_button(label="🏠 Хакерство", color=VkKeyboardColor.POSITIVE)
+
+pdamagemenu = VkKeyboard(one_time=False)
+pdamagemenu.add_button(label="Прокачать Урон")
+pdamagemenu.add_line()
+pdamagemenu.add_button(label="⬅ Улучшения", color=VkKeyboardColor.PRIMARY)
+pdamagemenu.add_button(label="🏠 Хакерство", color=VkKeyboardColor.POSITIVE)
 # Хакерство
 
 errormenu = VkKeyboard(one_time=False, inline=True)
@@ -391,11 +416,14 @@ def prof(id):
         "phone": "",
         "home": "",
         "banned": "NO",
-        "hhp": 20,
         "hlevel": 1,
-        "hhp": 10,
+        "hexp": 0,
+        "hhp": 20,
+        "hplvl": 1,
         "hdamage": 1,
+        "damagelvl": 1,
         "hdef": 1,
+        "deflvl": 1,
         "pdamage": 0,
         "php": 0,
         "pdef": 0,
@@ -1195,6 +1223,7 @@ def work(id):
         if ff["work"] != "":
             if ff["level"] >= 1:
                 if ff["work"] == "FakeTAXI":
+                    work = 1
                     ff["wstatus"] = True
                     threading.Timer(20.0, workend, args=(id, work,)).start()
                     with open('json/' + str(id) + '.json', 'w') as f:
@@ -1203,6 +1232,7 @@ def work(id):
 
                 if ff["work"] == "Ферма":
                     ff["wstatus"] = True
+                    work = 2
                     threading.Timer(40.0, workend, args=(id, work,)).start()
                     with open('json/' + str(id) + '.json', 'w') as f:
                         f.write(json.dumps(ff, indent=4))
@@ -1211,6 +1241,7 @@ def work(id):
             if ff["level"] >= 2:
                 if ff["work"] == "Тестировщик игр":
                     ff["wstatus"] = True
+                    work = 3
                     threading.Timer(60.0, workend, args=(id, work,)).start()
                     with open('json/' + str(id) + '.json', 'w') as f:
                         f.write(json.dumps(ff, indent=4))
@@ -1218,6 +1249,7 @@ def work(id):
 
                 if ff["work"] == "Работник кофейни":
                     ff["wstatus"] = True
+                    work = 4
                     threading.Timer(90.0, workend, args=(id, work,)).start()
                     with open('json/' + str(id) + '.json', 'w') as f:
                         f.write(json.dumps(ff, indent=4))
@@ -1228,6 +1260,7 @@ def work(id):
             if ff["level"] >= 3:
                 if ff["work"] == "Рабочий на заводе":
                     ff["wstatus"] = True
+                    work = 5
                     threading.Timer(120.0, workend, args=(id, work,)).start()
                     with open('json/' + str(id) + '.json', 'w') as f:
                         f.write(json.dumps(ff, indent=4))
@@ -1235,6 +1268,7 @@ def work(id):
 
                 if ff["work"] == "Дегустатор вина":
                     ff["wstatus"] = True
+                    work = 6
                     threading.Timer(180.0, workend, args=(id, work,)).start()
                     with open('json/' + str(id) + '.json', 'w') as f:
                         f.write(json.dumps(ff, indent=4))
@@ -1245,6 +1279,7 @@ def work(id):
             if ff["level"] >= 4:
                 if ff["work"] == "Продавец в Verdax":
                     ff["wstatus"] = True
+                    work = 7
                     threading.Timer(300.0, workend, args=(id, work,)).start()
                     with open('json/' + str(id) + '.json', 'w') as f:
                         f.write(json.dumps(ff, indent=4))
@@ -1252,6 +1287,7 @@ def work(id):
 
                 if ff["work"] == "Дизайнер":
                     ff["wstatus"] = True
+                    work = 8
                     threading.Timer(600.0, workend, args=(id, work,)).start()
                     with open('json/' + str(id) + '.json', 'w') as f:
                         f.write(json.dumps(ff, indent=4))
@@ -1262,6 +1298,7 @@ def work(id):
             if ff["level"] >= 5:
                 if ff["work"] == "Режиссёр Аниме":
                     ff["wstatus"] = True
+                    work = 9
                     threading.Timer(1200.0, workend, args=(id, work,)).start()
                     with open('json/' + str(id) + '.json', 'w') as f:
                         f.write(json.dumps(ff, indent=4))
@@ -1269,6 +1306,7 @@ def work(id):
 
                 if ff["work"] == "Директор Natflex":
                     ff["wstatus"] = True
+                    work = 10
                     threading.Timer(2400.0, workend, args=(id, work,)).start()
                     with open('json/' + str(id) + '.json', 'w') as f:
                         f.write(json.dumps(ff, indent=4))
@@ -1361,6 +1399,7 @@ def dwork(id):
         return "⚠ Вы нигде не работаете"
 
 def workend(id,work):
+    work = str(work)
     with open('json/' + str(id) + '.json') as f:
         ff = json.loads(f.read())
     if work == "1":
@@ -1393,7 +1432,7 @@ def workend(id,work):
     if work == "10":
         slr = 36000
         exp = 0
-
+    print(slr)
     ff["wstatus"] = False
     ff["balance"] += slr
     if ff["level"] < 5:
@@ -1494,7 +1533,7 @@ def shop():
            "\n&#12288;🏡 Дома" \
            "\n&#12288;🎞 Видеокарты" \
            "\n" \
-           "\n📌Для просмотра категории используйте ее название"
+           "\n📌 Для просмотра категории используйте ее название"
 
 def sell():
     return "Продажа:" \
@@ -1514,7 +1553,7 @@ def cars():
            "\n&#12288;💎 5. Range Rover | 50.000$" \
            "\n&#12288;💎 6. Rolls-Royce | 150.000$" \
            "\n" \
-           "\n📌Для покупки транспорта используйте 'кмашину [номер]'\n" \
+           "\n📌 Для покупки транспорта используйте 'кмашину [номер]'\n" \
            "Например: кмашину 1"
 
 def phones():
@@ -1526,7 +1565,7 @@ def phones():
            "\n&#12288;💎 4. Samsung Galaxy S21 | 50.000$" \
            "\n&#12288;💎 5. iPhone 12 | 200.000$" \
            "\n" \
-           "\n📌Для покупки телефона используйте 'ктел [номер]'\n" \
+           "\n📌 Для покупки телефона используйте 'ктел [номер]'\n" \
            "Например: ктел 1"
 
 def homes():
@@ -1541,7 +1580,7 @@ def homes():
            "\n&#12288;💎 7. Личный остров | 500.000$" \
            "\n&#12288;💎 8. Дворец в Геленджике | 1.000.000$" \
            "\n" \
-           "\n📌Для покупки транспорта используйте 'кдом [номер]'\n" \
+           "\n📌 Для покупки транспорта используйте 'кдом [номер]'\n" \
            "Например: кдом 1"
 
 # машины
@@ -2243,7 +2282,7 @@ def farmstatus(id):
            "\n&#12288;💴 Добыто в биткоинах: " + str(round(ff["farmed"] * ff["gpu_amount"],5)) + " ₿" + \
            "\n&#12288;💵 Добыто в долларах: " + str(int(ff["farmed"] * 10000 * ff["gpu_amount"])) + " $" + \
            "\n" \
-           "\n📌Для снятия используйте 'сбитки'" \
+           "\n📌 Для снятия используйте 'сбитки'" \
 #магазин
 
 def sellbtc(id):
@@ -2403,7 +2442,7 @@ def hackmenu(id):
         ff = json.loads(f.read())
     return "📋 Твой профиль:" \
            "\n" \
-           "\n🔎 Уровень: " + str(ff["level"]) + \
+           "\n🔎 Уровень: " + str(ff["hlevel"]) + \
            "\n💊 ХП: " + str(ff["hhp"]) + " (+" + str(ff["php"]) + ")" + \
            "\n🔫 Урон: " + str(ff["hdamage"]) + " (+" + str(ff["pdamage"]) + ")" + \
            "\n🕶 Защита: " + str(ff["hdef"]) + " (+" + str(ff["pdef"]) + ")" + \
@@ -2420,7 +2459,7 @@ def darkshop():
            "\n&#12288;🛡 VPN - защита" \
            "\n&#12288;🚪 Убежища - хп" \
            "\n" \
-           "\n📌Для просмотра категории используйте ее название"
+           "\n📌 Для просмотра категории используйте ее название"
 
 def comps():
     return "💻 Компы 💻" \
@@ -2432,7 +2471,7 @@ def comps():
            "\n&#12288;💎 4. &#12288;30 | Игровой | +10 к атаке | 500₿" \
            "\n&#12288;💎 5. &#12288;50 | Квантовый | +20 к атаке | 1500₿" \
            "\n" \
-           "\n📌Для покупки используйте 'ккомп [номер]'"
+           "\n📌 Для покупки используйте 'ккомп [номер]'"
 
 def vpns():
     return "🛡 VPN 🛡" \
@@ -2444,7 +2483,7 @@ def vpns():
            "\n&#12288;💎 4. &#12288;35 | Игровой | +15 к защите | 550₿" \
            "\n&#12288;💎 5. &#12288;55 | Собственный | +20 к защите | 1700₿" \
            "\n" \
-           "\n📌Для покупки используйте 'квпн [номер]'"
+           "\n📌 Для покупки используйте 'квпн [номер]'"
 
 def shltrs():
     return "🚪 Убежища 🚪" \
@@ -2456,7 +2495,7 @@ def shltrs():
            "\n&#12288;💎 4. &#12288;50 | Бункер в горах | +16 к хп | 1800₿" \
            "\n&#12288;💎 5. &#12288;60 | Дом Путина | +21 к хп | 2000₿" \
            "\n" \
-           "\n📌Для покупки используйте 'кубежище [номер]'"
+           "\n📌 Для покупки используйте 'кубежище [номер]'"
 
 def bcomp(id, n):
     with open('json/' + str(id) + '.json') as f:
@@ -2773,6 +2812,113 @@ def sshltr(id):
     else:
         return 'У вас нет убежища!'
 
+def upl():
+    return "Выберите что хотите улучшить" \
+           "\n&#12288;💊 ХП" \
+           "\n&#12288;🔫 Урон" \
+           "\n&#12288;🕶 Защита" \
+           "\n" \
+           "\n📌 Для просмотра категории используйте ее название"
+
+def hpup():
+    return "🔎 Ваш уровень: " + str(ff["hlevel"]) + \
+           "\n💊 ХП: " + str(ff["hhp"]) + \
+           "\n" \
+           "\n♻ Уровень прокачки: " + str(ff["hplvl"]) + \
+           "\n💰 Стоимость прокачки: " + str(ff["hplvl"] * 10) + "₿" + \
+           "\n" \
+           "\n📌 Для прокачки используйте - Пхп"
+
+def defup():
+    return "🔎 Ваш уровень: " + str(ff["hlevel"]) + \
+           "\n🕶 Защита: " + str(ff["hdef"]) + \
+           "\n" \
+           "\n♻ Уровень прокачки: " + str(ff["deflvl"]) + \
+           "\n💰 Стоимость прокачки: " + str(ff["deflvl"] * 10) + "₿" + \
+           "\n" \
+           "\n📌 Для прокачки используйте - Пдеф"
+
+def dmgup():
+    return "🔎 Ваш уровень: " + str(ff["hlevel"]) + \
+           "\n🔫 Урон: " + str(ff["hdamage"]) + \
+           "\n" \
+           "\n♻ Уровень прокачки: " + str(ff["damagelvl"]) + \
+           "\n💰 Стоимость прокачки: " + str(ff["damagelvl"] * 10) + "₿" + \
+           "\n" \
+           "\n📌 Для прокачки используйте - Пурон"
+
+def php(val):
+    if val == "":
+        value = 1
+    else:
+        value = int(val)
+
+    p = ff["hplvl"] ** 3
+    if ff["hplvl"] <= 100 and ff["hplvl"] + value <= 100:
+        if ff["btc"] >= p * value:
+            ff["btc"] -= p * value
+            ff["hplvl"] += value
+            ff["hhp"] += 10 * value
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "✅ Вы успешно прокачали ХП на " + str(value) + " уровень!\n💊 ХП: " + str(ff["hhp"]) + "\n" + "♻ Уровень ХП: " + str(ff["hplvl"]) + "\n\n💰 Стоимость следующей прокачки: " + str(p) + "₿"
+        else:
+            return "У вас недостаточно биткоинов для прокачки!"
+    else:
+        return "У вас максимальный уровень - 100!"
+
+def pdef(val):
+    if val == "":
+        value = 1
+    else:
+        value = int(val)
+
+    p = ff["deflvl"] ** 3
+    if ff["deflvl"] <= 100 and ff["deflvl"] + value <= 100:
+        if ff["btc"] >= p * value:
+            ff["btc"] -= p * value
+            ff["deflvl"] += value
+            ff["hdef"] += 10 * value
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "✅ Вы успешно прокачали Защиту на " + str(value) + " уровень!\n💊 ХП: " + str(ff["hdef"]) + "\n" + "♻ Уровень Защиты: " + str(ff["deflvl"]) + "\n\n💰 Стоимость следующей прокачки: " + str(p) + "₿"
+        else:
+            return "У вас недостаточно биткоинов для прокачки!"
+    else:
+        return "У вас максимальный уровень - 100!"
+
+def pdmg(val):
+    if val == "":
+        value = 1
+    else:
+        value = int(val)
+
+    p = ff["damagelvl"] ** 3
+    if ff["damagelvl"] <= 100 and ff["damagelvl"] + value <= 100:
+        if ff["btc"] >= p * value:
+            ff["btc"] -= p * value
+            ff["damagelvl"] += value
+            ff["hdamage"] += 10 * value
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "✅ Вы успешно прокачали ХП на " + str(value) + " уровень!\n💊 ХП: " + str(ff["hdamage"]) + "\n" + "♻ Уровень ХП: " + str(ff["damagelvl"]) + "\n\n💰 Стоимость следующей прокачки: " + str(p) + "₿"
+        else:
+            return "У вас недостаточно биткоинов для прокачки!"
+    else:
+        return "У вас максимальный уровень - 100!"
+
+def fightm(id):
+    return "Для того чтобы начать битву, нажмите кнопку или напишите 'Битва'"
+
+def fightstart(id):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    bothp = random.randint(1,ff["hhp"])
+    botdef = random.randint(1,ff["hdef"])
+    botdmg = random.randint(1,ff["hdamage"])
+
+
+
 # Хакерство
 btcfarmreload()
 baltop()
@@ -2784,7 +2930,7 @@ log("system", "Бот запущен")
 while True:
     try:
         messages = vk.method("messages.getConversations", {"offset": 0, "count": 20, "filter": "unanswered"})
-        if messages["count"] >= 1:
+        if messages["count"] >= 1 and messages["items"][0]["conversation"]["peer"]["type"] == 'user':
             id = messages["items"][0]["last_message"]["from_id"]
             body = messages["items"][0]["last_message"]["text"]
             c = 1
@@ -2804,6 +2950,7 @@ while True:
 
             allow = ["репорт", "профиль", "проф", "unban"]
             if True and str(body) != "":
+                    print(id, body)
                     if ff["banned"] == "NO" or body.lower().split(" ")[0] in allow:
                         if str(body.lower()).split()[0] == 'репорт':
                             temp = str(body.lower()).split("репорт")
@@ -2890,7 +3037,6 @@ while True:
                         elif body.lower() == 'баланс' or body.lower() == 'бал':
                             vk.method("messages.send", {"peer_id": id,
                                                         "message": bal(id),
-                                                        "keyboard": mainmenu.get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
@@ -3528,7 +3674,7 @@ while True:
                             log(id, body)
 
                         # Хакерство
-                        elif body.lower() == 'хакерство' or body.lower() == "⬅ хакерство":
+                        elif body.lower() == 'хакерство' or body.lower() == "⬅ хакерство" or body.lower() == "🏠 хакерство":
                             vk.method("messages.send", {"peer_id": id,
                                                     "message": hackmenu(id),
                                                     "keyboard": mainhackmenu.get_keyboard(),
@@ -3610,6 +3756,77 @@ while True:
                                                     "message": sshltr(id),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
+
+                        elif body.lower() == 'улучшения' or body.lower() == 'улучшение' or body.lower() == '⬅ улучшения':
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": upl(),
+                                                    "keyboard": uplmenu.get_keyboard(),
+                                                    "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+
+                        elif body.lower() == 'хп' or body.lower() == '💊 хп':
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": hpup(),
+                                                    "keyboard": phpmenu.get_keyboard(),
+                                                    "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+                        elif body.lower() == 'защита' or body.lower() == '🕶 защита':
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": defup(),
+                                                    "keyboard": pdefmenu.get_keyboard(),
+                                                    "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+                        elif body.lower() == 'урон' or body.lower() == '🔫 урон':
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": dmgup(),
+                                                    "keyboard": pdamagemenu.get_keyboard(),
+                                                    "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+
+                        elif str(body.lower()).split()[0] == 'пхп' or body.lower() == "прокачать хп":
+                            temp = str(body.lower()).split(" ")
+                            try:
+                                if temp[1] == "хп":
+                                    val = ""
+                                else:
+                                    val = temp[1]
+                            except:
+                                val = ""
+
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": php(val),
+                                                    "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+
+                        elif str(body.lower()).split()[0] == 'пдеф' or body.lower() == "прокачать защиту":
+                            temp = str(body.lower()).split(" ")
+                            try:
+                                if temp[1] == "защиту":
+                                    val = ""
+                                else:
+                                    val = temp[1]
+                            except:
+                                val = ""
+
+                            vk.method("messages.send", {"peer_id": id,
+                                                        "message": pdef(val),
+                                                        "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+
+                        elif str(body.lower()).split()[0] == 'пурон' or body.lower() == "прокачать урон":
+                            temp = str(body.lower()).split(" ")
+                            try:
+                                if temp[1] == "урон":
+                                    val = ""
+                                else:
+                                    val = temp[1]
+                            except:
+                                val = ""
+
+                            vk.method("messages.send", {"peer_id": id,
+                                                        "message": pdmg(val),
+                                                        "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
                         # Хакерство
 
                         else:
@@ -3630,6 +3847,6 @@ while True:
 
     except BaseException as E:
         print(E)
-        vk.method("messages.send",
-                  {"peer_id": 419760643, "message": E, "random_id": random.randint(1, 2147483647)})
-        log("system | ", E)
+        #vk.method("messages.send",
+         #         {"peer_id": 419760643, "message": E, "random_id": random.randint(1, 2147483647)})
+        #log("system | ", E)
