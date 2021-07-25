@@ -1,4 +1,7 @@
 /.idea
-log.txt
-log.txt
+/films
+/json
+/json.dump
 /__pycache__
+/bot_4u/__pycache__
+log.txt
