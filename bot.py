@@ -342,8 +342,8 @@ def ulist():
     for i in range (len(f)):
         f[i] = '[' + str(c) + '] ' + "vk.com/id" + str(f[i][:-5])
         c += 1
-    a = '\n'.join(f)
-    return "Список пользователей\n\n" + a
+    a = '\n'.join(f[:20])
+    return "Список пользователей [" + str(c) + "]\n\n" + a
 
 def getanekdot():
     z = ''
@@ -775,7 +775,6 @@ def workend(id,work):
     if work == "10":
         slr = 36000
         exp = 0
-    print(slr)
     ff["wstatus"] = False
     ff["balance"] += slr
     if ff["level"] < 5:
@@ -911,8 +910,6 @@ def btcfarm(id):
     return 0
 
 def btcfarmstart(id):
-    with open('json/' + str(id) + '.json') as f:
-        ff = json.loads(f.read())
     threading.Timer(300.0, btcfarm, args=(id,)).start()
     return 0
 
@@ -927,6 +924,686 @@ def btcfarmreload():
     return 0
 
 # Bytecoin
+
+def bfarm(id, n):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+        if ff["gpu_amount"] < 5:
+            if n == "1" or n == "7": p = 10000
+            elif n == "2" or n == "8": p = 50000
+            elif n == "3" or n == "9": p = 100000
+            elif n == "4" or n == "10": p = 300000
+            elif n == "5" or n == "11": p = 500000
+            elif n == "6" or n == "12": p = 1500000
+
+            if n == '1' and ff["balance"] >= p:
+                if ff["gpu"] == "GF 210" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "GF 210"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.00025
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
+
+            elif n == '2' and ff["balance"] >= p:
+                if ff["gpu"] == "GF GTX 750 Ti" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "GF GTX 750 Ti"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.0005
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
+
+            elif n == '3' and ff["balance"] >= p:
+                if ff["gpu"] == "GF GTX 1050 Ti" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "GF GTX 1050 Ti"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.001
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
+
+            elif n == '4' and ff["balance"] >= p:
+                if ff["gpu"] == "GF GTX 1660S" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "GF GTX 1660S"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.005
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
+
+            elif n == '5' and ff["balance"] >= p:
+                if ff["gpu"] == "GF RTX 2080S" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "GF RTX 2080S"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.01
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
+
+            elif n == '6' and ff["balance"] >= p:
+                if ff["gpu"] == "GF RTX 3090 Mining ver" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "GF RTX 3090 Mining ver"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.05
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
+
+            elif n == '7' and ff["balance"] >= p:
+                if ff["gpu"] == "R5 220" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "R5 220"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.00025
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
+
+            elif n == '8' and ff["balance"] >= p:
+                if ff["gpu"] == "R7 360" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "R7 360"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.0005
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
+
+            elif n == '9' and ff["balance"] >= p:
+                if ff["gpu"] == "R9 380" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "R9 380"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.001
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
+
+            elif n == '10' and ff["balance"] >= p:
+                if ff["gpu"] == "RX 580" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "RX 580"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.005
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
+
+            elif n == '11' and ff["balance"] >= p:
+                if ff["gpu"] == "RX5700" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "RX5700"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.01
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
+
+            elif n == '12' and ff["balance"] >= p:
+                if ff["gpu"] == "RX6900XT" or ff["gpu"] == "":
+                    ff["balance"] -= p
+                    ff["gpu"] = "RX6900XT"
+                    ff["gpu_amount"] += 1
+                    ff["farm"] = 0.05
+                    ff["farming"] = True
+                    with open('json/' + str(id) + '.json', 'w') as f:
+                        f.write(json.dumps(ff, indent=4))
+                    congrts(id)
+                    return "Вы купили " + str(ff["gpu"]) + " за " + str(p) + "$\nВаш баланс: " + str(ff["balance"]) + "$"
+                else:
+                    return "Вы можете купить только несколько одинаковых видеокарт"
+
+            else:
+                return "У вас не хватает денег или вы неправильно используете команду!\nПример: ккарту 1"
+        else:
+            return "У вас максимальное кол-во видеокарт - 5"
+
+def sfarm(id):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    if ff["gpu"] != "":
+        if ff["gpu"] == "GF 210":
+            ff["balance"] += 10000
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
+            ff["farm"] = 0.0
+            ff["farming"] = False
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою видеокарту за 1000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["gpu"] == "GF GTX 750 Ti":
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
+            ff["balance"] += 50000
+            ff["farm"] = 0.0
+            ff["farming"] = False
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою видеокарту за 50.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["gpu"] == "GF GTX 1050 Ti":
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
+            ff["balance"] += 100000
+            ff["farm"] = 0.0
+            ff["farming"] = False
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою видеокарту за 100.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["gpu"] == "GF GTX 1660S":
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
+            ff["balance"] += 300000
+            ff["farm"] = 0.0
+            ff["farming"] = False
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою видеокарту за 300.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["gpu"] == "GF RTX 2080S":
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
+            ff["balance"] += 500000
+            ff["farm"] = 0.0
+            ff["farming"] = False
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою видеокарту за 500.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["gpu"] == "GF RTX 3090 Mining ver":
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
+            ff["balance"] += 1500000
+            ff["farm"] = 0.0
+            ff["farming"] = False
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою видеокарту за 1.500.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["gpu"] == "R5 220":
+            ff["balance"] += 10000
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
+            ff["farm"] = 0.0
+            ff["farming"] = False
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою видеокарту за 1000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["gpu"] == "R7 360":
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
+            ff["balance"] += 50000
+            ff["farm"] = 0.0
+            ff["farming"] = False
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою видеокарту за 50.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["gpu"] == "R9 380":
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
+            ff["balance"] += 100000
+            ff["farm"] = 0.0
+            ff["farming"] = False
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою видеокарту за 100.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["gpu"] == "RX 580":
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
+            ff["balance"] += 300000
+            ff["farm"] = 0.0
+            ff["farming"] = False
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою видеокарту за 300.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["gpu"] == "RX5700":
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
+            ff["balance"] += 500000
+            ff["farm"] = 0.0
+            ff["farming"] = False
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою видеокарту за 500.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["gpu"] == "RX6900XT":
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
+            ff["balance"] += 1500000
+            ff["farm"] = 0.0
+            ff["farming"] = False
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою видеокарту за 1.500.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["gpu"] == "nVidia Tesla A100":
+            if ff["gpu_amount"] == 1:
+                ff["gpu"] = ""
+            ff["gpu_amount"] -= 1
+            ff["balance"] += 5000000
+            ff["farm"] = 0.0
+            ff["farming"] = False
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою видеокарту за 5.000.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+    else:
+        return 'У вас нет видеокарты!'
+
+
+def bcar(id, n):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    if ff["car"] == "":
+        if n == '1' and ff["balance"] >= 2000:
+            ff["balance"] -= 2000
+            ff["car"] = "ВАЗ 2115"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["car"]) + " за 2.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif n == '2' and ff["balance"] >= 4000:
+            ff["balance"] -= 4000
+            ff["car"] = "LADA Vesta"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["car"]) + " за 4.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif n == '3' and ff["balance"] >= 8000:
+            ff["balance"] -= 8000
+            ff["car"] = "Audi Q7"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["car"]) + " за 8.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif n == '4' and ff["balance"] >= 15000:
+            ff["balance"] -= 15000
+            ff["car"] = "BMW M8"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["car"]) + " за 15.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif n == '5' and ff["balance"] >= 50000:
+            ff["balance"] -= 50000
+            ff["car"] = "Range Rover"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["car"]) + " за 50.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif n == '6' and ff["balance"] >= 150000:
+            ff["balance"] -= 150000
+            ff["car"] = "Rolls-Royce"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["car"]) + " за 150.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+        else:
+            return "У вас не хватает денег или вы неправильно используете команду!\nПример: кмашину 1"
+    else:
+        return "У вас уже есть машина или вы неправильно используете команду!\nПример: кмашину 1\nЧтобы продать её, используйте 'пмашину'"
+
+
+def sellcar(id):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    if ff["car"] != "":
+        if ff["car"] == "ВАЗ 2115":
+            ff["car"] = ""
+            ff["balance"] += 2000
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою машину за 2.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+        if ff["car"] == "LADA Vesta":
+            ff["car"] = ""
+            ff["balance"] += 4000
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою машину за 4.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+        if ff["car"] == "Audi Q7":
+            ff["car"] = ""
+            ff["balance"] += 8000
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою машину за 8.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+        if ff["car"] == "BMW M8":
+            ff["car"] = ""
+            ff["balance"] += 15000
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою машину за 15.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+        if ff["car"] == "Range Rover":
+            ff["car"] = ""
+            ff["balance"] += 50000
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою машину за 50.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+        if ff["car"] == "Rolls-Royce":
+            ff["car"] = ""
+            ff["balance"] += 150000
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свою машину за 150.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+    else:
+        return 'У вас нет машины!'
+
+
+# машины
+
+# телефоны
+def bphone(id, n):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    if ff["phone"] == "":
+        if n == '1' and ff["balance"] >= 200:
+            ff["balance"] -= 200
+            ff["phone"] = "Fly Ezzy Flip"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["phone"]) + " за 200$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif n == '2' and ff["balance"] >= 1000:
+            ff["balance"] -= 1000
+            ff["phone"] = "Sony Xperia XA1"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["phone"]) + " за 1.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif n == '3' and ff["balance"] >= 10000:
+            ff["balance"] -= 10000
+            ff["phone"] = "Xiaomi Mi 11"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["phone"]) + " за 10.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif n == '4' and ff["balance"] >= 50000:
+            ff["balance"] -= 50000
+            ff["phone"] = "Samsung Galaxy S21"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["phone"]) + " за 50.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif n == '5' and ff["balance"] >= 200000:
+            ff["balance"] -= 200000
+            ff["phone"] = "iPhone 12"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["phone"]) + " за 200.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        else:
+            return "У вас не хватает денег или вы неправильно используете команду!\nПример: ктел 1"
+    else:
+        return "У вас уже есть телефон или вы неправильно используете команду!\nПример: ктел 1\nЧтобы продать его, используйте 'птел'"
+
+
+def sellphone(id):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    if ff["phone"] != "":
+        if ff["phone"] == "Fly Ezzy Flip":
+            ff["balance"] += 200
+            ff["phone"] = ""
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свой телефон за 200$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        if ff["phone"] == "Sony Xperia XA1":
+            ff["phone"] = ""
+            ff["balance"] += 1000
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свой телефон за 1.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        if ff["phone"] == "Xiaomi Mi 11":
+            ff["phone"] = ""
+            ff["balance"] += 10000
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свой телефон за 10.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        if ff["phone"] == "Samsung Galaxy S21":
+            ff["phone"] = ""
+            ff["balance"] += 50000
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свой телефон за 50.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        if ff["phone"] == "iPhone 12":
+            ff["phone"] = ""
+            ff["balance"] += 200000
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свой телефон за 200.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        if ff["phone"] == "iPhone 12 Gold Edition":
+            ff["phone"] = ""
+            ff["balance"] += 1000000
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свой телефон за 1.000.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+    else:
+        return 'У вас нет телефона!'
+
+
+# телефоны
+
+# дома
+def bhome(id, n):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    if ff["home"] == "":
+        if n == '1' and ff["balance"] >= 100:
+            ff["balance"] -= 100
+            ff["home"] = "Картонная коробка"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["home"]) + " за 100$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif n == '2' and ff["balance"] >= 2000:
+            ff["balance"] -= 2000
+            ff["home"] = "Дом на дереве"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["home"]) + " за 2.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif n == '3' and ff["balance"] >= 10000:
+            ff["balance"] -= 10000
+            ff["home"] = "Деревянный дом"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["home"]) + " за 10.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif n == '4' and ff["balance"] >= 50000:
+            ff["balance"] -= 50000
+            ff["home"] = "Квартира в новостройке"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["home"]) + " за 50.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif n == '5' and ff["balance"] >= 150000:
+            ff["balance"] -= 150000
+            ff["home"] = "Особняк"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["home"]) + " за 150.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif n == '6' and ff["balance"] >= 300000:
+            ff["balance"] -= 300000
+            ff["home"] = "Дом на Рублёвке"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["home"]) + " за 300.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif n == '7' and ff["balance"] >= 500000:
+            ff["balance"] -= 500000
+            ff["home"] = "Личный остров"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["home"]) + " за 500.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif n == '8' and ff["balance"] >= 1000000:
+            ff["balance"] -= 1000000
+            ff["home"] = "Дворец в Геленджике"
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            congrts(id)
+            return "Вы купили " + str(ff["home"]) + " за 1.000.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        else:
+            return "У вас не хватает денег или вы неправильно используете команду!\nПример: кдом 1"
+    else:
+        return "У вас уже есть дом или вы неправильно используете команду!\nПример: кдом 1\nЧтобы продать его, используйте 'пдом'"
+
+
+def sellhome(id):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    if ff["home"] != "":
+        if ff["home"] == "Картонная коробка":
+            ff["balance"] += 100
+            ff["home"] = ""
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свой дом за 100$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["home"] == "Дом на дереве":
+            ff["home"] = ""
+            ff["balance"] += 2000
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свой дом за 2.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["home"] == "Деревянный дом":
+            ff["home"] = ""
+            ff["balance"] += 10000
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свой дом за 10.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["home"] == "Квартира в новостройке":
+            ff["home"] = ""
+            ff["balance"] += 50000
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свой дом за 50.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["home"] == "Особняк":
+            ff["home"] = ""
+            ff["balance"] += 150000
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свой дом за 150.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["home"] == "Дом на Рублёвке":
+            ff["home"] = ""
+            ff["balance"] += 300000
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свой дом за 300.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["home"] == "Личный остров":
+            ff["home"] = ""
+            ff["balance"] += 500000
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свой дом за 500.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+
+        elif ff["home"] == "Дворец в Геленджике":
+            ff["home"] = ""
+            ff["balance"] += 1000000
+            with open('json/' + str(id) + '.json', 'w') as f:
+                f.write(json.dumps(ff, indent=4))
+            return "Вы продали свой дом за 1.000.000$\nВаш баланс: " + str(ff["balance"]) + "$"
+    else:
+        return 'У вас нет дома!'
+
+
+# дома
 
 # Топ
 def sortbybal(str):
@@ -945,20 +1622,24 @@ def baltop():
         f[i] = str(f[i][0:-5])
     for i in f:
         id = i
-        with open('json/' + str(id) + '.json') as f:
-            ff = json.loads(f.read())
-        if ff["balance"] != 0:
-            if ff["nick"] != "":
-                a.append(str(str(ff["balance"]) + ":" + "@id" + str(id) + " (" + ff["nick"] + ")"))
-            else:
-                user = vk.method("users.get", {"user_ids": id})
-                a.append(str(str(ff["balance"]) + ":" + "@id" + str(id) + " (" + user[0]['first_name'] + ")"))
+        try:
+            with open('json/' + str(id) + '.json') as f:
+                ff = json.loads(f.read())
+            if ff["balance"] > 1000:
+                if ff["nick"] != "":
+                    a.append(str(str(ff["balance"]) + ":" + "@id" + str(id) + " (" + ff["nick"] + ")"))
+                else:
+                    user = vk.method("users.get", {"user_ids": id})
+                    a.append(str(str(ff["balance"]) + ":" + "@id" + str(id) + " (" + user[0]['first_name'] + ")"))
+        except:
+            return
     a = sorted(a, key=sortbybal, reverse=True)
     for i in range(len(a)):
             a[i] = str(i+1) + ". " + str(a[i].split(":")[1]) + " | " + str(a[i].split(":")[0]) + "$"
     threading.Thread(target=reloadtop, args=()).start()
     global topbal
-    topbal = "📜 Топ по балансу:\n\n" + "\n".join(a) + "\n\nОбновление каждые 5 минут"
+    topbal = "📜 Топ по балансу:\n\n" + "\n".join(a[:10]) + "\n\nОбновление каждые 5 минут"
+    print("Топ баланса обновлен")
 
 def btctop():
     a=[]
@@ -968,20 +1649,24 @@ def btctop():
         f[i] = str(f[i][0:-5])
     for i in f:
         id = i
-        with open('json/' + str(id) + '.json') as f:
-            ff = json.loads(f.read())
-        if ff["btc"] != 0.0:
-            if ff["nick"] != "":
-                a.append(str(str(ff["btc"]) + ": " + "@id" + str(id) + " (" + ff["nick"] + ")"))
-            else:
-                user = vk.method("users.get", {"user_ids": id})
-                a.append(str(str(ff["btc"]) + ": " + "@id" + str(id) + " (" + user[0]['first_name'] + ")"))
+        try:
+            with open('json/' + str(id) + '.json') as f:
+                ff = json.loads(f.read())
+            if ff["btc"] != 0.0:
+                if ff["nick"] != "":
+                    a.append(str(str(ff["btc"]) + ": " + "@id" + str(id) + " (" + ff["nick"] + ")"))
+                else:
+                    user = vk.method("users.get", {"user_ids": id})
+                    a.append(str(str(ff["btc"]) + ": " + "@id" + str(id) + " (" + user[0]['first_name'] + ")"))
+        except:
+            return
     a = sorted(a, key=sortbybtc, reverse=True)
     for i in range(len(a)):
             a[i] = str(i+1) + ". " + str(a[i].split(":")[1]) + " | " + str(round(float(a[i].split(":")[0]),5)) + "₿"
     global topbtc
-    topbtc = "📜 Топ по биткоинам:\n\n" + "\n".join(a) + "\n\nОбновление каждые 5 минут"
+    topbtc = "📜 Топ по биткоинам:\n\n" + "\n".join(a[:10]) + "\n\nОбновление каждые 5 минут"
     threading.Thread(target=reloadtopbtc, args=()).start()
+    print("Топ биткоинов обновлен")
 
 def reloadtop():
     threading.Timer(300.0, baltop, args=()).start()
@@ -991,7 +1676,7 @@ def reloadtopbtc():
 # Топ
 
 def mailing(body):
-    path = "json/"
+    path = "json.dump/"
     f = list(os.listdir(path))
     for i in range(len(f)):
         f[i] = str(f[i][0:-5])
@@ -1002,10 +1687,24 @@ def mailing(body):
                                     "random_id": random.randint(1, 2147483647)})
     return "Рассылка завершена!"
 
+def workreset():
+    path = "json/"
+    f = list(os.listdir(path))
+    for i in range(len(f)):
+        f[i] = str(f[i][0:-5])
+    for i in f:
+        id = i
+        with open('json/' + str(id) + '.json') as f:
+            ff = json.loads(f.read())
+        ff["wstatus"] = False
+        with open('json/' + str(id) + '.json', 'w') as f:
+            f.write(json.dumps(ff, indent=4))
+    print("Обнуление работы завершено!")
 
-btcfarmreload()
-baltop()
-btctop()
+threading.Thread(target=workreset, args=()).start()
+threading.Thread(target=btcfarmreload, args=()).start()
+threading.Thread(target=baltop, args=()).start()
+threading.Thread(target=btctop, args=()).start()
 # btcratestart()
 
 print("[" + res() +"] ✅Бот запущен!")
@@ -1033,7 +1732,6 @@ while True:
 
             allow = ["репорт", "профиль", "проф", "unban"]
             if True and str(body) != "":
-                    print(id, body)
                     if ff["banned"] == "NO" or body.lower().split(" ")[0] in allow:
                         if str(body.lower()).split()[0] == 'репорт':
                             temp = str(body.lower()).split("репорт")
@@ -1733,17 +2431,30 @@ while True:
                             log(id, body)
 
                         elif body.lower() == 'битктоп':
-                            vk.method("messages.send", {"peer_id": id,
-                                                    "message": topbtc,
-                                                    "keyboard": topmenu.get_keyboard(),
-                                                    "random_id": random.randint(1, 2147483647)})
-                            log(id, body)
+                            try:
+                                vk.method("messages.send", {"peer_id": id,
+                                                        "message": topbtc,
+                                                        "keyboard": topmenu.get_keyboard(),
+                                                        "random_id": random.randint(1, 2147483647)})
+                                log(id, body)
+                            except:
+                                vk.method("messages.send", {"peer_id": id,
+                                                        "message": "Топ еще не обновлён",
+                                                        "keyboard": topmenu.get_keyboard(),
+                                                        "random_id": random.randint(1, 2147483647)})
+                                log(id, body)
 
                         elif body.lower() == 'балтоп':
-                            vk.method("messages.send", {"peer_id": id,
-                                                    "message": topbal,
-                                                    "random_id": random.randint(1, 2147483647)})
-                            log(id, body)
+                            try:
+                                vk.method("messages.send", {"peer_id": id,
+                                                        "message": topbal,
+                                                        "random_id": random.randint(1, 2147483647)})
+                                log(id, body)
+                            except:
+                                vk.method("messages.send", {"peer_id": id,
+                                                        "message": "Топ еще не обновлён",
+                                                        "keyboard": topmenu.get_keyboard(),
+                                                        "random_id": random.randint(1, 2147483647)})
 
                         # Хакерство
                         elif body.lower() == 'хакерство' or body.lower() == "⬅ хакерство" or body.lower() == "🏠 хакерство":
@@ -1838,19 +2549,19 @@ while True:
 
                         elif body.lower() == 'хп' or body.lower() == '💊 хп':
                             vk.method("messages.send", {"peer_id": id,
-                                                    "message": hpup(),
+                                                    "message": hpup(id),
                                                     "keyboard": phpmenu.get_keyboard(),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
                         elif body.lower() == 'защита' or body.lower() == '🕶 защита':
                             vk.method("messages.send", {"peer_id": id,
-                                                    "message": defup(),
+                                                    "message": defup(id),
                                                     "keyboard": pdefmenu.get_keyboard(),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
                         elif body.lower() == 'урон' or body.lower() == '🔫 урон':
                             vk.method("messages.send", {"peer_id": id,
-                                                    "message": dmgup(),
+                                                    "message": dmgup(id),
                                                     "keyboard": pdamagemenu.get_keyboard(),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
@@ -1866,7 +2577,7 @@ while True:
                                 val = ""
 
                             vk.method("messages.send", {"peer_id": id,
-                                                    "message": php(val),
+                                                    "message": php(id,val),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
@@ -1881,7 +2592,7 @@ while True:
                                 val = ""
 
                             vk.method("messages.send", {"peer_id": id,
-                                                        "message": pdef(val),
+                                                        "message": pdef(id,val),
                                                         "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
@@ -1896,7 +2607,7 @@ while True:
                                 val = ""
 
                             vk.method("messages.send", {"peer_id": id,
-                                                        "message": pdmg(val),
+                                                        "message": pdmg(id,val),
                                                         "random_id": random.randint(1, 2147483647)})
                             log(id, body)
                         # Хакерство
@@ -1919,6 +2630,6 @@ while True:
 
     except BaseException as E:
         print(E)
-        #vk.method("messages.send",
-         #         {"peer_id": 419760643, "message": E, "random_id": random.randint(1, 2147483647)})
-        #log("system | ", E)
+        vk.method("messages.markAsAnsweredConversation",
+                 {"peer_id": id, "answered": 1, "group_id": 173284877})
+        log("system | ", E)

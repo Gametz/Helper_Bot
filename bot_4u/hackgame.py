@@ -384,7 +384,9 @@ def upl():
            "\n" \
            "\n📌 Для просмотра категории используйте ее название"
 
-def hpup():
+def hpup(id):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
     return "🔎 Ваш уровень: " + str(ff["hlevel"]) + \
            "\n💊 ХП: " + str(ff["hhp"]) + \
            "\n" \
@@ -393,7 +395,10 @@ def hpup():
            "\n" \
            "\n📌 Для прокачки используйте - Пхп"
 
-def defup():
+def defup(id):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+
     return "🔎 Ваш уровень: " + str(ff["hlevel"]) + \
            "\n🕶 Защита: " + str(ff["hdef"]) + \
            "\n" \
@@ -402,7 +407,10 @@ def defup():
            "\n" \
            "\n📌 Для прокачки используйте - Пдеф"
 
-def dmgup():
+def dmgup(id):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+
     return "🔎 Ваш уровень: " + str(ff["hlevel"]) + \
            "\n🔫 Урон: " + str(ff["hdamage"]) + \
            "\n" \
@@ -411,7 +419,10 @@ def dmgup():
            "\n" \
            "\n📌 Для прокачки используйте - Пурон"
 
-def php(val):
+def php(id,val):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+
     if val == "":
         value = 1
     else:
@@ -431,7 +442,10 @@ def php(val):
     else:
         return "У вас максимальный уровень - 100!"
 
-def pdef(val):
+def pdef(id,val):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+
     if val == "":
         value = 1
     else:
@@ -451,7 +465,10 @@ def pdef(val):
     else:
         return "У вас максимальный уровень - 100!"
 
-def pdmg(val):
+def pdmg(id,val):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+
     if val == "":
         value = 1
     else:

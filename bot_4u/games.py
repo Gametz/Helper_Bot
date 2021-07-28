@@ -1,6 +1,12 @@
 import json
 import random
 
+def bal(id):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    return '💰Ваш баланс: ' + str(ff["balance"]) + "$\n💴 Биткоины: " + str(round(ff["btc"],5)) + " ₿"
+
+
 def games():
     return "🎮 Список игр:" \
            "\n" \
