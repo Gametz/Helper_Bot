@@ -488,12 +488,4 @@ def pdmg(id,val):
     else:
         return "У вас максимальный уровень - 100!"
 
-def fightm(id):
-    return "Для того чтобы начать битву, нажмите кнопку или напишите 'Битва'"
 
-def fightstart(id):
-    with open('json/' + str(id) + '.json') as f:
-        ff = json.loads(f.read())
-    bothp = random.randint(1,ff["hhp"])
-    botdef = random.randint(1,ff["hdef"])
-    botdmg = random.randint(1,ff["hdamage"])

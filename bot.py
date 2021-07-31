@@ -186,7 +186,6 @@ def nick(id, nick):
     else:
         return "Ваш ник больше 15 символов!"
 
-
 def dnick(id, nick):
     if len(nick) <= 15:
         with open('json/' + str(id) + '.json') as f:
@@ -786,10 +785,12 @@ def workend(id,work):
         vk.method("messages.send", {"peer_id": id,
                                     "message": "💎 Вы закончили работу!\nВам начислена зарплата в размере: \n" + str(
                                         slr) + "$",
+                                    "keyboard": rework().get_keyboard(),
                                     "random_id": random.randint(1, 2147483647)})
     else:
         vk.method("messages.send", {"peer_id": id,
                                     "message": "💎 Вы закончили работу!\nВам начислена зарплата в размере: \n" + str(slr) + "$" + " и " + str(exp) + " опыта",
+                                    "keyboard": rework().get_keyboard(),
                                     "random_id": random.randint(1, 2147483647)})
 
 def report(id, msg):
@@ -804,7 +805,7 @@ def report(id, msg):
 def cgbonus(id):
     vk.method("messages.send", {"peer_id": id,
                                 "message": "💎 Вам снова доступен бонус!\nИспользуйте 'бонус', чтобы получить его",
-                                "keyboard": bonusmenu.get_keyboard(),
+                                "keyboard": bonusmenu().get_keyboard(),
                                 "random_id": random.randint(1, 2147483647)})
 
 def gbonus(id):
@@ -1639,7 +1640,6 @@ def baltop():
     threading.Thread(target=reloadtop, args=()).start()
     global topbal
     topbal = "📜 Топ по балансу:\n\n" + "\n".join(a[:10]) + "\n\nОбновление каждые 5 минут"
-    print("Топ баланса обновлен")
 
 def btctop():
     a=[]
@@ -1666,7 +1666,6 @@ def btctop():
     global topbtc
     topbtc = "📜 Топ по биткоинам:\n\n" + "\n".join(a[:10]) + "\n\nОбновление каждые 5 минут"
     threading.Thread(target=reloadtopbtc, args=()).start()
-    print("Топ биткоинов обновлен")
 
 def reloadtop():
     threading.Timer(300.0, baltop, args=()).start()
@@ -1674,6 +1673,21 @@ def reloadtop():
 def reloadtopbtc():
     threading.Timer(300.0, btctop, args=()).start()
 # Топ
+
+# Хакерство
+def botfightstart(id):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    bothp = random.randint(1,ff["hhp"])
+    botdef = random.randint(1,ff["hdef"])
+    botdmg = random.randint(1,ff["hdamage"])
+
+def botfightwait(id):
+    return
+def botfight(id):
+    return
+
+# Хакерство
 
 def mailing(body):
     path = "json.dump/"
@@ -1699,7 +1713,6 @@ def workreset():
         ff["wstatus"] = False
         with open('json/' + str(id) + '.json', 'w') as f:
             f.write(json.dumps(ff, indent=4))
-    print("Обнуление работы завершено!")
 
 threading.Thread(target=workreset, args=()).start()
 threading.Thread(target=btcfarmreload, args=()).start()
@@ -1724,7 +1737,7 @@ while True:
             if str(id) not in u:
                 vk.method("messages.send", {"peer_id": id,
                                             "message": prof(id) + "\n\n💎 Добро пожаловать в главное меню",
-                                            "keyboard": mainmenu.get_keyboard(),
+                                            "keyboard": mainmenu(id).get_keyboard(),
                                             "random_id": random.randint(1, 2147483647)})
 
             with open('json/' + str(id) + '.json') as f:
@@ -1762,14 +1775,14 @@ while True:
                         elif body.lower() == "🏠 главное меню":
                             vk.method("messages.send", {"peer_id": id,
                                                     "message": "💎 Добро пожаловать в главное меню",
-                                                    "keyboard": mainmenu.get_keyboard(),
+                                                    "keyboard": mainmenu(id).get_keyboard(),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
                         elif body.lower() == "начать" or body.lower() == "start":
                             vk.method("messages.send", {"peer_id": id,
                                                     "message": "Удачи в развитии!",
-                                                    "keyboard": mainmenu.get_keyboard(),
+                                                    "keyboard": mainmenu(id).get_keyboard(),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
                         # Меню
@@ -1783,7 +1796,7 @@ while True:
                         elif body.lower() == 'хелп' or body.lower() == 'помощь' or body.lower() == 'команды':
                             vk.method("messages.send", {"peer_id": id,
                                                         "message": help(),
-                                                        "keyboard": mainmenu.get_keyboard(),
+                                                        "keyboard": mainmenu(id).get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
@@ -1801,7 +1814,7 @@ while True:
                             if id in admins or id in moders:
                                 vk.method("messages.send", {"peer_id": id,
                                                             "message": "Ну раз тебе так хочется,то на",
-                                                            "keyboard": adminmenu.get_keyboard(),
+                                                            "keyboard": adminmenu().get_keyboard(),
                                                             "random_id": random.randint(1, 2147483647)})
                             else:
                                 vk.method("messages.send", {"peer_id": id,
@@ -1811,7 +1824,7 @@ while True:
                         elif body.lower() == 'профиль' or body.lower() == 'проф':
                             vk.method("messages.send", {"peer_id": id,
                                                         "message": prof(id),
-                                                        "keyboard": mainmenu.get_keyboard(),
+                                                        "keyboard": mainmenu(id).get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
@@ -1824,7 +1837,7 @@ while True:
                         elif body.lower() == 'стата':
                             vk.method("messages.send", {"peer_id": id,
                                                         "message": gstats(id),
-                                                        "keyboard": mainmenu.get_keyboard(),
+                                                        "keyboard": mainmenu(id).get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
@@ -2000,7 +2013,7 @@ while True:
                             vk.method("messages.send",
                                       {"peer_id": id,
                                        "message": games(),
-                                       "keyboard": gamesmenu.get_keyboard(),
+                                       "keyboard": gamesmenu().get_keyboard(),
                                        "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
@@ -2008,7 +2021,7 @@ while True:
                             vk.method("messages.send",
                                       {"peer_id": id,
                                        "message": "Выберите что вы хотите сделать\n" + bal(id),
-                                       "keyboard": btcmenu.get_keyboard(),
+                                       "keyboard": btcmenu().get_keyboard(),
                                        "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
@@ -2018,13 +2031,13 @@ while True:
                                 amount = temp[1]
                                 vk.method("messages.send", {"peer_id": id,
                                                             "message": kaz(id, amount),
-                                                            "keyboard": kazmenu.get_keyboard(),
+                                                            "keyboard": kazmenu().get_keyboard(),
                                                             "random_id": random.randint(1, 2147483647)})
                                 log(id, body)
                             else:
                                 vk.method("messages.send", {"peer_id": id,
                                                             "message": "Добро пожаловать в казино!",
-                                                            "keyboard": kazmenu.get_keyboard(),
+                                                            "keyboard": kazmenu().get_keyboard(),
                                                             "random_id": random.randint(1, 2147483647)})
                                 log(id, body)
 
@@ -2034,7 +2047,7 @@ while True:
                                 amount = temp[1]
                                 vk.method("messages.send", {"peer_id": id,
                                                             "message": kaz(id, amount),
-                                                            "keyboard": kazmenu.get_keyboard(),
+                                                            "keyboard": kazmenu().get_keyboard(),
                                                             "random_id": random.randint(1, 2147483647)})
                                 log(id, body)
 
@@ -2045,27 +2058,27 @@ while True:
                                 amount = temp[2]
                                 vk.method("messages.send", {"peer_id": id,
                                                             "message": monetka(id, side , amount),
-                                                            "keyboard": monetkasidemenu.get_keyboard(),
+                                                            "keyboard": monetkasidemenu().get_keyboard(),
                                                             "random_id": random.randint(1, 2147483647)})
                                 log(id, body)
                             else:
                                 vk.method("messages.send", {"peer_id": id,
                                                             "message": "Обычная игра в монеточку\nВыберите сторону [Орел или Решка] и укажите сткаву\nПример: Монетка орел 1000",
-                                                            "keyboard": monetkasidemenu.get_keyboard(),
+                                                            "keyboard": monetkasidemenu().get_keyboard(),
                                                             "random_id": random.randint(1, 2147483647)})
 
                         elif body.lower() == "орел":
                             vk.method("messages.send",
                                       {"peer_id": id,
                                        "message": "Вы выбрали Орла",
-                                       "keyboard": monetkaorelmenu.get_keyboard(),
+                                       "keyboard": monetkaorelmenu().get_keyboard(),
                                        "random_id": random.randint(1, 2147483647)})
                             log(id, body)
                         elif body.lower() == "решка":
                             vk.method("messages.send",
                                       {"peer_id": id,
                                        "message": "Вы выбрали Решку",
-                                       "keyboard": monetkareshkamenu.get_keyboard(),
+                                       "keyboard": monetkareshkamenu().get_keyboard(),
                                        "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
@@ -2093,7 +2106,7 @@ while True:
                                                                 "random_id": random.randint(1, 2147483647)})
                                     log(id, body)
 
-                        elif body.lower()  == 'работать':
+                        elif body.lower() == 'работать' or body.lower() == '💻 работать':
                             vk.method("messages.send", {"peer_id": id,
                                 "message": work(str(id)),
                                 "random_id": random.randint(1, 2147483647)})
@@ -2102,7 +2115,7 @@ while True:
                         elif body.lower()  == 'уволиться':
                             vk.method("messages.send", {"peer_id": id,
                                 "message": dwork(str(id)),
-                                "keyboard": mainworkmenu.get_keyboard(),
+                                "keyboard": mainworkmenu().get_keyboard(),
                                 "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
@@ -2112,13 +2125,13 @@ while True:
                                 val = temp[1]
                                 vk.method("messages.send", {"peer_id": id,
                                                             "message": hwork(str(id), val),
-                                                            "keyboard": worksmenu.get_keyboard(),
+                                                            "keyboard": worksmenu().get_keyboard(),
                                                             "random_id": random.randint(1, 2147483647)})
                                 log(id, body)
                             else:
                                 vk.method("messages.send", {"peer_id": id,
                                                             "message": works(id),
-                                                            "keyboard": worksmenu.get_keyboard(),
+                                                            "keyboard": worksmenu().get_keyboard(),
                                                             "random_id": random.randint(1, 2147483647)})
                                 log(id, body)
 
@@ -2186,14 +2199,14 @@ while True:
                         elif body.lower() == 'работа' or body.lower() == '⬅ работа':
                             vk.method("messages.send", {"peer_id": id,
                                                         "message": "💎 Выберите действие",
-                                                        "keyboard": mainworkmenu.get_keyboard(),
+                                                        "keyboard": mainworkmenu().get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
                         elif body.lower() == 'уровни':
                             vk.method("messages.send", {"peer_id": id,
                                                         "message": levels(),
-                                                        "keyboard": mainmenu.get_keyboard(),
+                                                        "keyboard": mainmenu(id).get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
@@ -2223,21 +2236,21 @@ while True:
                                 amount = temp[2]
                                 vk.method("messages.send", {"peer_id": id,
                                                             "message": bank(id, type, amount),
-                                                            "keyboard": bankmenu.get_keyboard(),
+                                                            "keyboard": bankmenu().get_keyboard(),
                                                             "random_id": random.randint(1, 2147483647)})
                             else:
                                 with open('json/' + str(id) + '.json', encoding='utf-8') as f:
                                     ff = json.loads(f.read())
                                 vk.method("messages.send", {"peer_id": id,
                                                             "message": "💳 Баланс счёта: " + str(ff["bank"]) + "$\n\n⚠ Используйте:\nБанк положить {сумма}\nили\nБанк снять {сумма}",
-                                                            "keyboard": bankmenu.get_keyboard(),
+                                                            "keyboard": bankmenu().get_keyboard(),
                                                             "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
                         elif body.lower() == 'бонус':
                             vk.method("messages.send", {"peer_id": id,
                                                         "message": gbonus(id),
-                                                        "keyboard": mainmenu.get_keyboard(),
+                                                        "keyboard": mainmenu(id).get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
@@ -2259,27 +2272,27 @@ while True:
                         elif body.lower() == 'магазин' or body.lower() == "⬅ магазин":
                             vk.method("messages.send", {"peer_id": id,
                                                         "message": shop(),
-                                                        "keyboard": shopmenu.get_keyboard(),
+                                                        "keyboard": shopmenu().get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
                         elif body.lower() == 'продать':
                             vk.method("messages.send", {"peer_id": id,
                                                         "message": sell(),
-                                                        "keyboard": sellmenu.get_keyboard(),
+                                                        "keyboard": sellmenu().get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
                         elif body.lower() == 'машины':
                             vk.method("messages.send", {"peer_id": id,
                                                         "message": cars(),
-                                                        "keyboard": carsmenu.get_keyboard(),
+                                                        "keyboard": carsmenu().get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
                         elif body.lower() == 'телефоны':
                             vk.method("messages.send", {"peer_id": id,
                                                         "message": phones(),
-                                                        "keyboard": phonemenu.get_keyboard(),
+                                                        "keyboard": phonemenu().get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
                         elif body.lower() == 'дома':
                             vk.method("messages.send", {"peer_id": id,
                                                         "message": homes(),
-                                                        "keyboard": homemenu.get_keyboard(),
+                                                        "keyboard": homemenu().get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
 
                         elif str(body.lower()).split()[0] == 'кмашину':
@@ -2346,7 +2359,7 @@ while True:
                         elif  body.lower() == 'видеокарты':
                             vk.method("messages.send", {"peer_id": id,
                                                         "message": fshop(),
-                                                        "keyboard": gpumenu.get_keyboard(),
+                                                        "keyboard": gpumenu().get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
 
                         elif str(body.lower()).split()[0] == 'ккарту':
@@ -2370,14 +2383,14 @@ while True:
                         elif body.lower() == "ферма":
                             vk.method("messages.send", {"peer_id": id,
                                                     "message": farmstatus(id),
-                                                    "keyboard": farmmenu.get_keyboard(),
+                                                    "keyboard": farmmenu().get_keyboard(),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
                         elif body.lower() == "♻ обновить":
                             vk.method("messages.send", {"peer_id": id,
                                                     "message": farmstatus(id),
-                                                    "keyboard": farmmenu.get_keyboard(),
+                                                    "keyboard": farmmenu().get_keyboard(),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
@@ -2426,7 +2439,7 @@ while True:
                                                     "message": "Какй топ вы хотите посмтореть?"
                                                                "\nБалтоп - топ по балансу"
                                                                "\nБитктоп - топ по кол-ву биткоинов",
-                                                    "keyboard": topmenu.get_keyboard(),
+                                                    "keyboard": topmenu().get_keyboard(),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
@@ -2434,13 +2447,13 @@ while True:
                             try:
                                 vk.method("messages.send", {"peer_id": id,
                                                         "message": topbtc,
-                                                        "keyboard": topmenu.get_keyboard(),
+                                                        "keyboard": topmenu().get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
                                 log(id, body)
                             except:
                                 vk.method("messages.send", {"peer_id": id,
                                                         "message": "Топ еще не обновлён",
-                                                        "keyboard": topmenu.get_keyboard(),
+                                                        "keyboard": topmenu().get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
                                 log(id, body)
 
@@ -2453,40 +2466,40 @@ while True:
                             except:
                                 vk.method("messages.send", {"peer_id": id,
                                                         "message": "Топ еще не обновлён",
-                                                        "keyboard": topmenu.get_keyboard(),
+                                                        "keyboard": topmenu().get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
 
                         # Хакерство
                         elif body.lower() == 'хакерство' or body.lower() == "⬅ хакерство" or body.lower() == "🏠 хакерство":
                             vk.method("messages.send", {"peer_id": id,
                                                     "message": hackmenu(id),
-                                                    "keyboard": mainhackmenu.get_keyboard(),
+                                                    "keyboard": mainhackmenu().get_keyboard(),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
                         elif body.lower() == 'darkshop' or body.lower() == "⬅ darkshop":
                             vk.method("messages.send", {"peer_id": id,
                                                     "message": darkshop(),
-                                                    "keyboard": dsmenu.get_keyboard(),
+                                                    "keyboard": dsmenu().get_keyboard(),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
                         elif body.lower() == 'компы' or body.lower() == 'компьютеры' or body.lower() == 'комп':
                             vk.method("messages.send", {"peer_id": id,
                                                     "message": comps(),
-                                                    "keyboard": compmenu.get_keyboard(),
+                                                    "keyboard": compmenu().get_keyboard(),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
                         elif body.lower() == 'впн' or body.lower() == 'vpn':
                             vk.method("messages.send", {"peer_id": id,
                                                     "message": vpns(),
-                                                    "keyboard": vpnmenu.get_keyboard(),
+                                                    "keyboard": vpnmenu().get_keyboard(),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
                         elif body.lower() == 'убежища' or body.lower() == 'убежище' or body.lower() == 'убеж':
                             vk.method("messages.send", {"peer_id": id,
                                                     "message": shltrs(),
-                                                    "keyboard": shltrmenu.get_keyboard(),
+                                                    "keyboard": shltrmenu().get_keyboard(),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
@@ -2521,7 +2534,7 @@ while True:
                                                                "\n&#12288;💻 Пкомп" \
                                                                "\n&#12288;🛡 Пвпн" \
                                                                "\n&#12288;🚪 Пубежище",
-                                                    "keyboard": selldarkmenu.get_keyboard(),
+                                                    "keyboard": selldarkmenu().get_keyboard(),
                                                     "random_id": random.randint(1, 2147483647)})
 
                         elif body.lower() == 'пкомп':
@@ -2543,26 +2556,26 @@ while True:
                         elif body.lower() == 'улучшения' or body.lower() == 'улучшение' or body.lower() == '⬅ улучшения':
                             vk.method("messages.send", {"peer_id": id,
                                                     "message": upl(),
-                                                    "keyboard": uplmenu.get_keyboard(),
+                                                    "keyboard": uplmenu().get_keyboard(),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
                         elif body.lower() == 'хп' or body.lower() == '💊 хп':
                             vk.method("messages.send", {"peer_id": id,
                                                     "message": hpup(id),
-                                                    "keyboard": phpmenu.get_keyboard(),
+                                                    "keyboard": phpmenu().get_keyboard(),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
                         elif body.lower() == 'защита' or body.lower() == '🕶 защита':
                             vk.method("messages.send", {"peer_id": id,
                                                     "message": defup(id),
-                                                    "keyboard": pdefmenu.get_keyboard(),
+                                                    "keyboard": pdefmenu().get_keyboard(),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
                         elif body.lower() == 'урон' or body.lower() == '🔫 урон':
                             vk.method("messages.send", {"peer_id": id,
                                                     "message": dmgup(id),
-                                                    "keyboard": pdamagemenu.get_keyboard(),
+                                                    "keyboard": pdamagemenu().get_keyboard(),
                                                     "random_id": random.randint(1, 2147483647)})
                             log(id, body)
 
@@ -2610,12 +2623,21 @@ while True:
                                                         "message": pdmg(id,val),
                                                         "random_id": random.randint(1, 2147483647)})
                             log(id, body)
+
+                        elif body.lower() == 'битва':
+                            vk.method("messages.send", {"peer_id": id,
+                                                    "message": "🔫 Выберите вид битвы",
+                                                    "keyboard": battlemenu().get_keyboard(),
+                                                    "random_id": random.randint(1, 2147483647)})
+                            log(id, body)
+
+
                         # Хакерство
 
                         else:
                             vk.method("messages.send", {"peer_id": id,
-                                                        "message": "Увы, но такой команды нет\nПосмотреть их список можно написав 'команды'",
-                                                        "keyboard": errormenu.get_keyboard(),
+                                                        "message": "Увы, но такой команды нет\nПосмотреть их список можно написав 'команды'\n\nДля связи с администрацией, используйте 'репорт'",
+                                                        "keyboard": errormenu().get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
 
                     else:
@@ -2625,7 +2647,7 @@ while True:
             else:
                 vk.method("messages.send", {"peer_id": id,
                                         "message": "К сожалению,я могу распознать только текст :(",
-                                        "keyboard": mainmenu.get_keyboard(),
+                                        "keyboard": mainmenu(id).get_keyboard(),
                                         "random_id": random.randint(1, 2147483647)})
 
     except BaseException as E:
