@@ -86,26 +86,28 @@ def prof(id):
                                     "random_id": random.randint(1, 2147483647)})
         return '💬 Добро пожаловать! Я вижу ты здесь новенький, используй "хелп" для помощи и развлекайся!' \
                '\n💲 А еще,держи свой бонус в размере 1000$\n\n' + prof(str(id))
-
     return 'Ваш профиль\n\n' + \
-           '🔎 id: ' + str(ff["id"]) + \
-           '\n📋 Ник: ' + str(ff["nick"]) + \
-           '\n💰 Баланс: ' + str(ff["balance"]) + "$" + \
-           '\n💳 Банк: ' + str(ff["bank"]) + "$" + \
-           '\n💴 Биткоины: ' + str(round(ff["btc"],5)) + "₿" + \
-           '\n💼 Работа: ' + str(ff["work"]) + \
-           '\n📶 Уровень: ' + str(ff["level"]) + \
-           '\n💡 Опыт: ' + str(ff["exp"]) + \
-           '\n' \
-           '\n🔑 Имущество:' \
-           '\n&#12288;🚗 Машина: ' + carcheck(id) + \
-           '\n&#12288;🏡 Дом: ' + homecheck(id) +  \
-           '\n&#12288;📱 Телефон: ' + phonecheck(id) + \
-           '\n&#12288;🎞 Видеокарта: ' + farmcheck(id) + \
-           '\n' \
-           '\n👔 Вы персонал: ' + ifstaff(id) + \
-           '\n⛔ Блокировка: ' + profbancheck(id) + \
-           '\n📅 Дата регистрации: ' + str(ff["reg"]) + ver
+            '🔎 id: ' + str(ff["id"]) + \
+            '\n📋 Ник: ' + str(ff["nick"]) + \
+            '\n💰 Баланс: ' + str(ff["balance"]) + "$" + \
+            '\n💳 Банк: ' + str(ff["bank"]) + "$" + \
+            '\n💴 Биткоины: ' + str(round(ff["btc"],5)) + "₿" + \
+            '\n💼 Работа: ' + str(ff["work"]) + \
+            '\n' \
+            '\n🔑 Имущество:' \
+            '\n&#12288;🚗 Машина: ' + carcheck(id) + \
+            '\n&#12288;🏡 Дом: ' + homecheck(id) +  \
+            '\n&#12288;📱 Телефон: ' + phonecheck(id) + \
+            '\n&#12288;🎞 Видеокарта: ' + farmcheck(id) + \
+            '\n' + prof2(id)
+
+def prof2(id):
+    if id in admins or id in moders:
+        return '\n👔 Вы персонал: ' + ifstaff(id) + \
+        '\n📅 Дата регистрации: ' + str(ff["reg"]) + ver
+        print("prof2 check")
+    else:
+        return '\n📅 Дата регистрации: ' + str(ff["reg"]) + ver
 
 def dprof(idd):
     idd = ids(idd)
@@ -341,8 +343,7 @@ def ulist():
     for i in range (len(f)):
         f[i] = '[' + str(c) + '] ' + "vk.com/id" + str(f[i][:-5])
         c += 1
-    a = '\n'.join(f[:20])
-    return "Список пользователей [" + str(c) + "]\n\n" + a
+    return "Количество пользователей [" + str(c) + "]"
 
 def getanekdot():
     z = ''
@@ -610,6 +611,15 @@ def lvlcheck(id):
                                 "random_id": random.randint(1, 2147483647)})
         return
 
+def workinfo(id):
+    with open('json/' + str(id) + '.json') as f:
+        ff = json.loads(f.read())
+    return "\n👤 Информация:" \
+           "\n" \
+           "\n💼 Работа: " + str(ff["work"]) + \
+           "\n📶 Уровень: " + str(ff["level"]) + \
+           "\n💡 Опыт: " + str(ff["exp"])
+
 def works(id):
 
     s= "Список работ:" \
@@ -795,9 +805,10 @@ def workend(id,work):
 
 def report(id, msg):
     if len(msg) <= 100:
-        vk.method("messages.send", {"peer_id": 419760643,
-                                    "message": "⚠ Репорт | vk.com/gim196468884?sel=" + id + " | " + msg,
-                                    "random_id": random.randint(1, 2147483647)})
+        for i in admins:
+            vk.method("messages.send", {"peer_id": i,
+                                        "message": "⚠ Репорт | vk.com/gim196468884?sel=" + id + " | " + msg,
+                                        "random_id": random.randint(1, 2147483647)})
         return "✅ Репорт отправлен!"
     else:
         return "⚠ Ваш репорт превышает 100 символов"
@@ -1671,7 +1682,10 @@ def reloadtop():
     threading.Timer(300.0, baltop, args=()).start()
 
 def reloadtopbtc():
-    threading.Timer(300.0, btctop, args=()).start()
+    try:
+        threading.Timer(300.0, btctop, args=()).start()
+    except:
+        btctop()
 # Топ
 
 # Хакерство
@@ -1724,7 +1738,7 @@ print("[" + res() +"] ✅Бот запущен!")
 log("system", "Бот запущен")
 while True:
     try:
-        messages = vk.method("messages.getConversations", {"offset": 0, "count": 20, "filter": "unanswered"})
+        messages = vk.method("р", {"offset": 0, "count": 20, "filter": "unanswered"})
         if messages["count"] >= 1 and messages["items"][0]["conversation"]["peer"]["type"] == 'user':
             id = messages["items"][0]["last_message"]["from_id"]
             body = messages["items"][0]["last_message"]["text"]
@@ -1739,9 +1753,11 @@ while True:
                                             "message": prof(id) + "\n\n💎 Добро пожаловать в главное меню",
                                             "keyboard": mainmenu(id).get_keyboard(),
                                             "random_id": random.randint(1, 2147483647)})
-
-            with open('json/' + str(id) + '.json') as f:
-                ff = json.loads(f.read())
+            try:
+                with open('json/' + str(id) + '.json') as f:
+                    ff = json.loads(f.read())
+            except:
+                prof(id)
 
             allow = ["репорт", "профиль", "проф", "unban"]
             if True and str(body) != "":
@@ -2198,7 +2214,7 @@ while True:
 
                         elif body.lower() == 'работа' or body.lower() == '⬅ работа':
                             vk.method("messages.send", {"peer_id": id,
-                                                        "message": "💎 Выберите действие",
+                                                        "message": workinfo(id),
                                                         "keyboard": mainworkmenu().get_keyboard(),
                                                         "random_id": random.randint(1, 2147483647)})
                             log(id, body)
@@ -2641,9 +2657,19 @@ while True:
                                                         "random_id": random.randint(1, 2147483647)})
 
                     else:
-                        vk.method("messages.send", {"peer_id": id,
-                                                    "message": "⚠ Вы заблокированы",
-                                                    "random_id": random.randint(1, 2147483647)})
+                        try:
+                            with open('json/' + str(id) + '.json') as f:
+                                ff = json.loads(f.read())
+                            temp = ff["banned"].split()
+                            idd = temp[0]
+                            reason = temp[1]
+                            vk.method("messages.send", {"peer_id": id,
+                                                        "message": "⚠ Вы заблокированы vk.com/id" + idd + "\nПо причине: " + reason,
+                                                        "random_id": random.randint(1, 2147483647)})
+                        except:
+                            vk.method("messages.send", {"peer_id": id,
+                                                        "message": "⚠ Вы заблокированы",
+                                                        "random_id": random.randint(1, 2147483647)})
             else:
                 vk.method("messages.send", {"peer_id": id,
                                         "message": "К сожалению,я могу распознать только текст :(",
@@ -2652,6 +2678,4 @@ while True:
 
     except BaseException as E:
         print(E)
-        vk.method("messages.markAsAnsweredConversation",
-                 {"peer_id": id, "answered": 1, "group_id": 173284877})
         log("system | ", E)

@@ -47,7 +47,7 @@ def profbancheck(id):
     with open('json/' + str(id) + '.json') as f:
         ff = json.loads(f.read())
     if ff["banned"] == "NO":
-        return "🚫"
+        return ""
     else:
         r = ff["banned"].split(" ")[-1]
         return "✅ | " + r
