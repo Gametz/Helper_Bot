@@ -29,10 +29,16 @@ users = next(os.walk("json/"))[2]
 vk = vk_api.VkApi(token=token)
 vk._auth_token()
 
-def log(id, body):
-    with open('log.txt', 'a', encoding='utf-8') as f:
-        f.writelines("\n[" + res() + "] " + str(id) + " " + str(body) + " | Успешно!")
-    print("\n[" + res() + "] " + str(id) + " " + str(body) + " | Успешно!")
+def log(id, body, *args):
+    id = str(id)
+    if body != "block":
+        with open('log.txt', 'a', encoding='utf-8') as f:
+            f.writelines("\n[" + res() + "] " + id + " " + str(body) + " | Успешно!")
+        print("\n[" + res() + "] " + id + " " + str(body) + " | Успешно!")
+    else:
+        with open('log.txt', 'a', encoding='utf-8') as f:
+            f.writelines("\n[" + res() + "] " + id + " " + str(body) + " | Ошибка!")
+        print("\n[" + res() + "] " + id + " " + str(body) + " | Ошибка!")
 
 def prof(id):
     x = {
@@ -105,7 +111,6 @@ def prof2(id):
     if id in admins or id in moders:
         return '\n👔 Вы персонал: ' + ifstaff(id) + \
         '\n📅 Дата регистрации: ' + str(ff["reg"]) + ver
-        print("prof2 check")
     else:
         return '\n📅 Дата регистрации: ' + str(ff["reg"]) + ver
 
@@ -1734,11 +1739,10 @@ threading.Thread(target=baltop, args=()).start()
 threading.Thread(target=btctop, args=()).start()
 # btcratestart()
 
-print("[" + res() +"] ✅Бот запущен!")
 log("system", "Бот запущен")
 while True:
     try:
-        messages = vk.method("р", {"offset": 0, "count": 20, "filter": "unanswered"})
+        messages = vk.method("messages.getConversations", {"offset": 0, "count": 20, "filter": "unanswered"})
         if messages["count"] >= 1 and messages["items"][0]["conversation"]["peer"]["type"] == 'user':
             id = messages["items"][0]["last_message"]["from_id"]
             body = messages["items"][0]["last_message"]["text"]
@@ -2677,5 +2681,5 @@ while True:
                                         "random_id": random.randint(1, 2147483647)})
 
     except BaseException as E:
-        print(E)
-        log("system | ", E)
+        log("system | " + str(id) + " | ", E)
+        pass
