@@ -71,7 +71,7 @@ def bcomp(id, n):
             ff["pdamage"] += 1
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
-            congrts(id)
+            congrts(id) # noqa
             return "Вы купили " + str(ff["hcomp"]) + " за 20₿\nВаш баланс: \n" + bal(id)
 
         elif n == '2' and ff["btc"] >= 100 and ff["hlevel"] >= 5:
@@ -80,7 +80,7 @@ def bcomp(id, n):
             ff["pdamage"] += 3
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
-            congrts(id)
+            congrts(id) # noqa
             return "Вы купили " + str(ff["hcomp"]) + " за 100₿\nВаш баланс: \n" + bal(id)
 
         elif n == '3' and ff["btc"] >= 300 and ff["hlevel"] >= 15:
