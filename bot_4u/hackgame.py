@@ -72,7 +72,7 @@ def bcomp(id, n):
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
             congrts(id) # noqa
-            return "Вы купили " + str(ff["hcomp"]) + " за 20₿\nВаш баланс: \n" + bal(id)
+            return "Вы купили " + str(ff["hcomp"]) + " за 20₿\nВаш баланс: \n" + bal(id) # noqa
 
         elif n == '2' and ff["btc"] >= 100 and ff["hlevel"] >= 5:
             ff["btc"] -= 100
@@ -81,7 +81,7 @@ def bcomp(id, n):
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
             congrts(id) # noqa
-            return "Вы купили " + str(ff["hcomp"]) + " за 100₿\nВаш баланс: \n" + bal(id)
+            return "Вы купили " + str(ff["hcomp"]) + " за 100₿\nВаш баланс: \n" + bal(id) # noqa
 
         elif n == '3' and ff["btc"] >= 300 and ff["hlevel"] >= 15:
             ff["btc"] -= 300
@@ -90,7 +90,7 @@ def bcomp(id, n):
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
             congrts(id)
-            return "Вы купили " + str(ff["hcomp"]) + " за 300₿\nВаш баланс: \n" + bal(id)
+            return "Вы купили " + str(ff["hcomp"]) + " за 300₿\nВаш баланс: \n" + bal(id) # noqa
 
         elif n == '4' and ff["btc"] >= 500 and ff["hlevel"] >= 30:
             ff["btc"] -= 500
@@ -99,7 +99,7 @@ def bcomp(id, n):
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
             congrts(id)
-            return "Вы купили " + str(ff["hcomp"]) + " за 500₿\nВаш баланс: \n" + bal(id)
+            return "Вы купили " + str(ff["hcomp"]) + " за 500₿\nВаш баланс: \n" + bal(id) # noqa
 
         elif n == '5' and ff["btc"] >= 1500 and ff["hlevel"] >= 50:
             ff["btc"] -= 1500
@@ -108,7 +108,7 @@ def bcomp(id, n):
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
             congrts(id)
-            return "Вы купили " + str(ff["hcomp"]) + " за 1500₿\nВаш баланс: \n" + bal(id)
+            return "Вы купили " + str(ff["hcomp"]) + " за 1500₿\nВаш баланс: \n" + bal(id) # noqa
 
         else:
             return "У вас не хватает денег/опыта или вы неправильно используете команду!\nПример: ккомп 1"
@@ -126,7 +126,7 @@ def scomps(id):
             ff["pdamage"] = 0
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
-            return "Вы продали " + temp + " за 20₿\n" + bal(id)
+            return "Вы продали " + temp + " за 20₿\n" + bal(id) # noqa
 
         elif ff["hcomp"] == "4 ядра, 4 гига":
             temp = ff["hcomp"]
@@ -135,7 +135,7 @@ def scomps(id):
             ff["pdamage"] = 0
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
-            return "Вы продали " + temp + " за 100₿\n" + bal(id)
+            return "Вы продали " + temp + " за 100₿\n" + bal(id) # noqa
 
         elif ff["hcomp"] == "Офисный":
             temp = ff["hcomp"]
@@ -144,7 +144,7 @@ def scomps(id):
             ff["pdamage"] = 0
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
-            return "Вы продали " + temp + " за 300₿\n" + bal(id)
+            return "Вы продали " + temp + " за 300₿\n" + bal(id) # noqa
 
         elif ff["hcomp"] == "Игровой":
             temp = ff["hcomp"]
@@ -153,7 +153,7 @@ def scomps(id):
             ff["pdamage"] = 0
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
-            return "Вы продали " + temp + " за 500₿\n" + bal(id)
+            return "Вы продали " + temp + " за 500₿\n" + bal(id) # noqa
 
         elif ff["hcomp"] == "Квантовый":
             temp = ff["hcomp"]
@@ -162,7 +162,7 @@ def scomps(id):
             ff["pdamage"] = 0
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
-            return "Вы продали " + temp + " за 1500₿\n" + bal(id)
+            return "Вы продали " + temp + " за 1500₿\n" + bal(id) # noqa
     else:
         return 'У вас нет компа!'
 
@@ -177,7 +177,7 @@ def bvpn(id, n):
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
             congrts(id)
-            return "Вы купили " + str(ff["hvpn"]) + " за 20₿\nВаш баланс: \n" + bal(id)
+            return "Вы купили " + str(ff["hvpn"]) + " за 20₿\nВаш баланс: \n" + bal(id) # noqa
 
         elif n == '2' and ff["btc"] >= 170 and ff["hlevel"] >= 7:
             ff["btc"] -= 100
@@ -186,7 +186,7 @@ def bvpn(id, n):
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
             congrts(id)
-            return "Вы купили " + str(ff["hvpn"]) + " за 100₿\nВаш баланс: \n" + bal(id)
+            return "Вы купили " + str(ff["hvpn"]) + " за 100₿\nВаш баланс: \n" + bal(id) # noqa
 
         elif n == '3' and ff["btc"] >= 350 and ff["hlevel"] >= 18:
             ff["btc"] -= 300
@@ -195,7 +195,7 @@ def bvpn(id, n):
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
             congrts(id)
-            return "Вы купили " + str(ff["hvpn"]) + " за 300₿\nВаш баланс: \n" + bal(id)
+            return "Вы купили " + str(ff["hvpn"]) + " за 300₿\nВаш баланс: \n" + bal(id) # noqa
 
         elif n == '4' and ff["btc"] >= 550 and ff["hlevel"] >= 35:
             ff["btc"] -= 500
@@ -204,7 +204,7 @@ def bvpn(id, n):
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
             congrts(id)
-            return "Вы купили " + str(ff["hvpn"]) + " за 500₿\nВаш баланс: \n" + bal(id)
+            return "Вы купили " + str(ff["hvpn"]) + " за 500₿\nВаш баланс: \n" + bal(id) # noqa
 
         elif n == '5' and ff["btc"] >= 1700 and ff["hlevel"] >= 55:
             ff["btc"] -= 1500
@@ -213,7 +213,7 @@ def bvpn(id, n):
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
             congrts(id)
-            return "Вы купили " + str(ff["hvpn"]) + " за 1500₿\nВаш баланс: \n" + bal(id)
+            return "Вы купили " + str(ff["hvpn"]) + " за 1500₿\nВаш баланс: \n" + bal(id) # noqa
 
         else:
             return "У вас не хватает денег/опыта или вы неправильно используете команду!\nПример: квпн 1"
@@ -231,7 +231,7 @@ def svpn(id):
             ff["pdef"] = 0
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
-            return "Вы продали " + temp + " за 20₿\n" + bal(id)
+            return "Вы продали " + temp + " за 20₿\n" + bal(id) # noqa
 
         elif ff["hvpn"] == "С форума":
             temp = ff["hvpn"]
@@ -240,7 +240,7 @@ def svpn(id):
             ff["pdef"] = 0
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
-            return "Вы продали " + temp + " за 170₿\n" + bal(id)
+            return "Вы продали " + temp + " за 170₿\n" + bal(id) # noqa
 
         elif ff["hvpn"] == "Приватный":
             temp = ff["hvpn"]
@@ -249,7 +249,7 @@ def svpn(id):
             ff["pdef"] = 0
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
-            return "Вы продали " + temp + " за 350₿\n" + bal(id)
+            return "Вы продали " + temp + " за 350₿\n" + bal(id) # noqa
 
         elif ff["hvpn"] == "Игровой":
             temp = ff["hvpn"]
@@ -258,7 +258,7 @@ def svpn(id):
             ff["pdef"] = 0
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
-            return "Вы продали " + temp + " за 550₿\n" + bal(id)
+            return "Вы продали " + temp + " за 550₿\n" + bal(id) # noqa
 
         elif ff["hvpn"] == "Собственный":
             temp = ff["hvpn"]
@@ -267,7 +267,7 @@ def svpn(id):
             ff["pdef"] = 0
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
-            return "Вы продали " + temp + " за 1700₿\n" + bal(id)
+            return "Вы продали " + temp + " за 1700₿\n" + bal(id) # noqa
     else:
         return 'У вас нет VPN!'
 
@@ -282,7 +282,7 @@ def bshltr(id, n):
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
             congrts(id)
-            return "Вы купили " + str(ff["hsheltr"]) + " за 35₿\nВаш баланс: \n" + bal(id)
+            return "Вы купили " + str(ff["hsheltr"]) + " за 35₿\nВаш баланс: \n" + bal(id) # noqa
 
         elif n == '2' and ff["btc"] >= 200 and ff["hlevel"] >= 12:
             ff["btc"] -= 200
@@ -291,7 +291,7 @@ def bshltr(id, n):
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
             congrts(id)
-            return "Вы купили " + str(ff["hsheltr"]) + " за 200₿\nВаш баланс: \n" + bal(id)
+            return "Вы купили " + str(ff["hsheltr"]) + " за 200₿\nВаш баланс: \n" + bal(id) # noqa
 
         elif n == '3' and ff["btc"] >= 400 and ff["hlevel"] >= 25:
             ff["btc"] -= 400
@@ -300,7 +300,7 @@ def bshltr(id, n):
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
             congrts(id)
-            return "Вы купили " + str(ff["hsheltr"]) + " за 400₿\nВаш баланс: \n" + bal(id)
+            return "Вы купили " + str(ff["hsheltr"]) + " за 400₿\nВаш баланс: \n" + bal(id) # noqa
 
         elif n == '4' and ff["btc"] >= 1800 and ff["hlevel"] >= 50:
             ff["btc"] -= 1800
@@ -309,7 +309,7 @@ def bshltr(id, n):
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
             congrts(id)
-            return "Вы купили " + str(ff["hsheltr"]) + " за 1800₿\nВаш баланс: \n" + bal(id)
+            return "Вы купили " + str(ff["hsheltr"]) + " за 1800₿\nВаш баланс: \n" + bal(id) # noqa
 
         elif n == '5' and ff["btc"] >= 2000 and ff["hlevel"] >= 60:
             ff["btc"] -= 2000
@@ -318,7 +318,7 @@ def bshltr(id, n):
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
             congrts(id)
-            return "Вы купили " + str(ff["hsheltr"]) + " за 2000₿\nВаш баланс: \n" + bal(id)
+            return "Вы купили " + str(ff["hsheltr"]) + " за 2000₿\nВаш баланс: \n" + bal(id) # noqa
 
         else:
             return "У вас не хватает денег/опыта или вы неправильно используете команду!\nПример: кубежище 1"
@@ -336,7 +336,7 @@ def sshltr(id):
             ff["php"] = 0
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
-            return "Вы продали " + temp + " за 35₿\n" + bal(id)
+            return "Вы продали " + temp + " за 35₿\n" + bal(id) # noqa
 
         elif ff["hsheltr"] == "Гараж деда":
             temp = ff["hsheltr"]
@@ -345,7 +345,7 @@ def sshltr(id):
             ff["php"] = 0
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
-            return "Вы продали " + temp + " за 200₿\n" + bal(id)
+            return "Вы продали " + temp + " за 200₿\n" + bal(id) # noqa
 
         elif ff["hsheltr"] == "Съемная квартира":
             temp = ff["hsheltr"]
@@ -354,7 +354,7 @@ def sshltr(id):
             ff["php"] = 0
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
-            return "Вы продали " + temp + " за 400₿\n" + bal(id)
+            return "Вы продали " + temp + " за 400₿\n" + bal(id) # noqa
 
         elif ff["hsheltr"] == "Бункер в горах":
             temp = ff["hsheltr"]
@@ -363,7 +363,7 @@ def sshltr(id):
             ff["php"] = 0
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
-            return "Вы продали " + temp + " за 1800₿\n" + bal(id)
+            return "Вы продали " + temp + " за 1800₿\n" + bal(id) # noqa
 
         elif ff["hsheltr"] == "Дом Путина":
             temp = ff["hsheltr"]
@@ -372,7 +372,7 @@ def sshltr(id):
             ff["php"] = 0
             with open('json/' + str(id) + '.json', 'w') as f:
                 f.write(json.dumps(ff, indent=4))
-            return "Вы продали " + temp + " за 2000₿\n" + bal(id)
+            return "Вы продали " + temp + " за 2000₿\n" + bal(id) # noqa
     else:
         return 'У вас нет убежища!'
 
